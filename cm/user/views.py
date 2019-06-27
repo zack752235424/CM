@@ -1,8 +1,12 @@
 
 import hashlib
+
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from django.shortcuts import render
 
-# Create your views here.
+
+from user.form import UserForm
 from user.models import User
 
 
@@ -15,7 +19,15 @@ def login(request):
     if request.method == 'GET':
         return render(request, 'login.html')
     if request.method == 'POST':
-        username = request.POST.get('username')
-        pwd = request.POST.get('pwd')
-        user = User.objects.get()
+        form = UserForm(request.POST)
+        if form.is_valid():
+            user = User.objects.filter(username=form.cleaned_data['username'], pwd=form.cleaned_data['pwd']).first()
+            request.session['user_id'] = user.id
+            return HttpResponseRedirect(reverse('user:index'))
+        error = {[item for item in form.errors][0]: form.errors[[item for item in form.errors][0]]}
+        return render(request, 'login.html', {'error': error})
+
+
+def index(request):
+    return render(request, 'index.html')
 

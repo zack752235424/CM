@@ -11,9 +11,11 @@
 	<div id="container">
 		<div id="bd">
 			<div class="login">
-                <form id="form" action="{% url 'login' %}" method="post" onsubmit="return checkForm()">
+                <form id="form" action="{% url 'user:login' %}" method="post" onsubmit="return checkForm()">
                     <div class="login-top"><h1 class="logo">车辆管理系统</h1></div>
                     <div class="login-input">
+                        <h1 style="font-size: 14px; color: brown">{{ error.username.0 }}</h1>
+                        <h1 style="font-size: 14px; color: brown">{{ error.pwd.0 }}</h1>
                         <p class="user ue-clear">
                             <label>用户名</label>
                             <input type="text" name="username"/>
@@ -70,8 +72,9 @@
 <script type="text/javascript" >
     function checkForm(){
         var pwd= document.getElementById('pwd');
-        pwd.value= hex_md5(pwd.value);
-    //进行下一步
+        if(pwd.value){
+            pwd.value= hex_md5(pwd.value);
+        }
     return true;
 }
 </script>

@@ -7,7 +7,7 @@ class User(models.Model):
     """
     username = models.CharField(max_length=32, unique=True, verbose_name='用户名')
     pwd = models.CharField(max_length=32, verbose_name='密码')
-    phone = models.IntegerField(unique=True, verbose_name='用户手机号码')
+    phone = models.IntegerField(null=True, unique=True, verbose_name='用户手机号码')
     create_time = models.DateTimeField(auto_now_add=True, verbose_name='自动创建当前保存的时间')
     roles = models.ManyToManyField(to="Role", verbose_name='角色')
 
@@ -15,7 +15,7 @@ class User(models.Model):
         db_table = 'user'
 
     def __str__(self):
-        return self.name
+        return self.username
 
 
 class Role(models.Model):
