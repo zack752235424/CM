@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>升级</title>
+    <link rel="stylesheet" href="/static/css/layui.css" media="all">
+    <style>
+        .div_f{
+            height: 300px;
+        }
+        #first{
+            margin-top: 50px;
+            margin-left: 50px;
+            font-size: 20px;
+        }
+        #first_f{
+            border-left-width:0px;
+            border-top-width:0px;
+            border-right-width:0px;
+            border-bottom-color:gray;
+            width: 700px;
+            text-align: center;
+        }
+        .layui-btn{
+            margin-top: 20px;
+            width: 120px;
+            margin-left: 430px;
+        }
+    </style>
+</head>
+<body>
+    <div class="div_f">
+        <div id="first">ICCID号：
+            <input  id="first_f" type="text" placeholder="请输入ICCID">
+        </div>
+
+        <div id="first">&nbsp;&nbsp;&nbsp;VIN号：
+            <input  id="first_f" type="text" placeholder="请输入VIN号">
+        </div>
+
+        <div id="first">&nbsp;版本号：
+            <input  id="first_f" type="text" placeholder="请输入版本号">
+        </div>
+
+        <button type="button" class="layui-btn" >升级</button>
+    </div>
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 15px;">
+        <legend style="color: gray">正在升级中</legend>
+    </fieldset>
+    <table id="updating" lay-filter="test"></table>
+
+
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+        <legend style="color: gray">升级完成</legend>
+    </fieldset>    <table id="demo" lay-filter="test"></table>
+
+    <script src="/static/js/layui.js"></script>
+    <script>
+        layui.use('table', function(){
+          var table = layui.table;
+
+          //第一个实例
+          table.render({
+            elem: '#demo'
+            ,height: 500
+            ,url: '/updt/users/' //数据接口
+            ,page: false //开启分页
+            ,cols: [[ //表头
+              {field: 'id', title: 'ID', width:80, sort: true, fixed: 'left'}
+              ,{field: 'ICCID', title: 'ICCID', width:400}
+              ,{field: 'VIN', title: 'VIN', sort: true, width: 400}
+              ,{field: 'version', title: '版本号'}
+            ]]
+          });
+          // 第二个实例
+          table.render({
+            elem: '#updating'
+            ,height: 195
+            ,url: '/updt/users/' //数据接口
+            ,page: false //开启分页
+            ,cols: [[ //表头
+              {field: 'id', title: 'ID', width:80, sort: true, fixed: 'left', align:'center'}
+              ,{field: 'ICCID', title: 'ICCID', width:400, align:'center'}
+              ,{field: 'VIN', title: 'VIN', sort: true, width: 400, align:'center'}
+              ,{field: 'version', title: '版本号', align:'center'}
+            ]]
+          });
+
+        });
+    </script>
+</body>
+</html>

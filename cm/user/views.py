@@ -1,5 +1,4 @@
 
-import hashlib
 
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -23,11 +22,21 @@ def login(request):
         if form.is_valid():
             user = User.objects.filter(username=form.cleaned_data['username'], pwd=form.cleaned_data['pwd']).first()
             request.session['user_id'] = user.id
-            return HttpResponseRedirect(reverse('user:index'))
+            return HttpResponseRedirect(reverse('index:index'))
         error = {[item for item in form.errors][0]: form.errors[[item for item in form.errors][0]]}
         return render(request, 'login.html', {'error': error})
 
 
-def index(request):
-    return render(request, 'index.html')
+def logout(request):
+    """
+    注销功能
+    :param request:
+    :return:
+    """
+    del request.session['user_id']
+    return HttpResponseRedirect(reverse('user:login'))
+
+
+
+
 

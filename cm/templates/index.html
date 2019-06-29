@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- 设置全文编码格式 -->
+	<meta charset="utf-8">
+	<!-- 让IE也可以用上Chrome的引擎 -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge, Chrome=1">
+	<!-- 国产浏览器告诉模式 -->
+	<meta name="renderer", content="webkit">
+	<!-- 网页关键字 -->
+	<meta name="keywords" content="车辆, 自动化, 定位">
+	<title>主页面</title>
+
+	<!-- 总体样式 -->
+	<!-- 小图标 -->
+	<link rel="shortcut icon" href="/static/images/favicon.ico">
+	<!-- 整理列表字体 -->
+	<link rel="stylesheet" type="text/css" href="/static/css/base.css">
+	<!-- 字体前添加图标 -->
+	<link rel="stylesheet" type="text/css" href="/static/css/iconfont.css">
+	<!-- 左侧鼠标指针动态效果，右侧iframe扩大效果, layui基于jquery -->
+	<script type="text/javascript" src="/static/js/jquery-1.11.3.min.js" ></script>
+	<!-- 此两块为layui基本引入文件 -->
+	<link rel="stylesheet" type="text/css" href="/static/css/layui.css">
+	<script type="text/javascript" src="/static/js/layui.js"></script>
+
+	<!-- 滚动条插件 -->
+	<link rel="stylesheet" type="text/css" href="/static/css/jquery.mCustomScrollbar.css">
+	<script src="/static/js/jquery-ui-1.10.4.min.js"></script>
+	<script src="/static/js/jquery.mousewheel.min.js"></script>
+	<script src="/static/js/jquery.mCustomScrollbar.min.js"></script>
+	<!-- 仅供所有子页面使用 -->
+	<script src="/static/js/cframe.js"></script>
+	<!-- 公共样式 结束 -->
+	
+	<!-- 编辑整体样式 -->
+	<link rel="stylesheet" type="text/css" href="/static/css/frameStyle.css">
+	<!-- 将子模板渲染到中间 -->
+	<script type="text/javascript" src="/static/js/frame.js" ></script>
+</head>
+<body>
+	<body>
+		<!-- 左侧菜单 - 开始 -->
+		<div class="frameMenu">
+		    <div class="logo">
+		        <img src="/static/images/car.png"/>
+		        <div class="logoText">
+		            <h1>成都北斗科技</h1>
+		        </div>
+		    </div>
+		    <div class="menu">
+		        <ul>
+		        	<li>
+		                <a class="menuFA" href="javascript:void(0)" onclick="menuCAClick('{% url 'updt:up' %}',this)"><i class="iconfont icon-zhishi left"></i>车辆升级</a>
+		            </li>
+		        	<li>
+		                <a class="menuFA" href="javascript:void(0)" onclick="menuCAClick('tgls/iconfont.html',this)"><i class="iconfont icon-huojian left"></i>用户管理</a>
+		           	</li>
+		        	<li>
+		                <a class="menuFA" href="javascript:void(0)"><i class="iconfont icon-liuliangyunpingtaitubiao03 left"></i>分管管理<i class="iconfont icon-dajiantouyou right"></i></a>
+		                <dl>
+		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('tgls/agent/agent_add.html',this)">添加分管</a></dt>
+		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('tgls/agent/agent_list.html',this)">分管列表</a></dt>
+		                </dl>
+		            </li>
+		        	<li>
+		                <a class="menuFA" href="javascript:void(0)"><i class="iconfont icon-shangpin left"></i>商品管理<i class="iconfont icon-dajiantouyou right"></i></a>
+		                <dl>
+		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('tgls/goodsManage/goodsType_list.html',this)">分类列表</a></dt>
+		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('tgls/goodsManage/goods_list.html',this)">基本商品库</a></dt>
+		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('tgls/goodsManage/goods_add.html',this)">添加商品</a></dt>
+		                </dl>
+		            </li>
+		        	<li>
+		                <a class="menuFA" href="javascript:void(0)"><i class="iconfont icon-yunying left"></i>基础库内容<i class="iconfont icon-dajiantouyou right"></i></a>
+		                <dl>
+		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('tgls/base/base_add.html',this)">表单含编辑器</a></dt>
+		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('tgls/base/base_list.html',this)">常用列表</a></dt>
+		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('tgls/base/base_customList.html',this)">可新增的列表</a></dt>
+		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('tgls/base/base_customNewList.html',this)">可新增的列表(手写)</a></dt>
+		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('tgls/base/pages.html',this)">页签切换Table</a></dt>
+		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('tgls/base/maintain.html',this)">维护中页面</a></dt>
+		                </dl>
+		           	</li>
+		        	<li>
+		                <a class="menuFA" href="javascript:void(0)"><i class="iconfont icon-icon left"></i>打印模板<i class="iconfont icon-dajiantouyou right"></i></a>
+		                <dl>
+		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('tgls/print/outPrintData.html',this)">入库单打印模版</a></dt>
+		                </dl>
+		           	</li>
+
+
+
+
+		        	<li>
+		                <a class="menuFA" href="javascript:void(0)"><i class="iconfont icon-caiwu left"></i>财务管理</a>
+		           	</li>
+
+
+
+		        	<li>
+		                <a class="menuFA" href="javascript:void(0)"><i class="iconfont icon-icon left"></i>报表模块<i class="iconfont icon-dajiantouyou right"></i></a>
+		                <dl>
+		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('test.html',this)">订单统计报表</a></dt>
+		                </dl>
+		           	</li>
+		        </ul>
+		    </div>
+		</div>
+		<!-- 左侧菜单 - 结束 -->
+		
+		<div class="main">
+			<!-- 头部栏 - 开始 -->
+			<div class="frameTop">
+				<img class="jt" src="/static/images/top_jt.png"/>
+				<div class="topMenu">
+					<ul>
+						<li><a href="javascript:void(0)" onclick="menuCAClick('tgls/modify_password.html',this)"><i class="iconfont icon-yonghu1"></i>管理员</a></li>
+						<li><a href="javascript:void(0)" onclick="menuCAClick('tgls/modify_password.html',this)"><i class="iconfont icon-xiugaimima"></i>修改密码</a></li>
+						<li><a href="{% url 'user:logout' %}"><i class="iconfont icon-084tuichu"></i>注销</a></li>
+					</ul>
+				</div>
+			</div>
+			<!-- 头部栏 - 结束 -->
+			
+			<!-- 核心区域 - 开始 -->
+			<div class="frameMain">
+				<div class="title" id="frameMainTitle">
+					<span><i class="iconfont icon-xianshiqi"></i>后台首页</span>
+				</div>
+				<div class="con">
+					<iframe id="mainIframe" src="{% url 'index:map' %}"></iframe>
+				</div>
+			</div>
+			<!-- 核心区域 - 结束 -->
+		</div>
+	</body>
+</body>
+</html>

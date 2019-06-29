@@ -28,7 +28,7 @@ em,cite{font-style:normal;}
 .login .login-input p{ margin-top:11px; line-height:39px;}
 .login .login-input p label{ float:left; text-align:right; width:51px; color:#000000; font-size:16px; }
 .login .login-input p input{ padding:0 0 0 49px; margin-left:16px; width:195px; height:39px;line-height:39px\0; *line-height:39px; border:none; outline:none; }
-.login .login-input p.user input{ background:url(/static/images/login_user.png);}
+.login .login-input p.user input{ background:url(/static/images/login_user.png); }
 .login .login-input p.password input{ background:url(/static/images/login_password.png);}
 .login .login-btn{ margin-top:18px; padding-left:232px; line-height:38px;}
 .login .login-btn .btn{ float:left; width:117px; height:39px; background:url(/static/images/login_btn.png);  color:#fff; text-align:center; font-size:16px;font-family:'微软雅黑';}
