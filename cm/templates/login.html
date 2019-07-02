@@ -9,9 +9,6 @@
         body{
             background: url("/static/images/tim.jpeg");
         }
-{#        .login{#}
-{#            margin-left: 800px;#}
-{#        }#}
     </style>
 </head>
 <body>
@@ -19,6 +16,7 @@
 		<div id="bd">
 			<div class="login">
                 <form id="form" action="{% url 'user:login' %}" method="post" onsubmit="return checkForm()">
+                    {% csrf_token %}
                     <div class="login-top"><h1 class="logo">车辆管理系统</h1></div>
                     <div class="login-input">
                         <h1 style="font-size: 14px; color: brown">{{ error.username.0 }}</h1>

@@ -16,6 +16,7 @@ def login(request):
     :return:
     """
     if request.method == 'GET':
+
         return render(request, 'login.html')
     if request.method == 'POST':
         form = UserForm(request.POST)
@@ -37,6 +38,22 @@ def logout(request):
     return HttpResponseRedirect(reverse('user:login'))
 
 
+def manage(request):
+    """
+    用户管理
+    :param request:
+    :return:
+    """
+    return render(request, 'member_list.html')
+
+
+def member_add(request):
+    """
+    添加用户
+    :param request:
+    :return:
+    """
+    return render(request, 'member_add.html')
 
 
 

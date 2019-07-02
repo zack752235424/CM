@@ -4,5 +4,5 @@ from updt.views import *
 
 urlpatterns = [
     path('up/', up, name='up'),
-    path('users/', users, name='users'),
+    path('get_users/', get_users, name='get_users'),
 ]

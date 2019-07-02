@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.utils.deprecation import MiddlewareMixin
 
 
+
 class UserAuthMiddleware(MiddlewareMixin):
 
     def process_request(self, request):
@@ -12,7 +13,9 @@ class UserAuthMiddleware(MiddlewareMixin):
             return None
         if 'user_id' in request.session:
             # 表示不运行以下的所有代码，直接去访问路由文件，并执行视图函数
-            a = 23
-            ba = a
+
+            sdf = 1
+            sadf =2
+
             return None
         return HttpResponseRedirect(reverse('user:login'))
