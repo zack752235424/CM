@@ -25,10 +25,11 @@ SECRET_KEY = 'x^#!fjkkc5y1c6edv-y)8i5c6=o30(@yz0im7bg^+&!mbdnbm0'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -40,7 +41,11 @@ INSTALLED_APPS = [
     'user',
     'updt',
     'index',
+    'channels',
 ]
+
+# 指定ASGI的路由地址
+ASGI_APPLICATION = 'cm.routing.application'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

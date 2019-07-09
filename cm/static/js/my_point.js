@@ -210,7 +210,7 @@
       * @return 无返回值。
       */
      MarkerClusterer.prototype._addToClosestCluster = function (marker){
-         var distance = 4000000000000;
+         var distance = 4000000;
          var clusterToAddTo = null;
          var position = marker.getPosition();
          for(var i = 0, cluster; cluster = this._clusters[i]; i++){

@@ -16,7 +16,6 @@ def login(request):
     :return:
     """
     if request.method == 'GET':
-
         return render(request, 'login.html')
     if request.method == 'POST':
         form = UserForm(request.POST)

@@ -1,4 +1,4 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 
 # Create your views here.
@@ -22,4 +22,10 @@ def up(request):
             VIN
         if version != '':
             version
+
+
+def get_data(request):
+    return HttpResponse('1232121')
+
+
 
