@@ -6,12 +6,21 @@ from django.db import models
 class Car(models.Model):
     """
     车辆表
+    0：升级完成
+    1:升级中
+    2:升级失败
     """
     VIN = models.CharField(max_length=32, null=False, unique=True, verbose_name='VIN号')
     car_num = models.CharField(max_length=16, null=True, verbose_name='车牌号')
     ICCID = models.CharField(max_length=32, null=True, verbose_name='ICCID号')
     driver = models.CharField(max_length=8, null=True, verbose_name='司机')
     dept = models.CharField(max_length=16, null=True, verbose_name='部门')
+    version = models.CharField(max_length=32, null=True, verbose_name='版本号')
+    status = models.IntegerField(default=0, null=True, verbose_name='状态')
+    ip = models.CharField(max_length=512, null=True, verbose_name='升级文件传输地址')
+    ftp = models.CharField(max_length=32, null=True, verbose_name='用户名')
+    pwd = models.CharField(max_length=32, null=True, verbose_name='密码')
+    create_time = models.DateTimeField(auto_now=True, null=True, verbose_name='添加数据时间')
 
     class Meta:
         db_table = 'car'

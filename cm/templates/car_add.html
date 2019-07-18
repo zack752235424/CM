@@ -24,7 +24,7 @@
                   <span class="x-red">*</span>VIN码
               </label>
               <div class="layui-input-inline">
-                  <input type="text" id="L_username" name="VIN" required lay-verify="nikename"
+                  <input type="text" id="L_username" name="VIN" required lay-verify="VIN"
                   autocomplete="off" class="layui-input">
               </div>
           </div>
@@ -39,10 +39,10 @@
           </div>
           <div class="layui-form-item">
               <label for="L_repass" class="layui-form-label">
-                  ICCID
+                  <span class="x-red">*</span>ICCID
               </label>
               <div class="layui-input-inline">
-                  <input type="text" id="L_repass" name="ICCID"
+                  <input type="text" id="L_repass" name="ICCID" required lay-verify="ICCID"
                   autocomplete="off" class="layui-input">
               </div>
           </div>
@@ -80,12 +80,20 @@
 
           //自定义验证规则
           form.verify({
-            nikename: function(value){
+            VIN: function(value){
               if(value.length != 17){
                 return '请输入17位VIN码';
               }
             }
           });
+          form.verify({
+            ICCID: function(value){
+              if(value.length != 20){
+                return '请输入20位ICCID码';
+              }
+            }
+          });
+
         });
     </script>
   </body>

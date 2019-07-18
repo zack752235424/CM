@@ -3,18 +3,17 @@ from django.db import models
 # Create your models here.
 
 
-class CarInfo(models.Model):
+class CarUpdate(models.Model):
     """
-    车辆总信息表
+    远程升级日志表
     """
-    VIN = models.CharField(max_length=32, null=False, verbose_name='VIN号')
-    ICCID = models.CharField(max_length=32, null=True, verbose_name='ICCID号')
-    car_num = models.CharField(max_length=16, null=True, verbose_name='车牌号')
-    latitude = models.CharField(max_length=32, null=True, verbose_name='纬度')
-    longitude = models.CharField(max_length=32, null=True, verbose_name='经度')
-    now_location = models.CharField(max_length=128, null=True, verbose_name='当前车辆位置')
-    version = models.CharField(max_length=32, null=True, verbose_name='终端编号')
-    create_time = models.DateTimeField(null=True, verbose_name='数据上传时间')
+    VIN = models.CharField(max_length=1024, null=True, verbose_name='VIN号')
+    ICCID = models.CharField(max_length=1024, null=True, verbose_name='ICCID号')
+    version = models.CharField(max_length=32, null=True, verbose_name='版本号')
+    ip = models.CharField(max_length=512, null=True, verbose_name='升级文件传输地址')
+    ftp = models.CharField(max_length=32, null=True, verbose_name='用户名')
+    pwd = models.CharField(max_length=32, null=True, verbose_name='密码')
+    create_time = models.DateTimeField(auto_now=True, null=True, verbose_name='添加数据时间')
 
     class Meta:
-        db_table = 'car_info'
+        db_table = 'car_update'

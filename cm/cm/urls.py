@@ -22,4 +22,5 @@ urlpatterns = [
     path('updt/', include(('updt.urls', 'updt'), namespace='updt')),
     path('index/', include(('index.urls', 'index'), namespace='index')),
     path('car/', include(('car.urls', 'car'), namespace='car')),
+    path('CAN/', include(('CAN.urls', 'CAN'), namespace='CAN')),
 ]

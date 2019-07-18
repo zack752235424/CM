@@ -21,271 +21,393 @@
 
     <!-- 点聚合 -->
     <script type="text/javascript" src="/static/js/TextIconOverlay_min.js"></script>
-{#	<script type="text/javascript" src="http://api.map.baidu.com/library/MarkerClusterer/1.2/src/MarkerClusterer_min.js"></script>#}
     <!-- 自定义算法 -->
     <script type="text/javascript" src="/static/js/my_point.js"></script>
-
+    <script type="text/javascript" src="/static/js/layui.js"></script>
 </head>
 <body>
     <div id="container" style="background-color: gray"></div>
-    <script type="text/javascript">
-        var map = new BMap.Map("container"); // 创建地图实例
-        var point = new BMap.Point(103.9815939695,30.7452663885); // 创建点坐标
-        map.centerAndZoom(point, 6); // 初始化地图,设置中心点坐标和地图级别
-        map.addControl(new BMap.NavigationControl()); // 新加地图平移缩放功能，左上方
-        map.addControl(new BMap.ScaleControl()); //添加比例尺控件，左下方
-        map.addControl(new BMap.CopyrightControl());//添加版权控件，左下方
-        map.addControl(new BMap.GeolocationControl());//移动端开发，定位控件，左下方
-        map.addControl(new BMap.OverviewMapControl());//小视图控制，右下方
-        map.enableDragging();//启用地图拖拽事件，默认启用(可不写)
-        map.enableScrollWheelZoom();//启用地图滚轮放大缩小
-        map.enableDoubleClickZoom();//启用鼠标双击放大，默认启用(可不写)
-        map.enableKeyboard();//启用键盘上下左右键移动地图
-{#        var marker = new BMap.Marker(point);// 创建默认标注#}
-{#        map.addOverlay(marker);// 将标注添加到地图中#}
-
-// 自定义搜索框
-        // 先定义一个控件类
-        function SearchControl() {
-            // 停靠位置和偏移量
-            this.defaultAnchor = BMAP_ANCHOR_TOP_LEFT;
-	        this.defaultOffset = new BMap.Size(60, 25);
+    <script>
+// web套接字
+        var lockReconnect = false;  //避免ws重复连接
+        var ws = null;          // 判断当前浏览器是否支持WebSocket
+        var wsUrl = 'ws://' + window.location.host + '/ws/chat/';
+        createWebSocket(wsUrl);   //连接ws
+        function createWebSocket(url) {
+            try{
+                if('WebSocket' in window){
+                    ws = new WebSocket(url);
+                }else if('MozWebSocket' in window){
+                    ws = new MozWebSocket(url);
+                }else{
+                    layui.use(['layer'],function(){
+                      var layer = layui.layer;
+                      layer.alert("您的浏览器不支持websocket协议,建议使用新版谷歌、火狐等浏览器，请勿使用IE10以下浏览器，360浏览器请使用极速模式，不要使用兼容模式！");
+                    });
+                }
+                initEventHandle();
+            }catch(e){
+                reconnect(url);
+                console.log(e);
+            }
         }
-        // 继承类
-        SearchControl.prototype = new BMap.Control();
 
-        // 添加自己的initialize方法
-        SearchControl.prototype.initialize = function (map) {
-            var input = document.createElement('input');
-            // 将自定义的input标签添加到地图容器中
-            map.getContainer().appendChild(input);
-            // 加样式
-            input.style.height = '30px';
-            input.style.width = '200px';
-            input.placeholder = '请输入ICCID号';
-            input.style.opacity = '0.5';
-            input.style.borderTopLeftRadius = '8px';
-            input.style.borderBottomLeftRadius = '8px';
-            return input;
+        function initEventHandle() {
+            ws.onclose = function () {
+                reconnect(wsUrl);
+                console.log("llws连接关闭!"+new Date().toUTCString());
+            };
+            ws.onerror = function () {
+                reconnect(wsUrl);
+                console.log("llws连接错误!");
+            };
+            ws.onopen = function () {
+                heartCheck.reset().start();      //心跳检测重置
+                console.log("llws连接成功!"+new Date().toUTCString());
+            };
+            ws.onmessage = function (event) {    //如果获取到消息，心跳检测重置
+                messages = JSON.parse(event.data);
+                alert(messages['car_offline'][0][0]);
+                console.log(messages['car_online']);
+                console.log(messages['car_offline']);
+                baidumap(messages);
+                heartCheck.reset().start();      //拿到任何消息都说明当前连接是正常的
+                console.log("llws收到消息啦:" +event.data);
+                if(event.data!='pong'){
+                    var obj=eval("("+event.data+")");
+                    layui.use(['layim'], function(layim){
+                        if(obj.type=="onlineStatus"){
+                            layim.setFriendStatus(obj.id, obj.content);
+                        }else if(obj.type=="friend" || obj.type=="group"){
+                            layim.getMessage(obj);
+                        }
+            });
+        }}}
+
+        // 监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+        window.onbeforeunload = function() {
+            ws.close();
         };
-        // 创建控件
-        var myInputCtrl = new SearchControl();
-        // 添加到地图中
-        map.addControl(myInputCtrl);
-        
-        function BottonControl() {
-            this.defaultAnchor = BMAP_ANCHOR_TOP_LEFT;
-            this.defaultOffset = new BMap.Size(263, 25);
+
+        function reconnect(url) {
+            if(lockReconnect) return;
+            lockReconnect = true;
+            setTimeout(function () {     //没连接上会一直重连，设置延迟避免请求过多
+                createWebSocket(url);
+                lockReconnect = false;
+            }, 2000);
         }
-        BottonControl.prototype = new BMap.Control();
-        BottonControl.prototype.initialize = function (map) {
-            var button = document.createElement('button');
-            map.getContainer().appendChild(button);
-            button.style.width = '53px';
-            button.style.height = '35px';
-            button.style.backgroundColor = 'dodgerblue';
-            button.style.border = 'none';
-            button.style.borderTopRightRadius = '8px';
-            button.style.borderBottomRightRadius = '8px';
-            button.style.color = 'white';
-            button.appendChild(document.createTextNode('搜索'));
-            return button;
+
+        //心跳检测
+        var heartCheck = {
+            timeout: 540000,        //9分钟发一次心跳
+            timeoutObj: null,
+            serverTimeoutObj: null,
+            reset: function(){
+                clearTimeout(this.timeoutObj);
+                clearTimeout(this.serverTimeoutObj);
+                return this;
+            },
+            start: function(){
+                var self = this;
+                this.timeoutObj = setTimeout(function(){
+                    //这里发送一个心跳，后端收到后，返回一个心跳消息，
+                    //onmessage拿到返回的心跳就说明连接正常
+                    ws.send("ping");
+                    console.log("ping!");
+                    self.serverTimeoutObj = setTimeout(function(){//如果超过一定时间还没重置，说明后端主动断开了
+                        ws.close();     //如果onclose会执行reconnect，我们执行ws.close()就行了.如果直接执行reconnect 会触发onclose导致重连两次
+                    }, self.timeout)
+                }, this.timeout)
+            }
         };
-        var myButtonCtrl = new BottonControl();
-        map.addControl(myButtonCtrl);
 
 
-//点击出现滚动聚合途中点
-        onmarkers = 0;
-        offmarkers = 0;
-        warningmarkers = 0;
-        function OnlineCar() {
-                    var MAX = 10000;
-                    onmarkers = [];
+// 百度地图
+        function baidumap(messages) {
+            var map = new BMap.Map("container"); // 创建地图实例
+            var point = new BMap.Point(103.9815939695,30.7452663885); // 创建点坐标
+            map.centerAndZoom(point, 6); // 初始化地图,设置中心点坐标和地图级别
+            map.addControl(new BMap.NavigationControl()); // 新加地图平移缩放功能，左上方
+            map.addControl(new BMap.ScaleControl()); //添加比例尺控件，左下方
+            map.addControl(new BMap.CopyrightControl());//添加版权控件，左下方
+            map.addControl(new BMap.GeolocationControl());//移动端开发，定位控件，左下方
+            map.addControl(new BMap.OverviewMapControl());//小视图控制，右下方
+            map.enableDragging();//启用地图拖拽事件，默认启用(可不写)
+            map.enableScrollWheelZoom();//启用地图滚轮放大缩小
+            map.enableDoubleClickZoom();//启用鼠标双击放大，默认启用(可不写)
+            map.enableKeyboard();//启用键盘上下左右键移动地图
+
+    // 自定义搜索框
+            // 先定义一个控件类
+            function SearchControl() {
+                // 停靠位置和偏移量
+                this.defaultAnchor = BMAP_ANCHOR_TOP_LEFT;
+                this.defaultOffset = new BMap.Size(60, 25);
+            }
+            // 继承类
+            SearchControl.prototype = new BMap.Control();
+
+            // 添加自己的initialize方法
+            SearchControl.prototype.initialize = function (map) {
+                var input = document.createElement('input');
+                // 将自定义的input标签添加到地图容器中
+                map.getContainer().appendChild(input);
+                // 加样式
+                input.style.height = '30px';
+                input.style.width = '200px';
+                input.placeholder = '请输入ICCID号';
+                input.style.opacity = '0.5';
+                input.style.borderTopLeftRadius = '8px';
+                input.style.borderBottomLeftRadius = '8px';
+                return input;
+            };
+            // 创建控件
+            var myInputCtrl = new SearchControl();
+            // 添加到地图中
+            map.addControl(myInputCtrl);
+
+            function BottonControl() {
+                this.defaultAnchor = BMAP_ANCHOR_TOP_LEFT;
+                this.defaultOffset = new BMap.Size(263, 25);
+            }
+            BottonControl.prototype = new BMap.Control();
+            BottonControl.prototype.initialize = function (map) {
+                var button = document.createElement('button');
+                map.getContainer().appendChild(button);
+                button.style.width = '53px';
+                button.style.height = '35px';
+                button.style.backgroundColor = 'dodgerblue';
+                button.style.border = 'none';
+                button.style.borderTopRightRadius = '8px';
+                button.style.borderBottomRightRadius = '8px';
+                button.style.color = 'white';
+                button.appendChild(document.createTextNode('搜索'));
+                return button;
+            };
+            var myButtonCtrl = new BottonControl();
+            map.addControl(myButtonCtrl);
+
+
+    {#        var chatSocket = new WebSocket('ws://' + window.location.host + '/ws/chat/');#}
+    {##}
+    {#            chatSocket.onmessage = function(e) {#}
+    {#                var data = JSON.parse(e.data);#}
+    {#                alert(data)#}
+    {#            };#}
+    {##}
+    {#            chatSocket.onclose = function(e) {#}
+    {#                alert('关闭连接')#}
+    {#            };#}
+
+    //点击出现滚动聚合途中点
+            onmarkers = 0;
+            offmarkers = 0;
+            warningmarkers = 0;
+            function OnlineCar() {
+                        onmarkers = [];
+                        var pt = null;
+                        var icon = new BMap.Icon('/static/images/car1.png', new BMap.Size(17, 32));
+                        icon.imageSize = new BMap.Size(17, 30);
+                        icon.anchor = new BMap.Size(17, 25);
+                        for (var i=0,len=messages['car_online'].length; i<len; i++){
+                        pt = new BMap.Point(messages['car_online'][i][0], messages['car_line'][i][1]);
+                            var mk = new BMap.Marker(pt);
+                            mk.setIcon(icon);
+                            var opts = {
+                                width : 250, // 信息窗口宽度
+                                height: 100, // 信息窗口高度
+                                title : "VIN：" // 信息窗口标题
+                                };
+                            var infoWindow = new BMap.InfoWindow(messages['car_line'][i][2], opts); // 创建信息窗口对象
+                            mk.addEventListener("click", function () { this.openInfoWindow(infoWindow);});
+                            onmarkers.push(mk);
+                        }
+                        //最简单的用法，生成一个marker数组，然后调用markerClusterer类即可。
+                        onmarkerClusterer = new BMapLib.MarkerClusterer(map, {markers: onmarkers});
+                }
+            OnlineCar();
+
+            function WarningCar() {
+                    var MAX = 10;
+                    Warningmarkers = [];
                     var pt = null;
                     var i = 0;
-                    var icon = new BMap.Icon('/static/images/car1.png', new BMap.Size(17, 32));
+                    var icon = new BMap.Icon('/static/images/car2.png', new BMap.Size(17, 32));
                     icon.imageSize = new BMap.Size(17, 30);
                     icon.anchor = new BMap.Size(17, 25);
                     for (; i < MAX; i++) {
                         pt = new BMap.Point(Math.random() * 40 + 85, Math.random() * 30 + 21);
                         var mk = new BMap.Marker(pt);
                         mk.setIcon(icon);
-                        onmarkers.push(mk);
+                        var opts = {
+                            width : 250, // 信息窗口宽度
+                            height: 100, // 信息窗口高度
+                            title : "VIN：" // 信息窗口标题
+                            };
+                        var infoWindow = new BMap.InfoWindow("东风商用车", opts); // 创建信息窗口对象
+                        mk.addEventListener("click", function () { this.openInfoWindow(infoWindow);});
+                        Warningmarkers.push(mk);
                     }
                     //最简单的用法，生成一个marker数组，然后调用markerClusterer类即可。
-                    onmarkerClusterer = new BMapLib.MarkerClusterer(map, {markers: onmarkers});
+                    WarningmarkerClusterer = new BMapLib.MarkerClusterer(map, {markers: Warningmarkers});
             }
-        OnlineCar();
-
-        function WarningCar() {
-                var MAX = 10000;
-                Warningmarkers = [];
-                var pt = null;
-                var i = 0;
-                var icon = new BMap.Icon('/static/images/car2.png', new BMap.Size(17, 32));
-                icon.imageSize = new BMap.Size(17, 30);
-                icon.anchor = new BMap.Size(17, 25);
-                for (; i < MAX; i++) {
-                    pt = new BMap.Point(Math.random() * 40 + 85, Math.random() * 30 + 21);
-                    var mk = new BMap.Marker(pt);
-                    mk.setIcon(icon);
-                    Warningmarkers.push(mk);
-                }
-                //最简单的用法，生成一个marker数组，然后调用markerClusterer类即可。
-                WarningmarkerClusterer = new BMapLib.MarkerClusterer(map, {markers: Warningmarkers});
-        }
 
 
-        function OfflineCar() {
-                var MAX = 10000;
-                offmarkers = [];
-                var pt = null;
-                var i = 0;
-                var icon = new BMap.Icon('/static/images/car0.png', new BMap.Size(17, 32));
-                icon.imageSize = new BMap.Size(17, 30);
-                icon.anchor = new BMap.Size(17, 25);
-                for (; i < MAX; i++) {
-                    pt = new BMap.Point(Math.random() * 40 + 85, Math.random() * 30 + 21);
-                    var mk = new BMap.Marker(pt);
-                    mk.setIcon(icon);
-                    offmarkers.push(mk);
-                }
-                //最简单的用法，生成一个marker数组，然后调用markerClusterer类即可。
-                offmarkerClusterer = new BMapLib.MarkerClusterer(map, {markers: offmarkers});
-        }
+            function OfflineCar() {
+                    offmarkers = [];
+                    var pt = null;
+                    var icon = new BMap.Icon('/static/images/car0.png', new BMap.Size(17, 32));
+                    icon.imageSize = new BMap.Size(17, 30);
+                    icon.anchor = new BMap.Size(17, 25);
+                    for (var i=0,len=messages['car_offline'].length; i<len; i++){
+                        pt = new BMap.Point(messages['car_offline'][i][0], messages['car_offline'][i][1]);
+                        var mk = new BMap.Marker(pt);
+                        mk.setIcon(icon);
+                        var opts = {
+                                width : 250, // 信息窗口宽度
+                                height: 100, // 信息窗口高度
+                                title : "VIN：" // 信息窗口标题
+                                };
+                            var infoWindow = new BMap.InfoWindow(messages['car_offline'][i][2], opts); // 创建信息窗口对象
+                            mk.addEventListener("click", function () { this.openInfoWindow(infoWindow);});
+                        offmarkers.push(mk);
+                    }
+                    //最简单的用法，生成一个marker数组，然后调用markerClusterer类即可。
+                    offmarkerClusterer = new BMapLib.MarkerClusterer(map, {markers: offmarkers});
+            }
 
 
-// 自定义右上角显示框
-        function OffControl() {
-            this.defaultAnchor = BMAP_ANCHOR_TOP_RIGHT;
-            this.defaultOffset = new BMap.Size(10, 10);
-        }
-        OffControl.prototype = new BMap.Control();
-        OffControl.prototype.initialize = function (map) {
-            var div = document.createElement('div');
-            var div1 = document.createElement('div');
-            div1.appendChild(document.createTextNode('离线'));
-            var div2 = document.createElement('div');
-            div2.appendChild(document.createTextNode('20000'));
-            div1.style.color = 'white';
-            div2.style.color = 'white';
-            div.appendChild(div1);
-            div.appendChild(div2);
-            map.getContainer().appendChild(div);
-            div.style.width = '77px';
-            div.style.height = '40px';
-            div.style.backgroundColor = 'gray';
-            div.style.textAlign = 'center';
-            div.style.border = 'none';
-            div.style.borderRadius = '8px';
-            div.style.fontSize = '10px';
-            div.style.cursor = 'pointer';
-            div.onclick = function () {
-                if (onmarkers){
-                    onmarkerClusterer.clearMarkers(onmarkers);
-                    onmarkers = 0
-                }else if (offmarkers){
-                    offmarkerClusterer.clearMarkers(offmarkers);
-                    offmarkers = 0
-                }else if(Warningmarkers){
-                    WarningmarkerClusterer.clearMarkers(Warningmarkers);
-                    Warningmarkers = 0
-                }
-                OfflineCar();
+
+
+
+    // 自定义右上角显示框
+            function OffControl() {
+                this.defaultAnchor = BMAP_ANCHOR_TOP_RIGHT;
+                this.defaultOffset = new BMap.Size(10, 10);
+            }
+            OffControl.prototype = new BMap.Control();
+            OffControl.prototype.initialize = function (map) {
+                var div = document.createElement('div');
+                var div1 = document.createElement('div');
+                div1.appendChild(document.createTextNode('离线'));
+                var div2 = document.createElement('div');
+                div2.appendChild(document.createTextNode(messages['car_offline'].length));
+                div1.style.color = 'white';
+                div2.style.color = 'white';
+                div.appendChild(div1);
+                div.appendChild(div2);
+                map.getContainer().appendChild(div);
+                div.style.width = '77px';
+                div.style.height = '40px';
+                div.style.backgroundColor = 'gray';
+                div.style.textAlign = 'center';
+                div.style.border = 'none';
+                div.style.borderRadius = '8px';
+                div.style.fontSize = '10px';
+                div.style.cursor = 'pointer';
+                div.onclick = function () {
+                    if (onmarkers){
+                        onmarkerClusterer.clearMarkers(onmarkers);
+                        onmarkers = 0
+                    }else if (offmarkers){
+                        offmarkerClusterer.clearMarkers(offmarkers);
+                        offmarkers = 0
+                    }else if(Warningmarkers){
+                        WarningmarkerClusterer.clearMarkers(Warningmarkers);
+                        Warningmarkers = 0
+                    }
+                    OfflineCar();
+                };
+                return div;
             };
-            return div;
-        };
-        var myDivCtrl = new OffControl();
-        map.addControl(myDivCtrl);
+            var myDivCtrl = new OffControl();
+            map.addControl(myDivCtrl);
 
 
 
 
-        function OnControl() {
-            this.defaultAnchor = BMAP_ANCHOR_TOP_RIGHT;
-            this.defaultOffset = new BMap.Size(190, 10);
-        }
-        OnControl.prototype = new BMap.Control();
-        OnControl.prototype.initialize = function (map) {
-            var div = document.createElement('div');
-            var div1 = document.createElement('div');
-            div1.appendChild(document.createTextNode('在线'));
-            var div2 = document.createElement('div');
-            div2.appendChild(document.createTextNode('10000'));
-            div.appendChild(div1);
-            div.appendChild(div2);
-            map.getContainer().appendChild(div);
-            div.style.width = '77px';
-            div.style.height = '40px';
-            div.style.backgroundColor = 'lightgreen';
-            div.style.textAlign = 'center';
-            div.style.border = 'none';
-            div.style.borderRadius = '8px';
-            div.style.fontSize = '10px';
-            div.style.cursor = 'pointer';
-            div.onclick = function () {
-                if (onmarkers){
-                    onmarkerClusterer.clearMarkers(onmarkers);
-                    onmarkers = 0;
-                }else if (offmarkers){
-                    offmarkerClusterer.clearMarkers(offmarkers);
-                    offmarkers = 0;
-                }else if(Warningmarkers){
-                    WarningmarkerClusterer.clearMarkers(Warningmarkers);
-                    Warningmarkers = 0;
-                }
-                OnlineCar();
+            function OnControl() {
+                this.defaultAnchor = BMAP_ANCHOR_TOP_RIGHT;
+                this.defaultOffset = new BMap.Size(190, 10);
+            }
+            OnControl.prototype = new BMap.Control();
+            OnControl.prototype.initialize = function (map) {
+                var div = document.createElement('div');
+                var div1 = document.createElement('div');
+                div1.appendChild(document.createTextNode('在线'));
+                var div2 = document.createElement('div');
+                div2.appendChild(document.createTextNode(messages['car_online'].length));
+                div.appendChild(div1);
+                div.appendChild(div2);
+                map.getContainer().appendChild(div);
+                div.style.width = '77px';
+                div.style.height = '40px';
+                div.style.backgroundColor = 'lightgreen';
+                div.style.textAlign = 'center';
+                div.style.border = 'none';
+                div.style.borderRadius = '8px';
+                div.style.fontSize = '10px';
+                div.style.cursor = 'pointer';
+                div.onclick = function () {
+                    if (onmarkers){
+                        onmarkerClusterer.clearMarkers(onmarkers);
+                        onmarkers = 0;
+                    }else if (offmarkers){
+                        offmarkerClusterer.clearMarkers(offmarkers);
+                        offmarkers = 0;
+                    }else if(Warningmarkers){
+                        WarningmarkerClusterer.clearMarkers(Warningmarkers);
+                        Warningmarkers = 0;
+                    }
+                    OnlineCar();
+                };
+                return div;
             };
-            return div;
-        };
-        var myDiv2Ctrl = new OnControl();
-        map.addControl(myDiv2Ctrl);
+            var myDiv2Ctrl = new OnControl();
+            map.addControl(myDiv2Ctrl);
 
 
-        function WarningControl() {
-            this.defaultAnchor = BMAP_ANCHOR_TOP_RIGHT;
-            this.defaultOffset = new BMap.Size(100, 10);
-        }
-        WarningControl.prototype = new BMap.Control();
-        WarningControl.prototype.initialize = function (map) {
-            var div = document.createElement('div');
-            var div1 = document.createElement('div');
-            div1.appendChild(document.createTextNode('警告'));
-            var div2 = document.createElement('div');
-            div2.appendChild(document.createTextNode('20000'));
-            div.appendChild(div1);
-            div.appendChild(div2);
-            map.getContainer().appendChild(div);
-            div.style.width = '77px';
-            div.style.height = '40px';
-            div.style.backgroundColor = 'yellow';
-            div.style.textAlign = 'center';
-            div.style.border = 'none';
-            div.style.borderRadius = '8px';
-            div.style.fontSize = '10px';
-            div.style.cursor = 'pointer';
-            div.onclick = function () {
-                if (onmarkers){
-                    onmarkerClusterer.clearMarkers(onmarkers);
-                    onmarkers = 0;
-                }else if (offmarkers){
-                    offmarkerClusterer.clearMarkers(offmarkers);
-                    offmarkers = 0;
-                }else if(Warningmarkers){
-                    WarningmarkerClusterer.clearMarkers(Warningmarkers);
-                    Warningmarkers = 0;
-                }
-                WarningCar();
+            function WarningControl() {
+                this.defaultAnchor = BMAP_ANCHOR_TOP_RIGHT;
+                this.defaultOffset = new BMap.Size(100, 10);
+            }
+            WarningControl.prototype = new BMap.Control();
+            WarningControl.prototype.initialize = function (map) {
+                var div = document.createElement('div');
+                var div1 = document.createElement('div');
+                div1.appendChild(document.createTextNode('警告'));
+                var div2 = document.createElement('div');
+                div2.appendChild(document.createTextNode('20000'));
+                div.appendChild(div1);
+                div.appendChild(div2);
+                map.getContainer().appendChild(div);
+                div.style.width = '77px';
+                div.style.height = '40px';
+                div.style.backgroundColor = 'yellow';
+                div.style.textAlign = 'center';
+                div.style.border = 'none';
+                div.style.borderRadius = '8px';
+                div.style.fontSize = '10px';
+                div.style.cursor = 'pointer';
+                div.onclick = function () {
+                    if (onmarkers){
+                        onmarkerClusterer.clearMarkers(onmarkers);
+                        onmarkers = 0;
+                    }else if (offmarkers){
+                        offmarkerClusterer.clearMarkers(offmarkers);
+                        offmarkers = 0;
+                    }else if(Warningmarkers){
+                        WarningmarkerClusterer.clearMarkers(Warningmarkers);
+                        Warningmarkers = 0;
+                    }
+                    WarningCar();
+                };
+                return div;
             };
-            return div;
-        };
-        var myDiv3Ctrl = new WarningControl();
-        map.addControl(myDiv3Ctrl);
-
-
-
-
+            var myDiv3Ctrl = new WarningControl();
+            map.addControl(myDiv3Ctrl);
+    }
 
 
         // 自定义标注图形
@@ -298,7 +420,7 @@
 
         // 自定义控件
 
-        //窗口信息
+{#        //窗口信息#}
 {#        var opts = {#}
 {#            width : 250, // 信息窗口宽度#}
 {#            height: 100, // 信息窗口高度#}
@@ -308,10 +430,11 @@
 {#        map.openInfoWindow(infoWindow, point);// 打开信息窗口#}
 
 
-//        // 监听点击事件
-//        mk.addEventListener("click", function(){
-//            alert("您点击了图标。");
-//        });
+        // 监听点击事件
+{#        map.addEventListener("click", function(e){#}
+{#            alert(e +  "您点击了图标。");#}
+{#        });#}
+
 //        // 通过点击获取经纬度坐标
 //        map.addEventListener("click", function(e){
 //            alert(e.point.lng + ", " + e.point.lat);

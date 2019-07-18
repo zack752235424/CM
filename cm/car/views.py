@@ -31,15 +31,20 @@ def car_add(request):
         ICCID = request.POST.get('ICCID')
         driver = request.POST.get('driver')
         dept = request.POST.get('dept')
-        info = Car.objects.create(VIN=VIN, car_num=car_num, ICCID=ICCID, driver=driver, dept=dept)
-        info.save()
-        return HttpResponse('<div style="color: #0dc316; text-align: center; margin-top: 100px; font-size: 50px">添加成功！!!</div>')
+        old_cars = Car.objects.all()
+        cars = [item.VIN for item in old_cars]
+        if VIN not in cars:
+            info = Car.objects.create(VIN=VIN, car_num=car_num, ICCID=ICCID, driver=driver, dept=dept)
+            info.save()
+            return HttpResponse('<div style="color: #0dc316; text-align: center; margin-top: 100px; font-size: 50px">添加成功！!!</div>')
+    return HttpResponse('<<div style="color: red; text-align: center; margin-top: 100px; font-size: 20px">请勿重复添加！！</div>')
 
 
 def car_edit(request, id):
     """
     修改信息
     :param request:
+    :param id:
     :return:
     """
     if request.method == 'GET':
@@ -117,8 +122,8 @@ def car_upload(request):
             messages = ExcelImport(file_name)
             messages.get_cases()
             Car.objects.bulk_create(messages.cases)
-            return HttpResponse('<div style="color: #0dc316; text-align: center; margin-top: 100px; font-size: 50px">上传成功！!!</div>')
-        return HttpResponse('<div style="color: red; text-align: center; margin-top: 100px; font-size: 50px">请上传excle文件！!!</div>')
+            return HttpResponse('<div style="color: #0dc316; text-align: center; margin-top: 100px; font-size: 50px">上传成功！！！</div>')
+        return HttpResponse('<div style="color: red; text-align: center; margin-top: 100px; font-size: 20px">上传错误,请上传xls文件！！！</div>')
 
 
 def car_download(request):

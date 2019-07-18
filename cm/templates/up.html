@@ -6,12 +6,34 @@
     <link rel="stylesheet" href="/static/css/layui.css" media="all">
     <script src="/static/js/layui.js"></script>
     <style>
+
         .div_f{
-            height: 300px;
+            position: relative;
+            height: 220px;
         }
-        #first{
-            margin-top: 50px;
-            margin-left: 50px;
+        #VIN{
+            position: absolute;
+            left: 40px;
+            top: 20px;
+            font-size: 20px;
+        }
+        #ICCID{
+            position: absolute;
+            left: 580px;
+            top: 20px;
+            font-size: 20px;
+        }
+
+        #version{
+            position: absolute;
+            left: 32px;
+            top: 80px;
+            font-size: 20px;
+        }
+        #ip{
+            position: absolute;
+            left: 600px;
+            top: 80px;
             font-size: 20px;
         }
         #first_f{
@@ -19,13 +41,27 @@
             border-top-width:0px;
             border-right-width:0px;
             border-bottom-color:gray;
-            width: 700px;
+            width: 400px;
             text-align: center;
         }
+        #ftp{
+            position: absolute;
+            left: 32px;
+            top: 140px;
+            font-size: 20px;
+        }
+        #pwd{
+            position: absolute;
+            left: 613px;
+            top: 140px;
+            font-size: 20px;
+        }
         .layui-btn{
+            position: absolute;
+            top: 185px;
             margin-top: 20px;
             width: 120px;
-            margin-left: 430px;
+            margin-left: 500px;
         }
     </style>
 </head>
@@ -33,25 +69,29 @@
     <div class="div_f">
         <form action="{% url 'updt:up' %}" method="post">
             {% csrf_token %}
-            <div id="first">ICCID号：
-                <input id="first_f" type="text" placeholder="请输入ICCID" name="ICCID">
+            <div id="VIN">VIN号：
+                <input id="first_f" type="text" placeholder="使用英文分号为多个" name="VIN">
             </div>
-            <div id="first">&nbsp;&nbsp;&nbsp;VIN号：
-                <input id="first_f" type="text" placeholder="请输入VIN号" name="VIN">
+            <div id="ICCID">ICCID号：
+                <input id="first_f" type="text" placeholder="使用英文分号为多个" name="ICCID">
             </div>
-            <div id="first">&nbsp;版本号：
-                <input id="first_f" type="text" placeholder="请输入版本号" name="version">
+            <div id="version">版本号：
+                <input required id="first_f" type="text" placeholder="请输入版本号" name="version">
+            </div>
+            <div id="ip" >ip地址：
+                <input required id="first_f" type="text" placeholder="请输入版本号" name="ip">
+            </div>
+            <div id="ftp" >用户名：
+                <input id="first_f" type="text" value="FTP_tbox" name="ftp">
+            </div>
+            <div id="pwd" >密码：
+                <input id="first_f" type="password" value="00Tbx" name="pwd">
             </div>
             <button type="submit" class="layui-btn" >升级</button>
         </form>
     </div>
-    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 15px;">
-        <legend style="color: gray">正在升级中</legend>
-    </fieldset>
-    <table id="updating" lay-filter="test"></table>
-
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
-        <legend style="color: gray">升级完成</legend>
+        <legend style="color: gray">车辆升级</legend>
     </fieldset>
     <table id="demo" lay-filter="test"></table>
     <script>
@@ -62,33 +102,18 @@
           table.render({
             elem: '#demo'
             ,height: 500
-            ,url: '/updt/get_users/' //数据接口
+            ,url: '{% url 'updt:get_users' %}' //数据接口
             ,page: false //开启分页
             ,cols: [[ //表头
-              {field: 'id', title: 'ID', width:80, sort: true, fixed: 'left', align:'center'}
-              ,{field: 'ICCID', title: 'ICCID', width:400, align:'center'}
-              ,{field: 'VIN', title: 'VIN', sort: true, width: 400, align:'center'}
-              ,{field: 'version', title: '版本号', align:'center'}
+              {field: 'id', title: 'ID', sort: true, fixed: 'left', align:'center'}
+              ,{field: 'VIN', title: 'VIN', align:'center'}
+              ,{field: 'ICCID', title: 'ICCID', align:'center'}
+              ,{field: 'IP', title: 'IP', align:'center'}
+              ,{field: 'version', title: '版本号',sort: true, align:'center'}
+              ,{field: 'status', title: '状态',sort: true, align:'center'}
             ]]
           });
-          // 第二个实例
-          table.render({
-            elem: '#updating'
-            ,height: 195
-            ,url: '/updt/get_users/' //数据接口
-            ,page: false //开启分页
-            ,cols: [[ //表头
-              {field: 'id', title: 'ID', width:80, sort: true, fixed: 'left', align:'center'}
-              ,{field: 'ICCID', title: 'ICCID', width:400, align:'center'}
-              ,{field: 'VIN', title: 'VIN', sort: true, width: 400, align:'center'}
-              ,{field: 'version', title: '版本号', align:'center'}
-            ]]
-          });
-
         });
-{#        setTimeout(function () {#}
-{#            location.reload()#}
-{#        },1000); // 1s刷新一次#}
     </script>
 </body>
 </html>

@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'index',
     'channels',
     'car',
+    'CAN',
 ]
 
 # 指定ASGI的路由地址
@@ -138,3 +139,15 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 # 文件上传配置
 MEDIA_ROOT = os.path.join(BASE_DIR, 'upload/')
 MEDIA_URL = '/upload/'
+
+# redis配置
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "CONNECTION_POOL_KWARGS": {"max_connections": 100}
+        }
+    }
+}
