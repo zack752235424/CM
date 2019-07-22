@@ -1,5 +1,7 @@
 import socket
 
+import time
+
 
 def main():
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -10,5 +12,3 @@ def main():
         print(message)
 if __name__ == '__main__':
     main()
-
-

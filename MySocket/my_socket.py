@@ -153,6 +153,11 @@ def main():
                             if data[0:2] == '06':
                                 data = data.replace(data[0:30], '', 1)
                             if data[0:2] == '07':
+                                if data[2:4] != '00':
+                                    print('车辆报警')
+                                    messages['warning'].append(VIN)
+                                else:
+                                    messages['unwarning'].append(VIN)
                                 data = data.replace(data[0:12], '', 1)
                                 num1 = data[0:2]
                                 if num1 != '00':
@@ -223,6 +228,10 @@ def main():
                             if data[0:2] == '06':
                                 data = data.replace(data[0:30], '', 1)
                             if data[0:2] == '07':
+                                if data[2:4] != '00':
+                                    print('车辆报警')
+                                    messages['warning'].append(VIN)
+                                messages['unwarning'].append(VIN)
                                 data = data.replace(data[0:12], '', 1)
                                 num1 = data[0:2]
                                 if num1 != '00':
@@ -356,7 +365,7 @@ def main():
             self.cclient.close()
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.bind(('localhost', 2000))
+    sock.bind(('0.0.0.0', 2000))
     sock.listen(512)
 
     while True:
@@ -398,6 +407,18 @@ def set_time():
             r.zrem("car_offline", item[2])
             r.geoadd("car_online", item[0], item[1], item[2])
         messages['online'] = []
+
+    # 报警车辆存储
+    if messages['warning']:
+        r = redis.Redis(host='localhost', port=6379)
+        for item in messages['warning']:
+            location = r.geopos('car_online', item)
+            r.geoadd('car_warning', location[0][0], location[0][1], item)
+    # 报警车辆恢复
+    if messages['unwarning']:
+        r = redis.Redis(host='localhost', port=6379)
+        for item in messages['unwarning']:
+            r.zrem('car_warning', item)
     Timer(10, set_time).start()
 
 if __name__ == '__main__':
@@ -405,6 +426,8 @@ if __name__ == '__main__':
     messages['CAN'] = []
     messages['online'] = []
     messages['offline'] = []
+    messages['warning'] = []
+    messages['unwarning'] = []
     set_time()
     main()
 
