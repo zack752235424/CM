@@ -16,7 +16,25 @@ def main():
         sum = 0
         for i in range(2, len(q), 2):
             sum = int(hex(sum ^ int(q[i-2:i], 16)), 16)
-        return hex(sum)[2:]
+        result = hex(sum)[2:]
+        if len(result) == 1:
+            return '0' + result
+        return result
+
+    def BCC_all(q):
+        """
+        BCC异或校验法
+        :param q:
+        :return: 16进制数
+        """
+        sum = 0
+        for i in range(2, len(q)+2, 2):
+            sum = int(hex(sum ^ int(q[i-2:i], 16)), 16)
+        result = hex(sum)[2:]
+        if len(result) == 1:
+            return '0' + result
+        return result
+
 
     class Convertertime():
         """
@@ -67,10 +85,11 @@ def main():
 
         @staticmethod
         def to_hex(s):
-            list_h = []
-            for c in s:
-                list_h.append(str(hex(ord(c))[2:]))
-            return ''.join(list_h)
+            e = 0
+            for i in s:
+                d = ord(i)
+                e = e * 256 + d
+            return '%x' % e
 
     class CarTransHandle(Thread):
         """
@@ -82,7 +101,7 @@ def main():
 
         def run(self):
             while True:
-                message = self.cclient.recv(2048).decode('utf-8')
+                message = Converter().to_hex(self.cclient.recv(2048).decode('raw_unicode_escape'))
                 print(message)
                 if not message:
                     print('tcp连接中断')
@@ -101,35 +120,37 @@ def main():
                 cursor.close()
                 db.close()
                 create_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                ter_time = Convertertime().to_time(message[48:60])
                 if BCC(message) != message[-2:]:
                     print('BCC校验失败')
                     car_ID = car[0]
+                    ter_time = Convertertime().to_time(message[48:60])
                     type = 1002
                     messages['CAN'].append((car_ID, create_time, ter_time, message, type))
                     data = message[:6] + '02' + message[8:42] + '010006' + Convertertime().to_hex_time()
-                    my_bcc = BCC(data)
-                    self.cclient.send(str(data + my_bcc).encode('utf-8'))
+                    my_bcc = BCC_all(data)
+                    self.cclient.send(str(Converter().to_ascii(data + my_bcc)).encode('raw_unicode_escape'))
                     break
                 if message[4:6] == '01':
                     print('车辆登入')
                     car_ID = car[0]
+                    ter_time = Convertertime().to_time(message[48:60])
                     type = 1
                     messages['CAN'].append((car_ID, create_time, ter_time, message, type))
                     if not car:
                         type = 1003
                         messages['CAN'].append((car_ID, create_time, ter_time, message, type))
                         data = message[:6] + '02' + message[8:42] + '010006' + Convertertime().to_hex_time()
-                        my_bcc = BCC(data)
-                        self.cclient.send(str(data + my_bcc).encode('utf-8'))
+                        my_bcc = BCC_all(data)
+                        self.cclient.send(str(Converter().to_ascii(data + my_bcc)).encode('raw_unicode_escape'))
                         print('车辆登录失败')
                         break
                     data = message[:6] + '01' + message[8:42] + '010006' + Convertertime().to_hex_time()
-                    my_bcc = BCC(data)
-                    self.cclient.send(str(data + my_bcc).encode('utf-8'))
+                    my_bcc = BCC_all(data)
+                    self.cclient.send(str(Converter().to_ascii(data + my_bcc)).encode('raw_unicode_escape'))
                 if message[4:6] == '02':
                     print('实时信息上报')
                     car_ID = car[0]
+                    ter_time = Convertertime().to_time(message[48:60])
                     type = 2
                     messages['CAN'].append((car_ID, create_time, ter_time, message, type))
                     data = message[60:-2]
@@ -153,11 +174,11 @@ def main():
                             if data[0:2] == '06':
                                 data = data.replace(data[0:30], '', 1)
                             if data[0:2] == '07':
-                                if data[2:4] != '00':
+                                if data[2:4] == '00':
+                                    messages['unwarning'].append(VIN)
+                                else:
                                     print('车辆报警')
                                     messages['warning'].append(VIN)
-                                else:
-                                    messages['unwarning'].append(VIN)
                                 data = data.replace(data[0:12], '', 1)
                                 num1 = data[0:2]
                                 if num1 != '00':
@@ -205,6 +226,7 @@ def main():
                 if message[4:6] == '03':
                     print('补发信息上报')
                     car_ID = car[0]
+                    ter_time = Convertertime().to_time(message[48:60])
                     type = 3
                     messages['CAN'].append((car_ID, create_time, ter_time, message, type))
                     data = message[60:-2]
@@ -228,10 +250,11 @@ def main():
                             if data[0:2] == '06':
                                 data = data.replace(data[0:30], '', 1)
                             if data[0:2] == '07':
-                                if data[2:4] != '00':
+                                if data[2:4] == '00':
+                                    messages['unwarning'].append(VIN)
+                                else:
                                     print('车辆报警')
                                     messages['warning'].append(VIN)
-                                messages['unwarning'].append(VIN)
                                 data = data.replace(data[0:12], '', 1)
                                 num1 = data[0:2]
                                 if num1 != '00':
@@ -275,10 +298,10 @@ def main():
                         print('上报信息错误')
                         type = 1001
                         messages['CAN'].append((car_ID, create_time, ter_time, message, type))
-
                 if message[4:6] == '04':
                     print('车辆登出')
                     car_ID = car[0]
+                    ter_time = Convertertime().to_time(message[48:60])
                     type = 4
                     messages['CAN'].append((car_ID, create_time, ter_time, message, type))
                     messages['offline'].append(VIN)
@@ -286,25 +309,29 @@ def main():
                 if message[4:6] == '07':
                     print('心跳')
                     data = message[:6] + '01' + message[8:42] + '010006' + Convertertime().to_hex_time()
-                    my_bcc = BCC(data)
-                    self.cclient.send(str(data + my_bcc).encode('utf-8'))
+                    my_bcc = BCC_all(data)
+                    self.cclient.send(str(Converter().to_ascii(data + my_bcc)).encode('raw_unicode_escape'))
                 if message[4:6] == '80':
                     car_ID = car[0]
+                    ter_time = Convertertime().to_time(message[48:60])
                     type = 80
                     messages['CAN'].append((car_ID, create_time, ter_time, message, type))
                     print('远程升级命令')
                     ftp = car[9]
                     pwd = car[10]
-                    ip = str(car[8]).split('/')[0]
+                    ip = str(car[8]).split('/')[0].split('.')
                     port = '21'
                     ID = 'CPS'
                     ter = '123456'
                     version = car[6]
                     url = car[8]
-                    if message[-4:-2] == '68' or message[-4:-2] == '64' or message[-4:-2] == '00':
+                    if version:
+                        ip_hex = '0000'
+                        for item in ip:
+                            ip_hex += hex(int(item))[2:]
                         if int(version) > int(message[76:86]):
-                            data = Convertertime().to_hex_time() + '01' + Converter().to_hex('mas;' + ftp + ';' + pwd + ';' + ip + ';' + port + ';' + ID + ';' + ter + ';' + version + ';' + url + ';') + '0000'
-                            len_data = hex(int(len(data)/2))[2:]
+                            data = Convertertime().to_hex_time() + '01' + Converter().to_hex('mas;' + str(ftp) + ';' + str(pwd) + ';') + ip_hex + '3B' + '00153B' + Converter().to_hex(';' + str(ID) + ';' + str(ter) + ';' + str(version) + ';' + 'ftp://' + str(url) + ';') + '0000'
+                            len_data = hex(int(len(data)))[2:]
                             if len(len_data) == 1:
                                 datas = message[:4] + '82fe' + message[8:42] + '01' + '000' + str(len_data) + data
                             if len(len_data) == 2:
@@ -313,9 +340,33 @@ def main():
                                 datas = message[:4] + '82fe' + message[8:42] + '01' + '0' + str(len_data) + data
                             if len(len_data) == 4:
                                 datas = message[:4] + '82fe' + message[8:42] + '01' + str(len_data) + data
-                            is_bcc = BCC(datas)
-                            self.cclient.send(str(datas + is_bcc).encode('utf-8'))
+                            is_bcc = BCC_all(datas)
+                            self.cclient.send(str(Converter().to_ascii(datas + is_bcc)).encode('raw_unicode_escape'))
+                            print('开始升级')
+                            db = pymysql.connect(host='localhost', port=3306, user='root', passwd='ruige254475',
+                                                 db='cm',
+                                                 charset='utf8')
+                            cursor = db.cursor()
+                            query = "update car set status = 1 where id = %d;" % car[0]
+                            print(query)
+                            cursor.execute(query)
+                            db.commit()
+                            cursor.close()
+                            db.close()
+                        elif int(version) == int(message[76:86]):
+                            print('升级完成')
+                            db = pymysql.connect(host='localhost', port=3306, user='root', passwd='ruige254475',
+                                                 db='cm',
+                                                 charset='utf8')
+                            cursor = db.cursor()
+                            query = "update car set status = 2 where id = %d;" % car[0]
+                            print(query)
+                            cursor.execute(query)
+                            db.commit()
+                            cursor.close()
+                            db.close()
                         else:
+                            print('版本不大于')
                             db = pymysql.connect(host='localhost', port=3306, user='root', passwd='ruige254475',
                                                  db='cm',
                                                  charset='utf8')
@@ -326,8 +377,8 @@ def main():
                             db.commit()
                             cursor.close()
                             db.close()
-                            data = Convertertime().to_hex_time() + '01' + Converter().to_hex(';' + ftp + ';' + pwd + ';' + ip + ';' + port + ';' + ID + ';' + ter + ';' + version + ';' + url + ';') + '0000'
-                            len_data = hex(int(len(data) / 2))[2:]
+                            data = Convertertime().to_hex_time() + Converter().to_hex('01' + ';' + str(ftp) + ';' + str(pwd) + ';' + str(ip) + ';' + str(port) + ';' + str(ID) + ';' + str(ter) + ';' + str(version) + ';' + str(url) + ';') + '0000'
+                            len_data = hex(int(len(data)))[2:]
                             if len(len_data) == 1:
                                 datas = message[:4] + '82fe' + message[8:42] + '01' + '000' + str(len_data) + data
                             if len(len_data) == 2:
@@ -336,21 +387,28 @@ def main():
                                 datas = message[:4] + '82fe' + message[8:42] + '01' + '0' + str(len_data) + data
                             if len(len_data) == 4:
                                 datas = message[:4] + '82fe' + message[8:42] + '01' + str(len_data) + data
-                            is_bcc = BCC(datas)
-                            self.cclient.send(str(datas + is_bcc).encode('utf-8'))
+                            is_bcc = BCC_all(datas)
+                            self.cclient.send(str(Converter().to_ascii(datas + is_bcc)).encode('raw_unicode_escape'))
                     else:
+                        print('无版本信息')
                         db = pymysql.connect(host='localhost', port=3306, user='root', passwd='ruige254475',
                                              db='cm',
                                              charset='utf8')
                         cursor = db.cursor()
-                        query = "update car set status = 2 where id = %d;" % car[0]
+                        query = "update car set status = 0 where id = %d;" % car[0]
+                        print(query)
+                        cursor.execute(query)
+                        db.commit()
+                        query = "update car set version = %s where id = %d;" % (message[76:86], car[0])
+                        print(query)
                         cursor.execute(query)
                         db.commit()
                         cursor.close()
                         db.close()
-                        data = Convertertime().to_hex_time() + '01' + Converter().to_hex(
-                            'mas;' + ftp + ';' + pwd + ';' + ip + ';' + port + ';' + ID + ';' + ter + ';' + version + ';' + url + ';') + '0000'
-                        len_data = hex(int(len(data) / 2))[2:]
+                        data = Convertertime().to_hex_time() + '01' + Converter().to_hex(';' + str(ftp) + ';' + str(pwd) + ';' + str(
+                            ip) + ';' + str(port) + ';' + str(ID) + ';' + str(ter) + ';' + str(version) + ';' + str(
+                            url) + ';') + '0000'
+                        len_data = hex(int(len(data)))[2:]
                         if len(len_data) == 1:
                             datas = message[:4] + '82fe' + message[8:42] + '01' + '000' + str(len_data) + data
                         if len(len_data) == 2:
@@ -359,14 +417,20 @@ def main():
                             datas = message[:4] + '82fe' + message[8:42] + '01' + '0' + str(len_data) + data
                         if len(len_data) == 4:
                             datas = message[:4] + '82fe' + message[8:42] + '01' + str(len_data) + data
-                        is_bcc = BCC(datas)
-                        self.cclient.send(str(datas + is_bcc).encode('utf-8'))
+
+                        is_bcc = BCC_all(datas)
+                        self.cclient.send(str(Converter().to_ascii(datas + is_bcc)).encode('raw_unicode_escape'))
+                if message[4:6] == '08':
+                    print('校时')
+                    data = message[:6] + '01' + message[8:42] + '010006' + Convertertime().to_hex_time()
+                    my_bcc = BCC_all(data)
+                    self.cclient.send(str(Converter().to_ascii(data + my_bcc)).encode('raw_unicode_escape'))
                 last_message = message
             self.cclient.close()
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.bind(('0.0.0.0', 2000))
-    sock.listen(512)
+    sock.listen(5000)
 
     while True:
         client, address = sock.accept()

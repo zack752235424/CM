@@ -1,0 +1,4 @@
+pip (9.0.1)
+PyMySQL (0.9.3)
+redis (3.2.1)
+setuptools (28.8.0)

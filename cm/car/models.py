@@ -6,9 +6,9 @@ from django.db import models
 class Car(models.Model):
     """
     车辆表
-    0：升级完成
+    0：未升级
     1:升级中
-    2:升级失败
+    2:升级完成
     """
     VIN = models.CharField(max_length=32, null=False, unique=True, verbose_name='VIN号')
     car_num = models.CharField(max_length=16, null=True, verbose_name='车牌号')

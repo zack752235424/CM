@@ -24,7 +24,7 @@ def up(request):
                 car.ip = ip
                 car.ftp = ftp
                 car.pwd = pwd
-                car.status = 1
+                car.status = 0
                 car.save()
             else:
                 ICCIDS = ICCID.split(',')
@@ -34,7 +34,7 @@ def up(request):
                     car.ip = ip
                     car.ftp = ftp
                     car.pwd = pwd
-                    car.status = 1
+                    car.status = 0
                     car.save()
         if VIN:
             if len(VIN) == 17:
@@ -43,7 +43,7 @@ def up(request):
                 car.ip = ip
                 car.ftp = ftp
                 car.pwd = pwd
-                car.status = 1
+                car.status = 0
                 car.save()
             else:
                 VINS = VIN.split(',')
@@ -53,7 +53,7 @@ def up(request):
                     car.ip = ip
                     car.ftp = ftp
                     car.pwd = pwd
-                    car.status = 1
+                    car.status = 0
                     car.save()
         return render(request, 'up.html')
 
@@ -69,7 +69,8 @@ def get_users(request):
                 "VIN": car.VIN,
                 "IP": car.ip,
                 "version": car.version,
-                "status":  '升级完成'
+                "status":  '未升级',
+                'create_time': car.create_time
             })
         if car.status == 1:
             data.append({
@@ -78,7 +79,8 @@ def get_users(request):
                 "VIN": car.VIN,
                 "IP": car.ip,
                 "version": car.version,
-                "status":  '正在升级'
+                "status":  '正在升级',
+                'create_time': car.create_time
             })
         if car.status == 2:
             data.append({
@@ -87,7 +89,8 @@ def get_users(request):
                 "VIN": car.VIN,
                 "IP": car.ip,
                 "version": car.version,
-                "status": '升级失败'
+                "status": '升级完成',
+                'create_time': car.create_time
             })
     result = {"code": 0, "msg": "成功", "data": data}
     return JsonResponse(result)

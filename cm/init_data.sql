@@ -1,3 +1,5 @@
+-- 创建数据库
+CREATE database if not exists cm DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 -- 添加超级用户
 INSERT INTO user(username, pwd, create_time) VALUES ('coco', 'e10adc3949ba59abbe56e057f20f883e', now());
 
