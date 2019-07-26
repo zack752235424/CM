@@ -311,6 +311,11 @@ def main():
                     data = message[:6] + '01' + message[8:42] + '010006' + Convertertime().to_hex_time()
                     my_bcc = BCC_all(data)
                     self.cclient.send(str(Converter().to_ascii(data + my_bcc)).encode('raw_unicode_escape'))
+                if message[4:6] == '08':
+                    print('校时')
+                    data = message[:6] + '01' + message[8:42] + '010006' + Convertertime().to_hex_time()
+                    my_bcc = BCC_all(data)
+                    self.cclient.send(str(Converter().to_ascii(data + my_bcc)).encode('raw_unicode_escape'))
                 if message[4:6] == '80':
                     car_ID = car[0]
                     ter_time = Convertertime().to_time(message[48:60])
@@ -363,10 +368,13 @@ def main():
                             print(query)
                             cursor.execute(query)
                             db.commit()
+                            query = "update car set version_now = %s where id = %d;" % (message[76:86], car[0])
+                            cursor.execute(query)
+                            db.commit()
                             cursor.close()
                             db.close()
                         else:
-                            print('版本不大于')
+                            print('当前版本大于需要升级版本')
                             db = pymysql.connect(host='localhost', port=3306, user='root', passwd='ruige254475',
                                                  db='cm',
                                                  charset='utf8')
@@ -375,9 +383,12 @@ def main():
                             print(query)
                             cursor.execute(query)
                             db.commit()
+                            query = "update car set version_now = %s where id = %d;" % (message[76:86], car[0])
+                            cursor.execute(query)
+                            db.commit()
                             cursor.close()
                             db.close()
-                            data = Convertertime().to_hex_time() + Converter().to_hex('01' + ';' + str(ftp) + ';' + str(pwd) + ';' + str(ip) + ';' + str(port) + ';' + str(ID) + ';' + str(ter) + ';' + str(version) + ';' + str(url) + ';') + '0000'
+                            data = Convertertime().to_hex_time() + '01' + Converter().to_hex(';' + str(ftp) + ';' + str(pwd) + ';' + str(ip) + ';' + str(port) + ';' + str(ID) + ';' + str(ter) + ';' + str(version) + ';' + str(url) + ';') + '0000'
                             len_data = hex(int(len(data)))[2:]
                             if len(len_data) == 1:
                                 datas = message[:4] + '82fe' + message[8:42] + '01' + '000' + str(len_data) + data
@@ -399,8 +410,7 @@ def main():
                         print(query)
                         cursor.execute(query)
                         db.commit()
-                        query = "update car set version = %s where id = %d;" % (message[76:86], car[0])
-                        print(query)
+                        query = "update car set version_now = %s where id = %d;" % (message[76:86], car[0])
                         cursor.execute(query)
                         db.commit()
                         cursor.close()
@@ -420,11 +430,6 @@ def main():
 
                         is_bcc = BCC_all(datas)
                         self.cclient.send(str(Converter().to_ascii(datas + is_bcc)).encode('raw_unicode_escape'))
-                if message[4:6] == '08':
-                    print('校时')
-                    data = message[:6] + '01' + message[8:42] + '010006' + Convertertime().to_hex_time()
-                    my_bcc = BCC_all(data)
-                    self.cclient.send(str(Converter().to_ascii(data + my_bcc)).encode('raw_unicode_escape'))
                 last_message = message
             self.cclient.close()
 

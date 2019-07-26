@@ -69,8 +69,9 @@ def get_users(request):
                 "VIN": car.VIN,
                 "IP": car.ip,
                 "version": car.version,
+                'version_now':car.version_now,
                 "status":  '未升级',
-                'create_time': car.create_time
+                'create_time': car.create_time.strftime("%Y-%m-%d %H:%M:%S")
             })
         if car.status == 1:
             data.append({
@@ -79,8 +80,9 @@ def get_users(request):
                 "VIN": car.VIN,
                 "IP": car.ip,
                 "version": car.version,
+                'version_now': car.version_now,
                 "status":  '正在升级',
-                'create_time': car.create_time
+                'create_time': car.create_time.strftime("%Y-%m-%d %H:%M:%S")
             })
         if car.status == 2:
             data.append({
@@ -89,8 +91,9 @@ def get_users(request):
                 "VIN": car.VIN,
                 "IP": car.ip,
                 "version": car.version,
+                'version_now': car.version_now,
                 "status": '升级完成',
-                'create_time': car.create_time
+                'create_time': car.create_time.strftime("%Y-%m-%d %H:%M:%S")
             })
     result = {"code": 0, "msg": "成功", "data": data}
     return JsonResponse(result)
