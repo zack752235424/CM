@@ -17,10 +17,13 @@ def map(request):
     return render(request, 'baidu_map.html')
 
 
-def search(request, VIN):
+def search(request):
+    VIN = request.GET.get('VIN')
     r = get_redis_connection('default')
-    car = r.geopos('car_online', VIN)
+    car = r.geopos('car_offline', VIN)[0]
     if car:
-        result = {}
-
+        result = {'car': car + (VIN,)}
+        return JsonResponse(result)
+    car = r.geopos('car_online', VIN)[0]
+    result = {'car': car + (VIN,)}
     return JsonResponse(result)

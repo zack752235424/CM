@@ -1,7 +1,9 @@
+from django.db.models import Q
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
-from django.urls import reverse
+from django.http import JsonResponse
+import json
 # Create your views here.
+from playback.models import Back
 
 
 def back_video(request):
@@ -22,4 +24,6 @@ def search(request):
     VIN = request.GET.get('VIN')
     stime = request.GET.get('stime')
     etime = request.GET.get('etime')
-    return HttpResponseRedirect(reverse('playback:back_video'))
+    opts = Back.objects.values_list('longitude', 'latitude').filter(Q(VIN=VIN) & Q(create_time__range=(stime, etime))).all()
+    result = {'opts': [item for item in opts]}
+    return JsonResponse(result)

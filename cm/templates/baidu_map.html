@@ -87,14 +87,6 @@
             ws.close();
         };
 
-        function reconnect(url) {
-            if(lockReconnect) return;
-            lockReconnect = true;
-            setTimeout(function () {     //没连接上会一直重连，设置延迟避免请求过多
-                createWebSocket(url);
-                lockReconnect = false;
-            }, 2000);
-        }
 
         //心跳检测
         var heartCheck = {
@@ -158,11 +150,12 @@
                 input.style.opacity = '0.5';
                 input.style.borderTopLeftRadius = '8px';
                 input.style.borderBottomLeftRadius = '8px';
-                input.id = 'search';
+                input.id = 'VIN';
                 return input;
             };
             // 创建控件
             var myInputCtrl = new SearchControl();
+
             // 添加到地图中
             map.addControl(myInputCtrl);
 
@@ -182,31 +175,31 @@
                 button.style.borderBottomRightRadius = '8px';
                 button.style.color = 'white';
                 button.appendChild(document.createTextNode('搜索'));
-{#                button.onclick = function () {#}
-{#                    $.ajax({#}
-{#                        url:"/index/search?VIN="+$('#search').val(),//地址#}
-{#                        dataType: 'json',//数据类型#}
-{#                        type: 'GET',//类型#}
-{#                        timeout: 2000,//超时#}
-{#                        //请求成功#}
-{#                        success: function (data, status) {#}
-{#                            $('#search').val()#}
-{#                            //alert(status);#}
-{#                        },#}
-{#                        //失败/超时#}
-{#                        error: function (XMLHttpRequest, textStatus, errorThrown) {#}
-{#                            if (textStatus === 'timeout') {#}
-{#                                alert('請求超時');#}
-{#                                setTimeout(function () {#}
-{#                                    alert('重新请求');#}
-{#                                }, 2000);#}
-{#                            }#}
-{#                            //alert(errorThrown);#}
-{#                        }#}
-{#                    });#}
-{##}
-{##}
-{#                };#}
+                button.onclick = function () {
+                    $.ajax({
+                        url:'/index/search?VIN='+$('#VIN').val(),
+                        dataType: 'json',
+                        type: 'GET',
+                        timeout: 2000,
+                        //请求成功
+                        success: function (data) {
+                            // alert(data.car)
+                            show(data.car)
+                        },
+                        //失败/超时
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            if (textStatus === 'timeout') {
+                                alert('請求超時');
+                                setTimeout(function () {
+                                    alert('重新请求');
+                                }, 2000);
+                            }
+                            //alert(errorThrown);
+                        }
+                    });
+
+
+                };
                 return button;
             };
             var myButtonCtrl = new BottonControl();
@@ -419,37 +412,32 @@
             var myDiv3Ctrl = new WarningControl();
             map.addControl(myDiv3Ctrl);
     }
-
-
+    function show(car) {
+        ws.close();
+        if(onmarkerClusterer){
+            onmarkerClusterer.clearMarkers()
+        }
         // 自定义标注图形
-{#        var mk = new BMap.Marker(point,{title:"标注提示语句"});//创建标注#}
-{#        var icon = new BMap.Icon('/static/images/car.png',new BMap.Size(17,32));#}
-{#        icon.imageSize = new BMap.Size(17,30);#}
-{#        icon.anchor = new BMap.Size(17,25);#}
-{#        mk.setIcon(icon);#}
-{#        map.addOverlay(mk);//将标注添加到地图中#}
+        var point_s = new BMap.Point(car[0],car[1]);
+        map.setZoom(15);
+        var mk = new BMap.Marker(point_s,{title:"标注提示语句"});//创建标注
+        var icon = new BMap.Icon('/static/images/car.png',new BMap.Size(17,32));
+        icon.imageSize = new BMap.Size(17,30);
+        icon.anchor = new BMap.Size(17,25);
+        mk.setIcon(icon);
+        var opts = {
+            width : 250, // 信息窗口宽度
+            height: 100, // 信息窗口高度
+            title : "查询VIN：" // 信息窗口标题
+            };
+        var infoWindow = new BMap.InfoWindow(car[2], opts); // 创建信息窗口对象
+        mk.addEventListener("click", function () { this.openInfoWindow(infoWindow);});
+        map.addOverlay(mk);//将标注添加到地图中
+        map.panTo(point_s);
+    }
 
-        // 自定义控件
-
-{#        //窗口信息#}
-{#        var opts = {#}
-{#            width : 250, // 信息窗口宽度#}
-{#            height: 100, // 信息窗口高度#}
-{#            title : "车辆型号：" // 信息窗口标题#}
-{#            };#}
-{#        var infoWindow = new BMap.InfoWindow("东风商用车", opts); // 创建信息窗口对象#}
-{#        map.openInfoWindow(infoWindow, point);// 打开信息窗口#}
 
 
-        // 监听点击事件
-{#        map.addEventListener("click", function(e){#}
-{#            alert(e +  "您点击了图标。");#}
-{#        });#}
-
-//        // 通过点击获取经纬度坐标
-//        map.addEventListener("click", function(e){
-//            alert(e.point.lng + ", " + e.point.lat);
-//        });
 //
 //        // 监听this事件
 //        map.addEventListener("click", function(){
