@@ -2,114 +2,119 @@
 <head>
 	<meta charset="utf-8" />
 	<title>路书</title>
-	<style type="text/css">
-		body, html{width: 100%;height: 100%;margin:0;font-family:"微软雅黑";}
-		#map_canvas{width:100%;height:500px;}
-		#result {width:100%}
-	</style>
+    <style type="text/css">
+    html{height:100%}
+    body{height:100%;margin:0px;padding:0px}
+    #controller{width:100%; border-bottom:3px outset; height:30px; filter:alpha(Opacity=100); -moz-opacity:1; opacity:1; z-index:10000; background-color:white;}
+    #container{height:100%}
+    </style>
 	<script src="//api.map.baidu.com/api?v=2.0&ak=vdwlUnwtXAAl0zuQQM2C5MdhLhfLZqcX"></script>
 	<script type="text/javascript" src="//api.map.baidu.com/library/LuShu/1.2/src/LuShu_min.js"></script>
+    <script language="javascript" type="text/javascript" src="/static/My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.js"></script>
 </head>
 <body>
     <div id="controller">
         <input id="VIN" style="margin-left: 5px; height: 18px; width: 200px" type="text" placeholder="请输入VIN" name="VIN">
-        <input id="stime" style="width: 14.5%" class="Wdate" type="text" onClick="WdatePicker({el:this,dateFmt:'yyyy-MM-dd HH:mm:ss'})" name="stime" autocomplete="off">
+        <input id="stime" placeholder="起始时间" style="width: 14.5%" class="Wdate" type="text" onClick="WdatePicker({el:this,dateFmt:'yyyy-MM-dd HH:mm:ss'})" name="stime" autocomplete="off">
         <span style="font-size:15px;">到</span>
-        <input id="etime" style="width: 14.5%" class="Wdate" type="text" onClick="WdatePicker({el:this,dateFmt:'yyyy-MM-dd HH:mm:ss'})" name="etime" autocomplete="off">
+        <input id="etime" placeholder="结束时间" style="width: 14.5%" class="Wdate" type="text" onClick="WdatePicker({el:this,dateFmt:'yyyy-MM-dd HH:mm:ss'})" name="etime" autocomplete="off">
         <input id="search" type="button" value="查询" onclick="find()">
-        <input style="margin-left: 27%;" id="follow" type="checkbox"><span style="font-size:12px;">画面跟随</span>
-        <input id="run" type="button" value="开始巡航" onclick="play();" disabled />
-        <input id="pause" type="button" value="暂停" onclick="pause();" disabled />
-        <input id="reset" type="button" value="重置" onclick="reset()" disabled />
+        <input id="speed" style="margin-left: 25%; width: 35px" value="100"><span style="font-size:20px;">km/h</span>
+        <input id="run" type="button" value="开始巡航"  />
+        <input id="pause" type="button" value="重置"  />
     </div>
     <div id="container"></div>
-
-{#	<button id="stop">停止</button>#}
-{#	<button id="pause">暂停</button>#}
-{#	<button id="hide">隐藏信息窗口</button>#}
-{#	<button id="show">展示信息窗口</button>#}
-
-	<script>
-	var map = new BMap.Map('controller');
-	map.enableScrollWheelZoom();
-	map.centerAndZoom(new BMap.Point(116.404, 39.915), 13);
-	var lushu;
+	<script type="text/javascript">
+	map = new BMap.Map("container");
+    map.centerAndZoom(new BMap.Point(116.350658, 39.938888), 5);
+    map.enableScrollWheelZoom();
+    map.addControl(new BMap.NavigationControl());
+    map.addControl(new BMap.ScaleControl());
+    map.addControl(new BMap.OverviewMapControl({isOpen: true}));
 
 
-	// 实例化一个驾车导航用来生成路线
-    var drv = new BMap.DrivingRoute('北京', {
-        onSearchComplete: function(res) {
-            if (drv.getStatus() == BMAP_STATUS_SUCCESS) {
-                var plan = res.getPlan(0);
-                var arrPois =[];
-                for(var j=0;j<plan.getNumRoutes();j++){
-                    var route = plan.getRoute(j);
-                    arrPois= arrPois.concat(route.getPath());
-                }
-                map.addOverlay(new BMap.Polyline(arrPois, {strokeColor: '#111'}));
-                map.setViewport(arrPois);
-
-                lushu = new BMapLib.LuShu(map,arrPois,{
-                defaultContent:"",//"从天安门到百度大厦"
-                autoView:true,//是否开启自动视野调整，如果开启那么路书在运动过程中会根据视野自动调整
-                icon  : new BMap.Icon('/static/images/car1.png', new BMap.Size(52,26),{anchor : new BMap.Size(27, 13)}),
-                speed: 450,
-                enableRotation:true,//是否设置marker随着道路的走向进行旋转
-                landmarkPois: [
-                   {lng:116.314782,lat:39.913508,html:'加油站',pauseTime:2},
-                   {lng:116.315391,lat:39.964429,html:'高速公路收费<div><img src="//map.baidu.com/img/logo-map.gif"/></div>',pauseTime:3},
-                   {lng:116.381476,lat:39.974073,html:'肯德基早餐',pauseTime:2}
-                ]});
-            }
-        }
-    });
-
-
-    var start=new BMap.Point(116.404844,39.911836);
-    var end=new BMap.Point(116.308102,40.056057);
-	drv.search(start, end);
-	//绑定事件
-	$("run").onclick = function(){
-		lushu.start();
-	};
-	$("stop").onclick = function(){
-		lushu.stop();
-	};
-	$("pause").onclick = function(){
-		lushu.pause();
-	};
-	$("hide").onclick = function(){
-		lushu.hideInfoWindow();
-	};
-	$("show").onclick = function(){
-		lushu.showInfoWindow();
-	};
-	function $(element){
-		return document.getElementById(element);
-	}
-
-</script>
-    <script type="text/javascript">
-        function find() {
-            $.ajax({
-            url:'/playback/search?VIN='+$('#VIN').val()+'&' + 'stime=' + $('#stime').val()+'&'+'etime='+$('#etime').val(),//地址
+    function find() {
+        arrPois = [];//全局变量保存坐标点
+        $.ajax({
+            url: '/playback/search?VIN=' + $('#VIN').val() + '&' + 'stime=' + $('#stime').val() + '&' + 'etime=' + $('#etime').val(),//地址
             dataType: 'json',
             type: 'GET',
             timeout: 2000,
             success: function (e) {
-                routing(e.opts)
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                if (textStatus === 'timeout') {
-                    alert('請求超時');
-                    setTimeout(function () {
-                        alert('重新请求');
-                    }, 2000);
+                if(e.opts == 'failure'){
+                    alert('无此数据')
+                }else {
+                var opts = e.opts;
+                for (var i = 0; i < opts.length; i++) {
+                    arrPois.push(new BMap.Point(opts[i][0], opts[i][1]))//后台取数
                 }
-                //alert(errorThrown);
+                play(); //播放方法
+            }},
+            error: function () {
+                alert("获取失败！");
             }
+
         });
     }
+    var marker;
+    var lushu;
+    var speeds;
+    speeds = $("#speed").val();
+
+        function play() {
+            map.setViewport(arrPois);
+            marker = new BMap.Marker(arrPois[0], {
+                icon: new BMap.Icon('/static/images/car_back.png', new BMap.Size(52, 26), { anchor: new BMap.Size(27, 13) })
+            });
+            var polyline = new BMap.Polyline(arrPois, {strokeColor: "gray", strokeWeight: 8, strokeOpacity: 1});
+            map.addOverlay(polyline); // 增加折线
+            map.addOverlay(marker);
+
+            lushu = new BMapLib.LuShu(map, arrPois, {
+                defaultContent: "京A30780",//"从天安门到百度大厦"
+                autoView:true,//是否开启自动视野调整，如果开启那么路书在运动过程中会根据视野自动调整
+                icon: new BMap.Icon('/static/images/car_back.png', new BMap.Size(52, 26), { anchor: new BMap.Size(27, 13) }),
+                speed: speeds,
+                enableRotation: true,//是否设置marker随着道路的走向进行旋转
+                landmarkPois: [
+                { lng: 116.306954, lat: 40.05718, html: '加油站', pauseTime: 2 }
+                ]  //车辆到这个点暂停2s，坐标可写成自己想要的，也可以从数组动态获取；
+            });
+            map.centerAndZoom(arrPois[0], 15);//设置初始点为中心
+            marker.addEventListener("click", function () {
+                marker.enableMassClear();   //设置后可以隐藏改点的覆盖物
+                marker.hide();
+                lushu.start();
+                //map.clearOverlays();  //清除所有覆盖物
+            });
+            //下拉框值的改变
+            $("#speed").change(function () {
+                lushu._opts.speed = $("#speed").val();//改变路书播放速度
+            });
+            $("#run").click(function () {
+                marker.enableMassClear(); //设置后可以隐藏改点的覆盖物
+                marker.hide();
+                lushu.start();
+                // map.clearOverlays();    //清除所有覆盖物
+            });
+            $("#stop").click(function () {
+                lushu.stop();
+                map.clearOverlays();
+            });
+            $("#pause").click(function () {
+                lushu.pause();
+            });
+            $("#hide").click(function () {
+                lushu.hideInfoWindow();
+            });
+            $("#show").click(function () {
+                lushu.showInfoWindow();
+            });
+            //function $(element) {
+            //    return document.getElementById(element);
+            //}
+        }
     </script>
 </body>
 </html>

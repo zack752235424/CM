@@ -25,5 +25,8 @@ def search(request):
     stime = request.GET.get('stime')
     etime = request.GET.get('etime')
     opts = Back.objects.values_list('longitude', 'latitude').filter(Q(VIN=VIN) & Q(create_time__range=(stime, etime))).all()
-    result = {'opts': [item for item in opts]}
+    if opts:
+        result = {'opts': [item for item in opts]}
+    else:
+        result = {'opts':'failure'}
     return JsonResponse(result)

@@ -128,9 +128,7 @@ def main():
                 data = data[2:]
                 message += data
                 print(message)
-                if not is_break:
-                    break
-                if not data:
+                if not is_break or not data:
                     print('tcp连接中断')
                     try:
                         messages['offline'].append(Converter().to_ascii(last_message[8:42]))
@@ -418,6 +416,7 @@ def main():
                             my_bcc = BCC_all(data)
                             self.cclient.send(str(Converter().to_ascii(data + my_bcc)).encode('raw_unicode_escape'))
                             message = ''
+                            is_break = False
                             break
                         db = pymysql.connect(host='localhost', port=3306, user='root', passwd='ruige254475', db='cm',
                                              charset='utf8')
