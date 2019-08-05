@@ -1,5 +1,6 @@
 import socket
 
+import time
 
 
 def main():
@@ -23,12 +24,12 @@ def main():
 
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         client.connect(('127.0.0.1', 2000))
-        num = 0
         while True:
                 data = '232301fe4c44503532413936354a4e34323735333901000613071f0a0e0fd6'
                 client.send(str(Converter().to_ascii(data)).encode('raw_unicode_escape'))
                 me = Converter().to_hex(client.recv(2048).decode('raw_unicode_escape'))
                 print(me)
+                time.sleep(10)
 
 if __name__ == '__main__':
     main()

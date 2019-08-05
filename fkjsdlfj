@@ -1,0 +1,77 @@
+[33mcommit 0ccfe226fa07db3ed3656e37ac2c24a1b91fe1e4[m
+Author: zack <752235424@qq.com>
+Date:   Wed Jul 31 16:27:31 2019 +0800
+
+    2019-7-31 优化socket信息处理
+
+[33mcommit 6b4e1654f8b215146f1d9bf3a88eef32758ab86b[m
+Author: zack <752235424@qq.com>
+Date:   Fri Jul 26 18:03:18 2019 +0800
+
+    2019-7-26 轨迹回放模块
+
+[33mcommit ecb72488b06809ed1c71aea9cf140cc1ff5e7e69[m
+Author: zack <752235424@qq.com>
+Date:   Thu Jul 25 11:17:29 2019 +0800
+
+    2019-7-25 升级模块完成
+
+[33mcommit 93b7992ce1fa7ef6e53f94eea4a2649ad1aad8d4[m
+Author: zack <752235424@qq.com>
+Date:   Mon Jul 22 09:12:16 2019 +0800
+
+    2019-7-22 报警模块修改
+
+[33mcommit f0bfc94e8895672381cce4294352d134cb4d96e3[m
+Author: zack <752235424@qq.com>
+Date:   Thu Jul 18 18:08:06 2019 +0800
+
+    2019-7-18 服务器socket模块
+
+[33mcommit a3d44c39c57916e274a30e38aebf939601fa089b[m
+Author: zack <752235424@qq.com>
+Date:   Thu Jul 18 18:05:28 2019 +0800
+
+    2019-7-18 百度地图与socket连接模块
+
+[33mcommit c3e66814007b616c9e16c6a1a0ff08473f8a80b0[m
+Author: zack <752235424@qq.com>
+Date:   Fri Jul 12 15:33:59 2019 +0800
+
+    2019-7-12 车辆excle导入数据
+
+[33mcommit aeb58a595bdd8ae6cbbb85a5f01683d6441be2e2[m
+Author: zack <752235424@qq.com>
+Date:   Tue Jul 9 18:08:05 2019 +0800
+
+    2019-7-9 socket模块
+
+[33mcommit 4b3d0ae717308c3262ad80fa97502ca9f52e9898[m
+Author: zack <752235424@qq.com>
+Date:   Tue Jul 2 19:45:12 2019 +0800
+
+    2019-7-2 用户管理模块
+
+[33mcommit 69d7d0116df1a40e3c9a1dce6dc5e6143dc4622b[m
+Author: zack <752235424@qq.com>
+Date:   Sat Jun 29 18:03:02 2019 +0800
+
+    2019-6-19 车辆升级模块+首页地图模块
+
+[33mcommit bba948053b2b9a6bf73881c8b3a36ea7c8b5fd7d[m
+Author: zack <752235424@qq.com>
+Date:   Thu Jun 27 09:22:14 2019 +0800
+
+    2019-6-26 user模块
+
+[33mcommit f162765b187cbd190a560ad91ecaeb621b986b1a[m
+Author: zack <752235424@qq.com>
+Date:   Tue Jun 25 20:02:59 2019 +0800
+
+    2019-6-25 user模块
+
+[33mcommit 135c4e43b5945e08be19448c95a776fe76366e01[m
+Author: zack <752235424@qq.com>
+Date:   Fri Jun 14 17:56:42 2019 +0800
+
+    first commit

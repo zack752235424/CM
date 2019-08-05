@@ -24,4 +24,5 @@ urlpatterns = [
     path('car/', include(('car.urls', 'car'), namespace='car')),
     path('CAN/', include(('CAN.urls', 'CAN'), namespace='CAN')),
     path('playback/', include(('playback.urls', 'playback'), namespace='playback')),
+    path('lock/', include(('lock.urls', 'lock'), namespace='lock')),
 ]

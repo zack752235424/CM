@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'car',
     'CAN',
     'playback',
+    'lock',
 ]
 
 # 指定ASGI的路由地址
