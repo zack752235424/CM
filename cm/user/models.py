@@ -4,10 +4,12 @@ from django.db import models
 class User(models.Model):
     """
     用户表
+    0：默认未删除
     """
     username = models.CharField(max_length=32, unique=True, verbose_name='用户名')
     pwd = models.CharField(max_length=32, verbose_name='密码')
     phone = models.IntegerField(null=True, unique=True, verbose_name='用户手机号码')
+    is_delete = models.BooleanField(default=0, null=False, verbose_name='是否删除')
     create_time = models.DateTimeField(auto_now_add=True, verbose_name='自动创建当前保存的时间')
     roles = models.ManyToManyField(to="Role", verbose_name='角色')
 

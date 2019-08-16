@@ -117,6 +117,7 @@ def main():
         自定义线程类
         """
         is_break = True
+        is_login = False
 
         def __init__(self, cclient):
             super().__init__()
@@ -125,15 +126,12 @@ def main():
         def run(self):
             try:
                 message = ''
-                self.cclient.settimeout(20)
+                self.cclient.settimeout(30)
                 while True:
                     data = Converter().to_hex('L' + self.cclient.recv(2048).decode('raw_unicode_escape'))
                     data = data[2:]
                     message += data
                     print(message)
-                    if message[:4] != '2323':
-                        print('无2323')
-                        break
                     if not self.is_break or not data:
                         print('tcp连接中断')
                         try:
@@ -148,10 +146,9 @@ def main():
                     if len(message) < 48 + len_data*2 + 2:
                         print('接收一条大于50长度信息不完整')
                         continue
-                    if len(message) > 48 + len_data*2 + 2:
-                        print('一次接收了多条信息或者多条信息最后一条不完整')
-                    if len(message) == 48 + len_data*2 + 2:
-                        print('接收一条完整信息')
+                    if message[:4] != '2323':
+                        print('无2323')
+                        break
                     create_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                     while True:
                         if not message:
@@ -163,10 +160,6 @@ def main():
                         if len(message) < 48 + len_data * 2 + 2:
                             print('处理一条大于50长度信息不完整')
                             break
-                        if len(message) > 48 + len_data * 2 + 2:
-                            print('处理了多条信息或者多条信息最后一条不完整')
-                        if len(message) == 48 + len_data * 2 + 2:
-                            print('处理一条完整信息')
                         last_message = message
                         if message[4:6] == '01':
                             print('车辆登入')
@@ -175,6 +168,16 @@ def main():
                             if BCC(info) != info[-2:]:
                                 print(info)
                                 print('BCC校验失败')
+                                db = pymysql.connect(host='localhost', port=3306, user='root', passwd='ruige254475',
+                                                     db='cm',
+                                                     charset='utf8')
+                                cursor = db.cursor()
+                                VIN = Converter().to_ascii(info[8:42])
+                                sql = 'select * from car where VIN = "%s";' % VIN
+                                cursor.execute(sql)
+                                car = cursor.fetchone()
+                                cursor.close()
+                                db.close()
                                 car_ID = car[0]
                                 ter_time = Convertertime().to_time(info[48:60])
                                 type = 1002
@@ -202,7 +205,7 @@ def main():
                                 my_bcc = BCC_all(data)
                                 self.cclient.send(str(Converter().to_ascii(data + my_bcc)).encode('raw_unicode_escape'))
                                 print('车辆登录失败')
-                                is_break = False
+                                self.is_break = False
                                 break
                             car_ID = car[0]
                             type = 1
@@ -210,6 +213,7 @@ def main():
                             data = info[:6] + '01' + info[8:42] + '010006' + Convertertime().to_hex_time()
                             my_bcc = BCC_all(data)
                             self.cclient.send(str(Converter().to_ascii(data + my_bcc)).encode('raw_unicode_escape'))
+                            self.is_login = True
                             continue
                         if message[4:6] == '02':
                             print('实时信息上报')
@@ -218,6 +222,16 @@ def main():
                             if BCC(info) != info[-2:]:
                                 print(info)
                                 print('BCC校验失败')
+                                db = pymysql.connect(host='localhost', port=3306, user='root', passwd='ruige254475',
+                                                     db='cm',
+                                                     charset='utf8')
+                                cursor = db.cursor()
+                                VIN = Converter().to_ascii(info[8:42])
+                                sql = 'select * from car where VIN = "%s";' % VIN
+                                cursor.execute(sql)
+                                car = cursor.fetchone()
+                                cursor.close()
+                                db.close()
                                 car_ID = car[0]
                                 ter_time = Convertertime().to_time(info[48:60])
                                 type = 1002
@@ -306,6 +320,12 @@ def main():
                                             data = data.replace(data[4:4 + 6 + total_len], '', 1)
                                             num -= 1
                                         data = data.replace(data[0:4], '', 1)
+                                    if data[0:2] == '30':
+                                        print('自定义30数据')
+                                        data = data.replace(data[0:46], '', 1)
+                                    if data[0:2] == '32':
+                                        print('自定义32数据')
+                                        data = data.replace(data[0:226], '', 1)
                                 continue
                             except:
                                 print('上报信息错误')
@@ -320,6 +340,16 @@ def main():
                             if BCC(info) != info[-2:]:
                                 print(info)
                                 print('BCC校验失败')
+                                db = pymysql.connect(host='localhost', port=3306, user='root', passwd='ruige254475',
+                                                     db='cm',
+                                                     charset='utf8')
+                                cursor = db.cursor()
+                                VIN = Converter().to_ascii(info[8:42])
+                                sql = 'select * from car where VIN = "%s";' % VIN
+                                cursor.execute(sql)
+                                car = cursor.fetchone()
+                                cursor.close()
+                                db.close()
                                 car_ID = car[0]
                                 ter_time = Convertertime().to_time(info[48:60])
                                 type = 1002
@@ -408,6 +438,12 @@ def main():
                                             data = data.replace(data[4:4 + 6 + total_len], '', 1)
                                             num -= 1
                                         data = data.replace(data[0:4], '', 1)
+                                    if data[0:2] == '30':
+                                        print('自定义30数据')
+                                        data = data.replace(data[0:46], '', 1)
+                                    if data[0:2] == '32':
+                                        print('自定义32数据')
+                                        data = data.replace(data[0:226], '', 1)
                                 continue
                             except:
                                 print('上报信息错误')
@@ -423,6 +459,16 @@ def main():
                             if BCC(info) != info[-2:]:
                                 print(info)
                                 print('BCC校验失败')
+                                db = pymysql.connect(host='localhost', port=3306, user='root', passwd='ruige254475',
+                                                     db='cm',
+                                                     charset='utf8')
+                                cursor = db.cursor()
+                                VIN = Converter().to_ascii(info[8:42])
+                                sql = 'select * from car where VIN = "%s";' % VIN
+                                cursor.execute(sql)
+                                car = cursor.fetchone()
+                                cursor.close()
+                                db.close()
                                 car_ID = car[0]
                                 ter_time = Convertertime().to_time(info[48:60])
                                 type = 1002
@@ -452,9 +498,20 @@ def main():
                             print('心跳')
                             len_data = int(message[44:48], 16)
                             info = message[:48 + len_data * 2 + 2]
+                            message = message.replace(info, '', 1)
                             if BCC(info) != info[-2:]:
                                 print(info)
                                 print('BCC校验失败')
+                                db = pymysql.connect(host='localhost', port=3306, user='root', passwd='ruige254475',
+                                                     db='cm',
+                                                     charset='utf8')
+                                cursor = db.cursor()
+                                VIN = Converter().to_ascii(info[8:42])
+                                sql = 'select * from car where VIN = "%s";' % VIN
+                                cursor.execute(sql)
+                                car = cursor.fetchone()
+                                cursor.close()
+                                db.close()
                                 car_ID = car[0]
                                 ter_time = Convertertime().to_time(info[48:60])
                                 type = 1002
@@ -464,10 +521,28 @@ def main():
                                 self.cclient.send(str(Converter().to_ascii(data + my_bcc)).encode('raw_unicode_escape'))
                                 message = ''
                                 break
-                            message = message.replace(info, '', 1)
                             data = info[:6] + '01' + info[8:42] + '010006' + Convertertime().to_hex_time()
                             my_bcc = BCC_all(data)
                             self.cclient.send(str(Converter().to_ascii(data + my_bcc)).encode('raw_unicode_escape'))
+                            if self.is_login:
+                                VIN = Converter().to_ascii(info[8:42])
+                                num = r.zscore('car', VIN)
+                                if int(num) == 1:
+                                    print('锁车命令发出')
+                                    data = '232382fe' + info[8:42] + '010008' + Convertertime().to_hex_time() + '9091'
+                                    my_bcc = BCC_all(data)
+                                    self.cclient.send(str(Converter().to_ascii(data + my_bcc)).encode('raw_unicode_escape'))
+                                if int(num) == 2:
+                                    print('解锁命令发出')
+                                    data = '232382fe' + info[8:42] + '010008' + Convertertime().to_hex_time() + '9090'
+                                    my_bcc = BCC_all(data)
+                                    self.cclient.send(str(Converter().to_ascii(data + my_bcc)).encode('raw_unicode_escape'))
+                                score_c = r.zscore('car_status', VIN)
+                                if int(score_c) == 3:
+                                    print('车辆状态查询')
+                                    data = '232380fe' + info[8:42] + '010008' + Convertertime().to_hex_time() + '0190'
+                                    my_bcc = BCC_all(data)
+                                    self.cclient.send(str(Converter().to_ascii(data + my_bcc)).encode('raw_unicode_escape'))
                             continue
                         if message[4:6] == '08':
                             print('校时')
@@ -476,6 +551,16 @@ def main():
                             if BCC(info) != info[-2:]:
                                 print(info)
                                 print('BCC校验失败')
+                                db = pymysql.connect(host='localhost', port=3306, user='root', passwd='ruige254475',
+                                                     db='cm',
+                                                     charset='utf8')
+                                cursor = db.cursor()
+                                VIN = Converter().to_ascii(info[8:42])
+                                sql = 'select * from car where VIN = "%s";' % VIN
+                                cursor.execute(sql)
+                                car = cursor.fetchone()
+                                cursor.close()
+                                db.close()
                                 car_ID = car[0]
                                 ter_time = Convertertime().to_time(info[48:60])
                                 type = 1002
@@ -492,12 +577,21 @@ def main():
 
                             continue
                         if message[4:6] == '80':
-                            print('远程升级命令')
                             len_data = int(message[44:48], 16)
                             info = message[:48 + len_data * 2 + 2]
                             if BCC(info) != info[-2:]:
                                 print(info)
                                 print('BCC校验失败')
+                                db = pymysql.connect(host='localhost', port=3306, user='root', passwd='ruige254475',
+                                                     db='cm',
+                                                     charset='utf8')
+                                cursor = db.cursor()
+                                VIN = Converter().to_ascii(info[8:42])
+                                sql = 'select * from car where VIN = "%s";' % VIN
+                                cursor.execute(sql)
+                                car = cursor.fetchone()
+                                cursor.close()
+                                db.close()
                                 car_ID = car[0]
                                 ter_time = Convertertime().to_time(info[48:60])
                                 type = 1002
@@ -508,136 +602,179 @@ def main():
                                 message = ''
                                 break
                             message = message.replace(info, '', 1)
-                            db = pymysql.connect(host='localhost', port=3306, user='root', passwd='ruige254475', db='cm',
-                                                 charset='utf8')
-                            cursor = db.cursor()
-                            VIN = Converter().to_ascii(info[8:42])
-                            sql = 'select * from car where VIN = "%s";' % VIN
-                            cursor.execute(sql)
-                            car = cursor.fetchone()
-                            cursor.close()
-                            db.close()
-                            car_ID = car[0]
-                            ter_time = Convertertime().to_time(info[48:60])
-                            type = 80
-                            messages['CAN'].append((car_ID, create_time, ter_time, info, type))
-                            ftp = car[9]
-                            pwd = car[10]
-                            ip = str(car[8]).split('/')[0].split('.')
-                            port = '21'
-                            ID = 'CPS'
-                            ter = '123456'
-                            version = car[6]
-                            url = car[8]
-                            if version:
-                                ip_hex = '0000'
-                                for item in ip:
-                                    ip_hex += hex(int(item))[2:]
-                                if int(version) > int(info[76:86]):
-                                    data = Convertertime().to_hex_time() + '01' + Converter().to_hex('mas;' + str(ftp) + ';' + str(pwd) + ';') + ip_hex + '3B' + '00153B' + Converter().to_hex(';' + str(ID) + ';' + str(ter) + ';' + str(version) + ';' + 'ftp://' + str(url) + ';') + '0000'
-                                    len_data = hex(int(len(data)))[2:]
-                                    if len(len_data) == 1:
-                                        datas = info[:4] + '82fe' + info[8:42] + '01' + '000' + str(len_data) + data
-                                    if len(len_data) == 2:
-                                        datas = info[:4] + '82fe' + info[8:42] + '01' + '00' + str(len_data) + data
-                                    if len(len_data) == 3:
-                                        datas = info[:4] + '82fe' + info[8:42] + '01' + '0' + str(len_data) + data
-                                    if len(len_data) == 4:
-                                        datas = info[:4] + '82fe' + info[8:42] + '01' + str(len_data) + data
-                                    is_bcc = BCC_all(datas)
-                                    self.cclient.send(str(Converter().to_ascii(datas + is_bcc)).encode('raw_unicode_escape'))
-                                    print('开始升级')
-                                    db = pymysql.connect(host='localhost', port=3306, user='root', passwd='ruige254475',
-                                                         db='cm',
-                                                         charset='utf8')
-                                    cursor = db.cursor()
-                                    query = "update car set status = 1 where id = %d;" % car[0]
-                                    print(query)
-                                    cursor.execute(query)
-                                    db.commit()
-                                    cursor.close()
-                                    db.close()
-                                    continue
-                                elif int(version) == int(info[76:86]):
-                                    print('升级完成')
-                                    db = pymysql.connect(host='localhost', port=3306, user='root', passwd='ruige254475',
-                                                         db='cm',
-                                                         charset='utf8')
-                                    cursor = db.cursor()
-                                    query = "update car set status = 2 where id = %d;" % car[0]
-                                    print(query)
-                                    cursor.execute(query)
-                                    db.commit()
-                                    query = "update car set version_now = %s where id = %d;" % (info[76:86], car[0])
-                                    cursor.execute(query)
-                                    db.commit()
-                                    cursor.close()
-                                    db.close()
-                                    continue
-                                else:
-                                    print('当前版本大于需要升级版本')
-                                    db = pymysql.connect(host='localhost', port=3306, user='root', passwd='ruige254475',
-                                                         db='cm',
-                                                         charset='utf8')
-                                    cursor = db.cursor()
-                                    query = "update car set status = 3 where id = %d;" % car[0]
-                                    print(query)
-                                    cursor.execute(query)
-                                    db.commit()
-                                    query = "update car set version_now = %s where id = %d;" % (info[76:86], car[0])
-                                    cursor.execute(query)
-                                    db.commit()
-                                    cursor.close()
-                                    db.close()
-                                    data = Convertertime().to_hex_time() + '01' + Converter().to_hex(';' + str(ftp) + ';' + str(pwd) + ';' + str(ip) + ';' + str(port) + ';' + str(ID) + ';' + str(ter) + ';' + str(version) + ';' + str(url) + ';') + '0000'
-                                    len_data = hex(int(len(data)))[2:]
-                                    if len(len_data) == 1:
-                                        datas = info[:4] + '82fe' + info[8:42] + '01' + '000' + str(len_data) + data
-                                    if len(len_data) == 2:
-                                        datas = info[:4] + '82fe' + info[8:42] + '01' + '00' + str(len_data) + data
-                                    if len(len_data) == 3:
-                                        datas = info[:4] + '82fe' + info[8:42] + '01' + '0' + str(len_data) + data
-                                    if len(len_data) == 4:
-                                        datas = info[:4] + '82fe' + info[8:42] + '01' + str(len_data) + data
-                                    is_bcc = BCC_all(datas)
-                                    self.cclient.send(str(Converter().to_ascii(datas + is_bcc)).encode('raw_unicode_escape'))
-                                    continue
+                            if info[62:64] == '90':
+                                print('车辆状态信息')
+                                if info[-4:-2] == '00':
+                                    print('车辆已解锁')
+                                    VIN = Converter().to_ascii(info[8:42])
+                                    r.zadd('car_status', {VIN: 2})
+                                if info[-4:-2] == '01':
+                                    print('车辆已锁车')
+                                    VIN = Converter().to_ascii(info[8:42])
+                                    r.zadd('car_status', {VIN: 1})
                             else:
-                                print('无版本信息')
+                                print('远程升级命令')
+                                db = pymysql.connect(host='localhost', port=3306, user='root', passwd='ruige254475', db='cm',
+                                                     charset='utf8')
+                                cursor = db.cursor()
+                                VIN = Converter().to_ascii(info[8:42])
+                                sql = 'select * from car where VIN = "%s";' % VIN
+                                cursor.execute(sql)
+                                car = cursor.fetchone()
+                                cursor.close()
+                                db.close()
+                                car_ID = car[0]
+                                ter_time = Convertertime().to_time(info[48:60])
+                                type = 80
+                                messages['CAN'].append((car_ID, create_time, ter_time, info, type))
+                                ftp = car[9]
+                                pwd = car[10]
+                                ip = str(car[8]).split('/')[0].split('.')
+                                port = '21'
+                                ID = 'CPS'
+                                ter = '123456'
+                                version = car[6]
+                                url = car[8]
+                                if version:
+                                    ip_hex = '0000'
+                                    for item in ip:
+                                        ip_hex += hex(int(item))[2:]
+                                    if int(version) > int(info[76:86]):
+                                        data = Convertertime().to_hex_time() + '01' + Converter().to_hex('mas;' + str(ftp) + ';' + str(pwd) + ';') + ip_hex + '3B' + '00153B' + Converter().to_hex(';' + str(ID) + ';' + str(ter) + ';' + str(version) + ';' + 'ftp://' + str(url) + ';') + '0000'
+                                        len_data = hex(int(len(data)))[2:]
+                                        if len(len_data) == 1:
+                                            datas = info[:4] + '82fe' + info[8:42] + '01' + '000' + str(len_data) + data
+                                        if len(len_data) == 2:
+                                            datas = info[:4] + '82fe' + info[8:42] + '01' + '00' + str(len_data) + data
+                                        if len(len_data) == 3:
+                                            datas = info[:4] + '82fe' + info[8:42] + '01' + '0' + str(len_data) + data
+                                        if len(len_data) == 4:
+                                            datas = info[:4] + '82fe' + info[8:42] + '01' + str(len_data) + data
+                                        is_bcc = BCC_all(datas)
+                                        self.cclient.send(str(Converter().to_ascii(datas + is_bcc)).encode('raw_unicode_escape'))
+                                        print('开始升级')
+                                        db = pymysql.connect(host='localhost', port=3306, user='root', passwd='ruige254475',
+                                                             db='cm',
+                                                             charset='utf8')
+                                        cursor = db.cursor()
+                                        query = "update car set status = 1 where id = %d;" % car[0]
+                                        print(query)
+                                        cursor.execute(query)
+                                        db.commit()
+                                        cursor.close()
+                                        db.close()
+                                        continue
+                                    elif int(version) == int(info[76:86]):
+                                        print('升级完成')
+                                        db = pymysql.connect(host='localhost', port=3306, user='root', passwd='ruige254475',
+                                                             db='cm',
+                                                             charset='utf8')
+                                        cursor = db.cursor()
+                                        query = "update car set status = 2 where id = %d;" % car[0]
+                                        print(query)
+                                        cursor.execute(query)
+                                        db.commit()
+                                        query = "update car set version_now = %s where id = %d;" % (info[76:86], car[0])
+                                        cursor.execute(query)
+                                        db.commit()
+                                        cursor.close()
+                                        db.close()
+                                        continue
+                                    else:
+                                        print('当前版本大于需要升级版本')
+                                        db = pymysql.connect(host='localhost', port=3306, user='root', passwd='ruige254475',
+                                                             db='cm',
+                                                             charset='utf8')
+                                        cursor = db.cursor()
+                                        query = "update car set status = 3 where id = %d;" % car[0]
+                                        print(query)
+                                        cursor.execute(query)
+                                        db.commit()
+                                        query = "update car set version_now = %s where id = %d;" % (info[76:86], car[0])
+                                        cursor.execute(query)
+                                        db.commit()
+                                        cursor.close()
+                                        db.close()
+                                        data = Convertertime().to_hex_time() + '01' + Converter().to_hex(';' + str(ftp) + ';' + str(pwd) + ';' + str(ip) + ';' + str(port) + ';' + str(ID) + ';' + str(ter) + ';' + str(version) + ';' + str(url) + ';') + '0000'
+                                        len_data = hex(int(len(data)))[2:]
+                                        if len(len_data) == 1:
+                                            datas = info[:4] + '82fe' + info[8:42] + '01' + '000' + str(len_data) + data
+                                        if len(len_data) == 2:
+                                            datas = info[:4] + '82fe' + info[8:42] + '01' + '00' + str(len_data) + data
+                                        if len(len_data) == 3:
+                                            datas = info[:4] + '82fe' + info[8:42] + '01' + '0' + str(len_data) + data
+                                        if len(len_data) == 4:
+                                            datas = info[:4] + '82fe' + info[8:42] + '01' + str(len_data) + data
+                                        is_bcc = BCC_all(datas)
+                                        self.cclient.send(str(Converter().to_ascii(datas + is_bcc)).encode('raw_unicode_escape'))
+                                        continue
+                                else:
+                                    print('无版本信息')
+                                    db = pymysql.connect(host='localhost', port=3306, user='root', passwd='ruige254475',
+                                                         db='cm',
+                                                         charset='utf8')
+                                    cursor = db.cursor()
+                                    query = "update car set status = 0 where id = %d;" % car[0]
+                                    print(query)
+                                    cursor.execute(query)
+                                    db.commit()
+                                    query = "update car set version_now = %s where id = %d;" % (info[76:86], car[0])
+                                    cursor.execute(query)
+                                    db.commit()
+                                    cursor.close()
+                                    db.close()
+                                    data = Convertertime().to_hex_time() + '01' + Converter().to_hex(';' + str(ftp) + ';' + str(pwd) + ';' + str(
+                                        ip) + ';' + str(port) + ';' + str(ID) + ';' + str(ter) + ';' + str(version) + ';' + str(
+                                        url) + ';') + '0000'
+                                    len_data = hex(int(len(data)))[2:]
+                                    if len(len_data) == 1:
+                                        datas = info[:4] + '82fe' + info[8:42] + '01' + '000' + str(len_data) + data
+                                    if len(len_data) == 2:
+                                        datas = info[:4] + '82fe' + info[8:42] + '01' + '00' + str(len_data) + data
+                                    if len(len_data) == 3:
+                                        datas = info[:4] + '82fe' + info[8:42] + '01' + '0' + str(len_data) + data
+                                    if len(len_data) == 4:
+                                        datas = info[:4] + '82fe' + info[8:42] + '01' + str(len_data) + data
+                                    is_bcc = BCC_all(datas)
+                                    self.cclient.send(str(Converter().to_ascii(datas + is_bcc)).encode('raw_unicode_escape'))
+                                    continue
+                        if message[4:6] == '82':
+                            print('解锁车接收成功')
+                            len_data = int(message[44:48], 16)
+                            info = message[:48 + len_data * 2 + 2]
+                            message = message.replace(info, '', 1)
+                            if BCC(info) != info[-2:]:
+                                print(info)
+                                print('BCC校验失败')
                                 db = pymysql.connect(host='localhost', port=3306, user='root', passwd='ruige254475',
                                                      db='cm',
                                                      charset='utf8')
                                 cursor = db.cursor()
-                                query = "update car set status = 0 where id = %d;" % car[0]
-                                print(query)
-                                cursor.execute(query)
-                                db.commit()
-                                query = "update car set version_now = %s where id = %d;" % (info[76:86], car[0])
-                                cursor.execute(query)
-                                db.commit()
+                                VIN = Converter().to_ascii(info[8:42])
+                                sql = 'select * from car where VIN = "%s";' % VIN
+                                cursor.execute(sql)
+                                car = cursor.fetchone()
                                 cursor.close()
                                 db.close()
-                                data = Convertertime().to_hex_time() + '01' + Converter().to_hex(';' + str(ftp) + ';' + str(pwd) + ';' + str(
-                                    ip) + ';' + str(port) + ';' + str(ID) + ';' + str(ter) + ';' + str(version) + ';' + str(
-                                    url) + ';') + '0000'
-                                len_data = hex(int(len(data)))[2:]
-                                if len(len_data) == 1:
-                                    datas = info[:4] + '82fe' + info[8:42] + '01' + '000' + str(len_data) + data
-                                if len(len_data) == 2:
-                                    datas = info[:4] + '82fe' + info[8:42] + '01' + '00' + str(len_data) + data
-                                if len(len_data) == 3:
-                                    datas = info[:4] + '82fe' + info[8:42] + '01' + '0' + str(len_data) + data
-                                if len(len_data) == 4:
-                                    datas = info[:4] + '82fe' + info[8:42] + '01' + str(len_data) + data
-                                is_bcc = BCC_all(datas)
-                                self.cclient.send(str(Converter().to_ascii(datas + is_bcc)).encode('raw_unicode_escape'))
-                                continue
+                                car_ID = car[0]
+                                ter_time = Convertertime().to_time(info[48:60])
+                                type = 1002
+                                messages['CAN'].append((car_ID, create_time, ter_time, info, type))
+                                data = info[:6] + '02' + info[8:42] + '010006' + Convertertime().to_hex_time()
+                                my_bcc = BCC_all(data)
+                                self.cclient.send(str(Converter().to_ascii(data + my_bcc)).encode('raw_unicode_escape'))
+                                message = ''
+                                break
+                            if info[-4:-2] == '90':
+                                VIN = Converter().to_ascii(info[8:42])
+                                r.zadd('car', {VIN: 3})
+                            continue
                         else:
                             print('无当前功能')
                             message = ''
                 print('关闭连接')
                 self.cclient.close()
-            except:
+            except socket.timeout:
                 print('连接超时')
                 messages['offline'].append(Converter().to_ascii(last_message[8:42]))
                 self.cclient.close()
@@ -672,7 +809,6 @@ def set_time():
 
         # 车辆离线存储
         if messages['offline']:
-            r = redis.Redis(host='localhost', port=6379)
             for item in messages['offline']:
                 location = r.geopos('car_online', item)
                 r.zrem("car_online", item)
@@ -681,7 +817,6 @@ def set_time():
 
         # 车辆在线存储
         if messages['online']:
-            r = redis.Redis(host='localhost', port=6379)
             for item in messages['online']:
                 r.zrem("car_offline", item[2])
                 r.geoadd("car_online", item[0], item[1], item[2])
@@ -699,13 +834,11 @@ def set_time():
 
         # 报警车辆存储
         if messages['warning']:
-            r = redis.Redis(host='localhost', port=6379)
             for item in messages['warning']:
                 location = r.geopos('car_online', item)
                 r.geoadd('car_warning', location[0][0], location[0][1], item)
         # 报警车辆恢复
         if messages['unwarning']:
-            r = redis.Redis(host='localhost', port=6379)
             for item in messages['unwarning']:
                 r.zrem('car_warning', item)
         Timer(10, set_time).start()
@@ -724,6 +857,7 @@ if __name__ == '__main__':
     messages['offline'] = []
     messages['warning'] = []
     messages['unwarning'] = []
+    r = redis.Redis(host='localhost', port=6379)
     set_time()
     main()
 

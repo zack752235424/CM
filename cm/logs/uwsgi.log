@@ -1,0 +1,335 @@
+*** Starting uWSGI 2.0.18 (64bit) on [Fri Aug  9 10:30:23 2019] ***
+compiled with version: 5.4.0 20160609 on 07 August 2019 06:26:39
+os: Linux-4.13.0-36-generic #40~16.04.1-Ubuntu SMP Fri Feb 16 23:25:58 UTC 2018
+nodename: zack-QiTianM415-B113
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 4
+current working directory: /home/zack/文档/beidou/cm
+detected binary path: /home/zack/.local/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+chdir() to /home/zack/文档/beidou/cm
+your processes number limit is 63590
+your memory page size is 4096 bytes
+detected max file descriptor number: 1048576
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uWSGI http bound on 0.0.0.0:8000 fd 4
+uwsgi socket 0 bound to TCP address 127.0.0.1:40129 (port auto-assigned) fd 3
+Python version: 3.6.8 (default, May  7 2019, 14:58:50)  [GCC 5.4.0 20160609]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x13280e0
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 364600 bytes (356 KB) for 4 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x13280e0 pid: 9976 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 9976)
+spawned uWSGI worker 1 (pid: 9978, cores: 1)
+spawned uWSGI worker 2 (pid: 9979, cores: 1)
+spawned uWSGI worker 3 (pid: 9980, cores: 1)
+spawned uWSGI worker 4 (pid: 9981, cores: 1)
+spawned uWSGI http 1 (pid: 9982)
+[pid: 9979|app: 0|req: 1/1] 127.0.0.1 () {38 vars in 810 bytes} [Fri Aug  9 10:30:51 2019] GET /index/index/ => generated 3923 bytes in 109 msecs (HTTP/1.1 200) 4 headers in 124 bytes (1 switches on core 0)
+[pid: 9979|app: 0|req: 2/2] 127.0.0.1 () {40 vars in 856 bytes} [Fri Aug  9 10:30:51 2019] GET /index/map/ => generated 21439 bytes in 16 msecs (HTTP/1.1 200) 4 headers in 125 bytes (1 switches on core 0)
+Not Found: /ws/chat/
+[pid: 9978|app: 0|req: 1/3] 127.0.0.1 () {48 vars in 902 bytes} [Fri Aug  9 10:30:51 2019] GET /ws/chat/ => generated 2697 bytes in 99 msecs (HTTP/1.1 404) 4 headers in 116 bytes (1 switches on core 0)
+[pid: 9978|app: 0|req: 2/4] 127.0.0.1 () {40 vars in 852 bytes} [Fri Aug  9 10:30:54 2019] GET /updt/up/ => generated 3934 bytes in 24 msecs (HTTP/1.1 200) 5 headers in 278 bytes (1 switches on core 0)
+[pid: 9978|app: 0|req: 3/5] 127.0.0.1 () {40 vars in 825 bytes} [Fri Aug  9 10:30:54 2019] GET /updt/get_users/?page=1&limit=10 => generated 46 bytes in 18 msecs (HTTP/1.1 200) 4 headers in 114 bytes (1 switches on core 0)
+[pid: 9980|app: 0|req: 1/6] 127.0.0.1 () {40 vars in 856 bytes} [Fri Aug  9 10:30:55 2019] GET /lock/lock/ => generated 2472 bytes in 143 msecs (HTTP/1.1 200) 4 headers in 124 bytes (1 switches on core 0)
+[pid: 9978|app: 0|req: 4/7] 127.0.0.1 () {40 vars in 876 bytes} [Fri Aug  9 10:30:55 2019] GET /playback/back_video/ => generated 9648 bytes in 27 msecs (HTTP/1.1 200) 4 headers in 124 bytes (1 switches on core 0)
+[pid: 9978|app: 0|req: 5/8] 127.0.0.1 () {40 vars in 858 bytes} [Fri Aug  9 10:30:56 2019] GET /car/manage/ => generated 4139 bytes in 25 msecs (HTTP/1.1 200) 4 headers in 124 bytes (1 switches on core 0)
+[pid: 9978|app: 0|req: 6/9] 127.0.0.1 () {40 vars in 860 bytes} [Fri Aug  9 10:30:56 2019] GET /user/manage/ => generated 5620 bytes in 65 msecs (HTTP/1.1 200) 4 headers in 124 bytes (1 switches on core 0)
+[pid: 9978|app: 0|req: 7/10] 127.0.0.1 () {40 vars in 841 bytes} [Fri Aug  9 10:30:58 2019] GET /index/index/ => generated 3923 bytes in 62 msecs (HTTP/1.1 200) 4 headers in 124 bytes (1 switches on core 0)
+[pid: 9978|app: 0|req: 8/11] 127.0.0.1 () {40 vars in 856 bytes} [Fri Aug  9 10:30:59 2019] GET /index/map/ => generated 21439 bytes in 12 msecs (HTTP/1.1 200) 4 headers in 125 bytes (1 switches on core 0)
+Not Found: /ws/chat/
+[pid: 9979|app: 0|req: 3/12] 127.0.0.1 () {48 vars in 902 bytes} [Fri Aug  9 10:30:59 2019] GET /ws/chat/ => generated 2697 bytes in 17 msecs (HTTP/1.1 404) 4 headers in 116 bytes (1 switches on core 0)
+SIGINT/SIGQUIT received...killing workers...
+gateway "uWSGI http 1" has been buried (pid: 9982)
+worker 1 buried after 2 seconds
+worker 2 buried after 2 seconds
+worker 3 buried after 2 seconds
+worker 4 buried after 2 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.18 (64bit) on [Fri Aug  9 10:34:28 2019] ***
+compiled with version: 5.4.0 20160609 on 07 August 2019 06:26:39
+os: Linux-4.13.0-36-generic #40~16.04.1-Ubuntu SMP Fri Feb 16 23:25:58 UTC 2018
+nodename: zack-QiTianM415-B113
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 4
+current working directory: /home/zack/文档/beidou/cm
+detected binary path: /home/zack/.local/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+chdir() to /home/zack/文档/beidou/cm
+your processes number limit is 63590
+your memory page size is 4096 bytes
+detected max file descriptor number: 1048576
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uWSGI http bound on 0.0.0.0:8000 fd 4
+uwsgi socket 0 bound to TCP address 127.0.0.1:46877 (port auto-assigned) fd 3
+Python version: 3.6.8 (default, May  7 2019, 14:58:50)  [GCC 5.4.0 20160609]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x24da150
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 364600 bytes (356 KB) for 4 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 0 seconds on interpreter 0x24da150 pid: 10189 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 10189)
+spawned uWSGI worker 1 (pid: 10191, cores: 1)
+spawned uWSGI worker 2 (pid: 10192, cores: 1)
+spawned uWSGI worker 3 (pid: 10193, cores: 1)
+spawned uWSGI worker 4 (pid: 10194, cores: 1)
+spawned uWSGI http 1 (pid: 10195)
+[pid: 10191|app: 0|req: 1/1] 127.0.0.1 () {40 vars in 841 bytes} [Fri Aug  9 10:34:35 2019] GET /index/index/ => generated 3923 bytes in 84 msecs (HTTP/1.1 200) 4 headers in 124 bytes (1 switches on core 0)
+[pid: 10191|app: 0|req: 2/2] 127.0.0.1 () {40 vars in 856 bytes} [Fri Aug  9 10:34:35 2019] GET /index/map/ => generated 21439 bytes in 24 msecs (HTTP/1.1 200) 4 headers in 125 bytes (1 switches on core 0)
+Not Found: /ws/chat/
+[pid: 10191|app: 0|req: 3/3] 127.0.0.1 () {48 vars in 902 bytes} [Fri Aug  9 10:34:35 2019] GET /ws/chat/ => generated 2697 bytes in 22 msecs (HTTP/1.1 404) 4 headers in 116 bytes (1 switches on core 0)
+SIGINT/SIGQUIT received...killing workers...
+gateway "uWSGI http 1" has been buried (pid: 10195)
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 4 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.18 (64bit) on [Fri Aug  9 10:35:09 2019] ***
+compiled with version: 5.4.0 20160609 on 07 August 2019 06:26:39
+os: Linux-4.13.0-36-generic #40~16.04.1-Ubuntu SMP Fri Feb 16 23:25:58 UTC 2018
+nodename: zack-QiTianM415-B113
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 4
+current working directory: /home/zack/文档/beidou/cm
+detected binary path: /home/zack/.local/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+chdir() to /home/zack/文档/beidou/cm
+your processes number limit is 63590
+your memory page size is 4096 bytes
+detected max file descriptor number: 1048576
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uWSGI http bound on 0.0.0.0:8000 fd 4
+uwsgi socket 0 bound to TCP address 127.0.0.1:41453 (port auto-assigned) fd 3
+Python version: 3.6.8 (default, May  7 2019, 14:58:50)  [GCC 5.4.0 20160609]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0xaac150
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 364600 bytes (356 KB) for 4 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0xaac150 pid: 10218 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 10218)
+spawned uWSGI worker 1 (pid: 10221, cores: 1)
+spawned uWSGI worker 2 (pid: 10222, cores: 1)
+spawned uWSGI worker 3 (pid: 10223, cores: 1)
+spawned uWSGI worker 4 (pid: 10224, cores: 1)
+spawned uWSGI http 1 (pid: 10225)
+[pid: 10222|app: 0|req: 1/1] 127.0.0.1 () {40 vars in 841 bytes} [Fri Aug  9 10:35:14 2019] GET /index/index/ => generated 3923 bytes in 86 msecs (HTTP/1.1 200) 4 headers in 124 bytes (1 switches on core 0)
+[pid: 10223|app: 0|req: 1/2] 127.0.0.1 () {40 vars in 856 bytes} [Fri Aug  9 10:35:14 2019] GET /index/map/ => generated 21439 bytes in 95 msecs (HTTP/1.1 200) 4 headers in 125 bytes (1 switches on core 0)
+Not Found: /ws/chat/
+[pid: 10222|app: 0|req: 2/3] 127.0.0.1 () {48 vars in 902 bytes} [Fri Aug  9 10:35:14 2019] GET /ws/chat/ => generated 2697 bytes in 13 msecs (HTTP/1.1 404) 4 headers in 116 bytes (1 switches on core 0)
+SIGINT/SIGQUIT received...killing workers...
+gateway "uWSGI http 1" has been buried (pid: 10225)
+worker 1 buried after 0 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 4 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.18 (64bit) on [Fri Aug  9 10:38:41 2019] ***
+compiled with version: 5.4.0 20160609 on 07 August 2019 06:26:39
+os: Linux-4.13.0-36-generic #40~16.04.1-Ubuntu SMP Fri Feb 16 23:25:58 UTC 2018
+nodename: zack-QiTianM415-B113
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 4
+current working directory: /home/zack/文档/beidou/cm
+detected binary path: /home/zack/.local/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+chdir() to /home/zack/文档/beidou/cm
+your processes number limit is 63590
+your memory page size is 4096 bytes
+detected max file descriptor number: 1048576
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uWSGI http bound on 0.0.0.0:8000 fd 4
+uwsgi socket 0 bound to TCP address 127.0.0.1:46429 (port auto-assigned) fd 3
+Python version: 3.6.8 (default, May  7 2019, 14:58:50)  [GCC 5.4.0 20160609]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1782160
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 364600 bytes (356 KB) for 4 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 0 seconds on interpreter 0x1782160 pid: 10269 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 10269)
+spawned uWSGI worker 1 (pid: 10271, cores: 1)
+spawned uWSGI worker 2 (pid: 10272, cores: 1)
+spawned uWSGI worker 3 (pid: 10273, cores: 1)
+spawned uWSGI worker 4 (pid: 10274, cores: 1)
+spawned uWSGI http 1 (pid: 10275)
+[pid: 10271|app: 0|req: 1/1] 127.0.0.1 () {40 vars in 841 bytes} [Fri Aug  9 10:38:49 2019] GET /index/index/ => generated 3923 bytes in 96 msecs (HTTP/1.1 200) 4 headers in 124 bytes (1 switches on core 0)
+[pid: 10271|app: 0|req: 2/2] 127.0.0.1 () {40 vars in 856 bytes} [Fri Aug  9 10:38:49 2019] GET /index/map/ => generated 21439 bytes in 20 msecs (HTTP/1.1 200) 4 headers in 125 bytes (1 switches on core 0)
+Not Found: /ws/chat/
+[pid: 10271|app: 0|req: 3/3] 127.0.0.1 () {48 vars in 902 bytes} [Fri Aug  9 10:38:49 2019] GET /ws/chat/ => generated 2697 bytes in 22 msecs (HTTP/1.1 404) 4 headers in 116 bytes (1 switches on core 0)
+SIGINT/SIGQUIT received...killing workers...
+gateway "uWSGI http 1" has been buried (pid: 10275)
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 4 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.18 (64bit) on [Fri Aug  9 10:52:35 2019] ***
+compiled with version: 5.4.0 20160609 on 07 August 2019 06:26:39
+os: Linux-4.13.0-36-generic #40~16.04.1-Ubuntu SMP Fri Feb 16 23:25:58 UTC 2018
+nodename: zack-QiTianM415-B113
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 4
+current working directory: /home/zack/文档/beidou/cm
+detected binary path: /home/zack/.local/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+chdir() to /home/zack/文档/beidou/cm
+your processes number limit is 63590
+your memory page size is 4096 bytes
+detected max file descriptor number: 1048576
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uWSGI http bound on 0.0.0.0:8000 fd 4
+uwsgi socket 0 bound to TCP address 127.0.0.1:40089 (port auto-assigned) fd 3
+Python version: 3.6.8 (default, May  7 2019, 14:58:50)  [GCC 5.4.0 20160609]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x11e1150
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 364600 bytes (356 KB) for 4 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 0 seconds on interpreter 0x11e1150 pid: 10505 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 10505)
+spawned uWSGI worker 1 (pid: 10507, cores: 1)
+spawned uWSGI worker 2 (pid: 10508, cores: 1)
+spawned uWSGI worker 3 (pid: 10509, cores: 1)
+spawned uWSGI worker 4 (pid: 10510, cores: 1)
+spawned uWSGI http 1 (pid: 10511)
+[pid: 10507|app: 0|req: 1/1] 127.0.0.1 () {38 vars in 810 bytes} [Fri Aug  9 10:52:41 2019] GET /index/index/ => generated 3923 bytes in 117 msecs (HTTP/1.1 200) 4 headers in 124 bytes (1 switches on core 0)
+Not Found: /static/js/jquery.min.map
+[pid: 10507|app: 0|req: 2/2] 127.0.0.1 () {34 vars in 666 bytes} [Fri Aug  9 10:52:41 2019] GET /static/js/jquery.min.map => generated 2745 bytes in 20 msecs (HTTP/1.1 404) 4 headers in 116 bytes (1 switches on core 0)
+[pid: 10508|app: 0|req: 1/3] 127.0.0.1 () {40 vars in 856 bytes} [Fri Aug  9 10:52:41 2019] GET /index/map/ => generated 21439 bytes in 99 msecs (HTTP/1.1 200) 4 headers in 125 bytes (1 switches on core 0)
+Not Found: /ws/chat/
+[pid: 10507|app: 0|req: 3/4] 127.0.0.1 () {48 vars in 902 bytes} [Fri Aug  9 10:52:42 2019] GET /ws/chat/ => generated 2697 bytes in 19 msecs (HTTP/1.1 404) 4 headers in 116 bytes (1 switches on core 0)
+SIGINT/SIGQUIT received...killing workers...
+gateway "uWSGI http 1" has been buried (pid: 10511)
+worker 1 buried after 0 seconds
+worker 2 buried after 0 seconds
+worker 3 buried after 0 seconds
+worker 4 buried after 0 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.18 (64bit) on [Fri Aug  9 10:53:47 2019] ***
+compiled with version: 5.4.0 20160609 on 07 August 2019 06:26:39
+os: Linux-4.13.0-36-generic #40~16.04.1-Ubuntu SMP Fri Feb 16 23:25:58 UTC 2018
+nodename: zack-QiTianM415-B113
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 4
+current working directory: /home/zack/文档/beidou/cm
+detected binary path: /home/zack/.local/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+chdir() to /home/zack/文档/beidou/cm
+your processes number limit is 63590
+your memory page size is 4096 bytes
+detected max file descriptor number: 1048576
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uWSGI http bound on 0.0.0.0:8000 fd 4
+uwsgi socket 0 bound to TCP address 127.0.0.1:45971 (port auto-assigned) fd 3
+Python version: 3.6.8 (default, May  7 2019, 14:58:50)  [GCC 5.4.0 20160609]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1ee0150
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 364600 bytes (356 KB) for 4 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x1ee0150 pid: 10548 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 10548)
+spawned uWSGI worker 1 (pid: 10551, cores: 1)
+spawned uWSGI worker 2 (pid: 10552, cores: 1)
+spawned uWSGI worker 3 (pid: 10553, cores: 1)
+spawned uWSGI worker 4 (pid: 10554, cores: 1)
+spawned uWSGI http 1 (pid: 10555)
+[pid: 10551|app: 0|req: 1/1] 127.0.0.1 () {40 vars in 841 bytes} [Fri Aug  9 10:53:53 2019] GET /index/index/ => generated 3923 bytes in 108 msecs (HTTP/1.1 200) 4 headers in 124 bytes (1 switches on core 0)
+Not Found: /static/js/jquery.min.map
+[pid: 10551|app: 0|req: 2/2] 127.0.0.1 () {34 vars in 666 bytes} [Fri Aug  9 10:53:53 2019] GET /static/js/jquery.min.map => generated 2745 bytes in 27 msecs (HTTP/1.1 404) 4 headers in 116 bytes (1 switches on core 0)
+[pid: 10552|app: 0|req: 1/3] 127.0.0.1 () {40 vars in 856 bytes} [Fri Aug  9 10:53:53 2019] GET /index/map/ => generated 21439 bytes in 91 msecs (HTTP/1.1 200) 4 headers in 125 bytes (1 switches on core 0)
+Not Found: /ws/chat/
+[pid: 10551|app: 0|req: 3/4] 127.0.0.1 () {48 vars in 902 bytes} [Fri Aug  9 10:53:53 2019] GET /ws/chat/ => generated 2697 bytes in 14 msecs (HTTP/1.1 404) 4 headers in 116 bytes (1 switches on core 0)
+SIGINT/SIGQUIT received...killing workers...
+gateway "uWSGI http 1" has been buried (pid: 10555)
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 4 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.18 (64bit) on [Fri Aug  9 11:11:44 2019] ***
+compiled with version: 5.4.0 20160609 on 07 August 2019 06:26:39
+os: Linux-4.13.0-36-generic #40~16.04.1-Ubuntu SMP Fri Feb 16 23:25:58 UTC 2018
+nodename: zack-QiTianM415-B113
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 4
+current working directory: /home/zack/文档/beidou/cm
+detected binary path: /home/zack/.local/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+chdir() to /home/zack/文档/beidou/cm
+your processes number limit is 63590
+your memory page size is 4096 bytes
+detected max file descriptor number: 1048576
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uWSGI http bound on 0.0.0.0:8000 fd 4
+uwsgi socket 0 bound to TCP address 127.0.0.1:38775 (port auto-assigned) fd 3
+Python version: 3.6.8 (default, May  7 2019, 14:58:50)  [GCC 5.4.0 20160609]
+Python main interpreter initialized at 0x1fca130
+python threads support enabled
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 835120 bytes (815 KB) for 40 cores
+*** Operational MODE: preforking+threaded ***
+WSGI app 0 (mountpoint='') ready in 0 seconds on interpreter 0x1fca130 pid: 10984 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 10984)
+spawned uWSGI worker 1 (pid: 10986, cores: 10)
+spawned uWSGI worker 2 (pid: 10989, cores: 10)
+spawned uWSGI worker 3 (pid: 11005, cores: 10)
+spawned uWSGI worker 4 (pid: 11016, cores: 10)
+spawned uWSGI http 1 (pid: 11026)
+[pid: 10986|app: 0|req: 1/1] 127.0.0.1 () {40 vars in 841 bytes} [Fri Aug  9 11:11:55 2019] GET /index/index/ => generated 3923 bytes in 133 msecs (HTTP/1.1 200) 4 headers in 124 bytes (1 switches on core 0)
+[pid: 10986|app: 0|req: 2/2] 127.0.0.1 () {40 vars in 856 bytes} [Fri Aug  9 11:11:56 2019] GET /index/map/ => generated 21439 bytes in 37 msecs (HTTP/1.1 200) 4 headers in 125 bytes (1 switches on core 6)
+Not Found: /ws/chat/
+[pid: 10986|app: 0|req: 3/3] 127.0.0.1 () {48 vars in 902 bytes} [Fri Aug  9 11:11:56 2019] GET /ws/chat/ => generated 2697 bytes in 31 msecs (HTTP/1.1 404) 4 headers in 116 bytes (1 switches on core 5)
+[pid: 10986|app: 0|req: 4/4] 127.0.0.1 () {40 vars in 858 bytes} [Fri Aug  9 11:11:57 2019] GET /car/manage/ => generated 4139 bytes in 55 msecs (HTTP/1.1 200) 4 headers in 124 bytes (1 switches on core 4)
+[pid: 10986|app: 0|req: 5/5] 127.0.0.1 () {40 vars in 876 bytes} [Fri Aug  9 11:11:58 2019] GET /playback/back_video/ => generated 9648 bytes in 25 msecs (HTTP/1.1 200) 4 headers in 124 bytes (1 switches on core 3)
+[pid: 10986|app: 0|req: 6/6] 127.0.0.1 () {40 vars in 852 bytes} [Fri Aug  9 11:11:58 2019] GET /updt/up/ => generated 3934 bytes in 29 msecs (HTTP/1.1 200) 5 headers in 278 bytes (1 switches on core 9)
+[pid: 10986|app: 0|req: 7/7] 127.0.0.1 () {40 vars in 825 bytes} [Fri Aug  9 11:11:58 2019] GET /updt/get_users/?page=1&limit=10 => generated 46 bytes in 37 msecs (HTTP/1.1 200) 4 headers in 114 bytes (1 switches on core 2)
+[pid: 10986|app: 0|req: 8/8] 127.0.0.1 () {40 vars in 856 bytes} [Fri Aug  9 11:11:59 2019] GET /lock/lock/ => generated 2472 bytes in 76 msecs (HTTP/1.1 200) 4 headers in 124 bytes (1 switches on core 7)
+[pid: 10986|app: 0|req: 9/9] 127.0.0.1 () {40 vars in 875 bytes} [Fri Aug  9 11:11:59 2019] GET /playback/back_video/ => generated 9648 bytes in 29 msecs (HTTP/1.1 200) 4 headers in 124 bytes (1 switches on core 8)
+[pid: 10989|app: 0|req: 1/10] 127.0.0.1 () {40 vars in 857 bytes} [Fri Aug  9 11:12:00 2019] GET /car/manage/ => generated 4139 bytes in 87 msecs (HTTP/1.1 200) 4 headers in 124 bytes (1 switches on core 5)
+[pid: 10989|app: 0|req: 2/11] 127.0.0.1 () {40 vars in 855 bytes} [Fri Aug  9 11:12:00 2019] GET /lock/lock/ => generated 2472 bytes in 37 msecs (HTTP/1.1 200) 4 headers in 124 bytes (1 switches on core 0)
+[pid: 11016|app: 0|req: 1/12] 127.0.0.1 () {40 vars in 851 bytes} [Fri Aug  9 11:12:01 2019] GET /updt/up/ => generated 3934 bytes in 82 msecs (HTTP/1.1 200) 5 headers in 278 bytes (1 switches on core 0)
+[pid: 10989|app: 0|req: 3/13] 127.0.0.1 () {40 vars in 825 bytes} [Fri Aug  9 11:12:01 2019] GET /updt/get_users/?page=1&limit=10 => generated 46 bytes in 28 msecs (HTTP/1.1 200) 4 headers in 114 bytes (1 switches on core 1)
+[pid: 10989|app: 0|req: 4/14] 127.0.0.1 () {40 vars in 856 bytes} [Fri Aug  9 11:12:01 2019] GET /lock/lock/ => generated 2472 bytes in 30 msecs (HTTP/1.1 200) 4 headers in 124 bytes (1 switches on core 7)
+[pid: 10989|app: 0|req: 5/15] 127.0.0.1 () {40 vars in 876 bytes} [Fri Aug  9 11:12:01 2019] GET /playback/back_video/ => generated 9648 bytes in 28 msecs (HTTP/1.1 200) 4 headers in 124 bytes (1 switches on core 2)
+[pid: 10989|app: 0|req: 6/16] 127.0.0.1 () {40 vars in 858 bytes} [Fri Aug  9 11:12:02 2019] GET /car/manage/ => generated 4139 bytes in 33 msecs (HTTP/1.1 200) 4 headers in 124 bytes (1 switches on core 4)
+SIGINT/SIGQUIT received...killing workers...
+gateway "uWSGI http 1" has been buried (pid: 11026)
+worker 1 buried after 0 seconds
+worker 2 buried after 0 seconds
+worker 3 buried after 0 seconds
+worker 4 buried after 0 seconds
+goodbye to uWSGI.

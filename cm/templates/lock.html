@@ -18,39 +18,31 @@
   <body class="layui-anim layui-anim-up">
     <div class="x-body">
       <div class="layui-row">
-        <form action="{% url 'car:car_search' %}" class="layui-form layui-col-md12 x-so">
+        <form action="{% url 'lock:search' %}" class="layui-form layui-col-md12 x-so">
           <input style="width: 200px" type="text" name="search"  placeholder="{{ info }}" autocomplete="off" class="layui-input">
           <button class="layui-btn" ><i class="layui-icon">&#xe615;</i></button>
         </form>
       </div>
-      <xblock>
-        <button class="layui-btn" onclick="x_admin_show('添加车辆','{% url 'car:car_add' %}',600,400)"><i class="layui-icon"></i>添加</button>
-        <button class="layui-btn" onclick="x_admin_show('导入','{% url 'car:car_upload' %}',600,400)"><i class="layui-icon"></i>导入</button>
-        <span class="x-right" style="line-height:40px">共有数据：{{ len }} 条</span>
-      </xblock>
-
       <table class="layui-table">
         <thead>
           <tr>
             <th>ID</th>
             <th>VIN码</th>
+            <th>操作状态</th>
+              <th>车辆状态</th>
             <th>操作</th>
         </thead>
         <tbody>
-            {% for car in car_list %}
+            {% for car in car_lis %}
               <tr>
                 <td>{{ forloop.counter }}</td>
-                <td>{{ car.VIN }}</td>
+                <td>{{ car.0 }}</td>
+                <td>{{ car.1}}</td>
+                  <td>{{ car.2}}</td>
                 <td class="td-manage">
-{#                  <a title="锁定" class="layui-btn layui-btn-sm layui-btn-normal"  onclick="x_admin_show('锁定','{% url 'lock:llock' car.VIN %}',600,400)" href="javascript:;">#}
-{#                    锁定#}
-{#                  </a>#}
-{#                  <a title="删除" class="layui-btn layui-btn-sm layui-btn-danger" onclick="member_del(this)" href="javascript:;">#}
-{#                    解锁#}
-{#                  </a>#}
-{#                  <a id="car_del" href="{% url 'car:car_del' car.id %}">#}
-{#                      查询#}
-{#                  </a>#}
+                  <button style="cursor: default" type="button" class="layui-btn layui-btn-normal layui-btn-sm"><a style="color:white;font-size: 15px;" href="{% url 'lock:llock' car.0 %}">锁定</a></button>
+                  <button style="cursor: default" type="button" class="layui-btn layui-btn-normal layui-btn-sm"><a style="color:white;font-size: 15px;" href="{% url 'lock:unlock' car.0 %}">解锁</a></button>
+                  <button type="button" class="layui-btn layui-btn-normal layui-btn-sm"><a style="color:white;font-size: 15px;" href="{% url 'lock:check_status' car.0 %}">查询车辆状态</a></button>
                 </td>
               </tr>
             {% endfor %}
@@ -71,51 +63,21 @@
 
     </div>
     <script>
-      layui.use('laydate', function(){
-        var laydate = layui.laydate;
-        
-        //执行一个laydate实例
-        laydate.render({
-          elem: '#start' //指定元素
+        function llock(VIN) {
+            $.ajax({
+            url: '/lock/llock?VIN=%s' % VIN,
+            dataType: 'json',
+            type: 'GET',
+            timeout: 2000,
+            success: function (e) {
+                alert('操作成功')
+            },
+            error: function () {
+                alert("获取失败！");
+            }
+
         });
-
-        //执行一个laydate实例
-        laydate.render({
-          elem: '#end' //指定元素
-        });
-      });
-
-       /*用户-停用*/
-      function member_stop(obj,id){
-          layer.confirm('确认要停用吗？',function(index){
-
-              if($(obj).attr('title')=='启用'){
-
-                //发异步把用户状态进行更改
-                $(obj).attr('title','停用')
-                $(obj).find('i').html('&#xe62f;');
-
-                $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
-                layer.msg('已停用!',{icon: 5,time:1000});
-
-              }else{
-                $(obj).attr('title','启用')
-                $(obj).find('i').html('&#xe601;');
-
-                $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
-                layer.msg('已启用!',{icon: 5,time:1000});
-              }
-              
-          });
-      }
-
-      /*用户-删除*/
-      function member_del(obj){
-          layer.confirm('确认要删除吗？',function(){
-              $(obj).parents("tr").remove();
-              document.getElementById("car_del").click();
-          });
-      }
+        }
     </script>
   </body>
 

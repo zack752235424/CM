@@ -1,6 +1,6 @@
 import time
 import xlwt
-from django.http import HttpResponse, HttpResponseRedirect, FileResponse
+from django.http import HttpResponse, HttpResponseRedirect, FileResponse, JsonResponse
 from django.shortcuts import render
 
 # Create your views here.
@@ -13,7 +13,7 @@ from car.models import Car, CaseFile
 
 def manage(request):
     car_list = Car.objects.all()
-    content = {'car_list': car_list, 'info': '请输入位VIN码或车牌号', 'len': len(car_list)}
+    content = {'car_list': car_list, 'info': '请输入位VIN码或车牌号'}
     return render(request, 'car_list.html', content)
 
 
@@ -67,15 +67,17 @@ def car_edit(request, id):
         return HttpResponse('<div style="color: #0dc316; text-align: center; margin-top: 100px; font-size: 50px">添加成功！!!</div>')
 
 
-def car_del(request, id):
+def car_del(request):
     """
     删除车辆信息
     :param request:
     :param id:
     :return:
     """
-    Car.objects.filter(id=id).delete()
-    return HttpResponseRedirect(reverse('car:manage'))
+    id = request.GET.get('id')
+    Car.objects.get(pk=id).delete()
+    result = {'opt': '操作成功'}
+    return JsonResponse(result)
 
 
 def car_search(request):
@@ -89,17 +91,17 @@ def car_search(request):
         car_list = Car.objects.filter(VIN=search).all()
         if not car_list:
             info = '无此车辆信息,请重新输入'
-            return render(request, 'car_list.html', {'info': info, 'len': 0})
+            return render(request, 'car_list.html', {'info': info})
         info = '查询成功'
-        content = {'car_list': car_list, 'info': info, 'len': len(car_list)}
+        content = {'car_list': car_list, 'info': info}
         return render(request, 'car_list.html', content)
 
     car_list = Car.objects.filter(car_num=search).all()
     if not car_list:
         info = '无此车辆信息,请重新输入'
-        return render(request, 'car_list.html', {'info': info, 'len': 0})
+        return render(request, 'car_list.html', {'info': info})
     info = '查询成功'
-    content = {'car_list': car_list, 'info': info, 'len': len(car_list)}
+    content = {'car_list': car_list, 'info': info}
     return render(request, 'car_list.html', content)
 
 

@@ -12,7 +12,6 @@
     <script src="/static/js/jquery-1.11.3.min.js"></script>
     <script type="text/javascript" src="/static/js/layui.js" charset="utf-8"></script>
     <script type="text/javascript" src="/static/js/xadmin.js"></script>
-
   </head>
   
   <body class="layui-anim layui-anim-up">
@@ -26,7 +25,7 @@
       <xblock>
         <button class="layui-btn" onclick="x_admin_show('添加车辆','{% url 'car:car_add' %}',600,400)"><i class="layui-icon"></i>添加</button>
         <button class="layui-btn" onclick="x_admin_show('导入','{% url 'car:car_upload' %}',600,400)"><i class="layui-icon"></i>导入</button>
-        <span class="x-right" style="line-height:40px">共有数据：{{ len }} 条</span>
+        <span class="x-right" style="line-height:40px">共有数据：{{ car_list.count }} 条</span>
       </xblock>
 
       <table class="layui-table">
@@ -61,10 +60,9 @@
                   <a title="修改" class="layui-btn layui-btn-sm layui-btn-normal"  onclick="x_admin_show('修改','{% url 'car:car_edit' car.id %}',600,400)" href="javascript:;">
                     编辑
                   </a>
-                  <a title="删除" class="layui-btn layui-btn-sm layui-btn-danger" onclick="member_del(this)" href="javascript:;">
+                  <a title="删除" class="layui-btn layui-btn-sm layui-btn-danger" onclick="member_del(this,{{ car.id }})" href="javascript:;">
                     删除
                   </a>
-                  <a id="car_del" href="{% url 'car:car_del' car.id %}"></a>
                 </td>
               </tr>
             {% endfor %}
@@ -72,16 +70,16 @@
         </tbody>
       </table>
 {#        分页#}
-{#      <div class="page">#}
-{#        <div>#}
-{#          <a class="prev" href="">&lt;&lt;</a>#}
-{#          <a class="num" href="">1</a>#}
-{#          <span class="current">2</span>#}
-{#          <a class="num" href="">3</a>#}
-{#          <a class="num" href="">489</a>#}
-{#          <a class="next" href="">&gt;&gt;</a>#}
-{#        </div>#}
-{#      </div>#}
+      <div class="page">
+        <div>
+          <a class="prev" href="">&lt;&lt;</a>
+          <a class="num" href="">1</a>
+          <span class="current">2</span>
+          <a class="num" href="">3</a>
+          <a class="num" href="">489</a>
+          <a class="next" href="">&gt;&gt;</a>
+        </div>
+      </div>
 
     </div>
     <script>
@@ -99,35 +97,23 @@
         });
       });
 
-       /*用户-停用*/
-      function member_stop(obj,id){
-          layer.confirm('确认要停用吗？',function(index){
-
-              if($(obj).attr('title')=='启用'){
-
-                //发异步把用户状态进行更改
-                $(obj).attr('title','停用')
-                $(obj).find('i').html('&#xe62f;');
-
-                $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
-                layer.msg('已停用!',{icon: 5,time:1000});
-
-              }else{
-                $(obj).attr('title','启用')
-                $(obj).find('i').html('&#xe601;');
-
-                $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
-                layer.msg('已启用!',{icon: 5,time:1000});
-              }
-              
-          });
-      }
-
       /*用户-删除*/
-      function member_del(obj){
+      function member_del(obj,id){
           layer.confirm('确认要删除吗？',function(){
-              $(obj).parents("tr").remove();
-              document.getElementById("car_del").click();
+              layer.closeAll();
+              $.ajax({
+                    url: '/car/car_del?id=' + id,
+                    dataType: 'json',
+                    type: 'GET',
+                    timeout: 2000,
+                    success: function (e) {
+                        $(obj).parents("tr").remove();
+                        alert('删除成功')
+                    },
+                    error: function () {
+                        alert("删除失败！");
+                    }
+                });
           });
       }
     </script>

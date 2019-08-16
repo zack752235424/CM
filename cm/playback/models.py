@@ -14,3 +14,7 @@ class Back(models.Model):
 
     class Meta:
         db_table = 'back'
+        index_together = [
+            'VIN',
+            'create_time'
+        ]

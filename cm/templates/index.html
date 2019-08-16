@@ -52,7 +52,7 @@
 		    <div class="menu">
 		        <ul>
 		        	<li>
-		                <a class="menuFA" href="javascript:void(0)" onclick="menuCAClick('{% url 'user:manage' %}',this)"><i class="iconfont icon-huojian left"></i>用户管理</a>
+		                <a class="menuFA" href="javascript:void(0)" {% ifequal rolename '超级管理员' %}onclick="menuCAClick('{% url 'user:manage' %}',this)"{% endifequal %}><i class="iconfont icon-huojian left"></i>用户管理</a>
 		           	</li>
                     <li>
 		                <a class="menuFA" href="javascript:void(0)" onclick="menuCAClick('{% url 'car:manage' %}',this)"><i class="iconfont icon-huojian left"></i>车辆管理</a>

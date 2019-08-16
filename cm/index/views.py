@@ -9,11 +9,12 @@ from user.models import User
 
 
 def index(request):
-    rolename = User.objects.get(pk=1).roles.first().rolename
+    rolename = User.objects.get(pk=request.session['user_id']).roles.first().rolename
     return render(request, 'index.html', {'rolename': rolename})
 
 
 def map(request):
+    a = 1
     return render(request, 'baidu_map.html')
 
 

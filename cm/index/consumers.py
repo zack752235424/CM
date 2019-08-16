@@ -39,12 +39,12 @@ class ChatConsumer(WebsocketConsumer):
             for item in car_offline:
                 cars = r.geopos('car_offline', item.decode('utf-8'))
                 messages['car_offline'].append([cars[0][0], cars[0][1], item.decode('utf-8')])
-        messages = json.dumps(messages)
         car_warning = r.zrange('car_warning', 0, -1)
         if car_warning:
-            for item in car_offline:
-                cars = r.geopos('car_carning', item.decode('utf-8'))
+            for item in car_warning:
+                cars = r.geopos('car_warning', item.decode('utf-8'))
                 messages['car_warning'].append([cars[0][0], cars[0][1], item.decode('utf-8')])
+        messages = json.dumps(messages)
         self.send(messages)
         if self.is_on:
             Timer(10, self.conti).start()
