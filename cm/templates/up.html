@@ -103,7 +103,7 @@
             elem: '#demo'
             ,height: 500
             ,url: '{% url 'updt:get_users' %}' //数据接口
-            ,page: false //开启分页
+            ,page: true //开启分页
             ,cols: [[ //表头
               {field: 'id', title: 'ID', sort: true, fixed: 'left', align:'center'}
               ,{field: 'VIN', title: 'VIN', align:'center'}
@@ -113,6 +113,7 @@
               ,{field: 'version_now', title: '当前版本号',sort: true, align:'center'}
               ,{field: 'version', title: '升级版本',sort: true, align:'center'}
               ,{field: 'status', title: '状态',sort: true, align:'center'}
+              ,{field: 'status_code', title: '状态码',sort: true, align:'center'}
             ]]
           });
         });

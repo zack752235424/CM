@@ -11,6 +11,8 @@ class Back(models.Model):
     longitude = models.CharField(max_length=32, null=False, verbose_name='经度')
     latitude = models.CharField(max_length=32, null=False, verbose_name='纬度')
     create_time = models.DateTimeField(null=False, verbose_name='添加数据时间')
+    spare_1 = models.CharField(max_length=128, null=True, verbose_name='备用1')
+    spare_2 = models.CharField(max_length=128, null=True, verbose_name='备用2')
 
     class Meta:
         db_table = 'back'

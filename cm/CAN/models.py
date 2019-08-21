@@ -21,6 +21,8 @@ class Can(models.Model):
     data = models.CharField(max_length=1024, null=False, verbose_name='报文数据')
     type = models.IntegerField(default=0, null=False, verbose_name='数据类型')
     car = models.ForeignKey(to="car.Car", on_delete=models.CASCADE, to_field="id", verbose_name='对应车辆')
+    spare_1 = models.CharField(max_length=128, null=True, verbose_name='备用1')
+    spare_2 = models.CharField(max_length=128, null=True, verbose_name='备用2')
 
     class Meta:
         db_table = 'can'

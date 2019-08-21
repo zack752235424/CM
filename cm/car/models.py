@@ -23,6 +23,10 @@ class Car(models.Model):
     ftp = models.CharField(max_length=32, null=True, verbose_name='用户名')
     pwd = models.CharField(max_length=32, null=True, verbose_name='密码')
     create_time = models.DateTimeField(auto_now=True, null=True, verbose_name='添加数据时间')
+    status_code = models.IntegerField(null=True, verbose_name='状态码')
+    spare_1 = models.CharField(max_length=128, null=True, verbose_name='备用1')
+    spare_2 = models.CharField(max_length=128, null=True, verbose_name='备用2')
+
 
     class Meta:
         db_table = 'car'

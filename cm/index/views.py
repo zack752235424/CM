@@ -14,7 +14,6 @@ def index(request):
 
 
 def map(request):
-    a = 1
     return render(request, 'baidu_map.html')
 
 

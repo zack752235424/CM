@@ -51,6 +51,9 @@
 		    </div>
 		    <div class="menu">
 		        <ul>
+                    <li>
+		                <a class="menuFA" href="javascript:void(0)" onclick="menuCAClick('{% url 'index:map' %}',this)"><i class="iconfont icon-yunying left"></i>首页</a>
+		           	</li>
 		        	<li>
 		                <a class="menuFA" href="javascript:void(0)" {% ifequal rolename '超级管理员' %}onclick="menuCAClick('{% url 'user:manage' %}',this)"{% endifequal %}><i class="iconfont icon-huojian left"></i>用户管理</a>
 		           	</li>
@@ -62,6 +65,9 @@
 		           	</li>
                     <li>
 		                <a class="menuFA" href="javascript:void(0)" onclick="menuCAClick('{% url 'lock:lock' %}',this)"><i class="iconfont icon-liuliangyunpingtaitubiao03 left"></i>车辆锁车</a>
+		           	</li>
+                    <li>
+		                <a class="menuFA" href="javascript:void(0)" onclick="menuCAClick('{% url 'CAN:show' %}',this)"><i class="iconfont icon-icon left"></i>报文查询</a>
 		           	</li>
 {#		        	<li>#}
 {#		                <a class="menuFA" href="javascript:void(0)"><i class="iconfont icon-liuliangyunpingtaitubiao03 left"></i>分管管理<i class="iconfont icon-dajiantouyou right"></i></a>#}

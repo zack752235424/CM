@@ -2,6 +2,8 @@ import socket
 
 import time
 
+import pymysql
+
 
 def main():
         class Converter(object):

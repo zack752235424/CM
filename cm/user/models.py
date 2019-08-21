@@ -12,6 +12,8 @@ class User(models.Model):
     is_delete = models.BooleanField(default=0, null=False, verbose_name='是否删除')
     create_time = models.DateTimeField(auto_now_add=True, verbose_name='自动创建当前保存的时间')
     roles = models.ManyToManyField(to="Role", verbose_name='角色')
+    spare_1 = models.CharField(max_length=128, null=True, verbose_name='备用1')
+    spare_2 = models.CharField(max_length=128, null=True, verbose_name='备用2')
 
     class Meta:
         db_table = 'user'

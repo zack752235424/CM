@@ -56,7 +56,6 @@ def main():
             return '0' + result
         return result
 
-
     class Convertertime():
         """
         时间转换
@@ -136,9 +135,9 @@ def main():
                         print('tcp连接中断')
                         try:
                             messages['offline'].append(Converter().to_ascii(last_message[8:42]))
-                            break
                         except:
-                            pass
+                            break
+                        break
                     if len(message) < 50:
                         print('接收一条信息不完整')
                         continue
@@ -495,7 +494,6 @@ def main():
                             message = ''
                             break
                         if message[4:6] == '07':
-                            print('心跳')
                             len_data = int(message[44:48], 16)
                             info = message[:48 + len_data * 2 + 2]
                             message = message.replace(info, '', 1)
@@ -574,7 +572,6 @@ def main():
                             data = info[:6] + '01' + info[8:42] + '010006' + Convertertime().to_hex_time()
                             my_bcc = BCC_all(data)
                             self.cclient.send(str(Converter().to_ascii(data + my_bcc)).encode('raw_unicode_escape'))
-
                             continue
                         if message[4:6] == '80':
                             len_data = int(message[44:48], 16)
@@ -612,7 +609,7 @@ def main():
                                     print('车辆已锁车')
                                     VIN = Converter().to_ascii(info[8:42])
                                     r.zadd('car_status', {VIN: 1})
-                            else:
+                            elif info[62:64] == '07':
                                 print('远程升级命令')
                                 db = pymysql.connect(host='localhost', port=3306, user='root', passwd='ruige254475', db='cm',
                                                      charset='utf8')
@@ -627,21 +624,34 @@ def main():
                                 ter_time = Convertertime().to_time(info[48:60])
                                 type = 80
                                 messages['CAN'].append((car_ID, create_time, ter_time, info, type))
-                                ftp = car[9]
-                                pwd = car[10]
-                                ip = str(car[8]).split('/')[0].split('.')
+                                ftp = car[10]
+                                pwd = car[11]
+                                ip = str(car[9]).split('/')[0].split('.')
                                 port = '21'
                                 ID = 'CPS'
                                 ter = '123456'
                                 version = car[6]
-                                url = car[8]
+                                url = car[9]
+                                if info[46:48] == '14':
+                                    db = pymysql.connect(host='localhost', port=3306, user='root', passwd='ruige254475',
+                                                         db='cm',
+                                                         charset='utf8')
+                                    cursor = db.cursor()
+                                    query = "update car set status_code = %d where id = %d;" % (int(info[-4:-2], 16), car[0])
+                                    print(query)
+                                    cursor.execute(query)
+                                    db.commit()
+                                    cursor.close()
+                                    db.close()
                                 if version:
                                     ip_hex = '0000'
                                     for item in ip:
                                         ip_hex += hex(int(item))[2:]
                                     if int(version) > int(info[76:86]):
-                                        data = Convertertime().to_hex_time() + '01' + Converter().to_hex('mas;' + str(ftp) + ';' + str(pwd) + ';') + ip_hex + '3B' + '00153B' + Converter().to_hex(';' + str(ID) + ';' + str(ter) + ';' + str(version) + ';' + 'ftp://' + str(url) + ';') + '0000'
+                                        data = Convertertime().to_hex_time() + '01' + Converter().to_hex('mas;' + str(ftp) + ';' + str(pwd) + ';') + ip_hex + '3B' + '00153B' + Converter().to_hex(str(ID) + ';' + str(ter) + ';' + str(version) + ';' + 'ftp://' + str(url) + ';') + '0000'
+                                        print(data, 1)
                                         len_data = hex(int(len(data)))[2:]
+                                        print(len_data, 2)
                                         if len(len_data) == 1:
                                             datas = info[:4] + '82fe' + info[8:42] + '01' + '000' + str(len_data) + data
                                         if len(len_data) == 2:
@@ -653,6 +663,7 @@ def main():
                                         is_bcc = BCC_all(datas)
                                         self.cclient.send(str(Converter().to_ascii(datas + is_bcc)).encode('raw_unicode_escape'))
                                         print('开始升级')
+                                        print(datas + is_bcc, 3)
                                         db = pymysql.connect(host='localhost', port=3306, user='root', passwd='ruige254475',
                                                              db='cm',
                                                              charset='utf8')
@@ -738,6 +749,7 @@ def main():
                                     is_bcc = BCC_all(datas)
                                     self.cclient.send(str(Converter().to_ascii(datas + is_bcc)).encode('raw_unicode_escape'))
                                     continue
+                            continue
                         if message[4:6] == '82':
                             print('解锁车接收成功')
                             len_data = int(message[44:48], 16)
