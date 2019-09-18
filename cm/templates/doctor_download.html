@@ -20,11 +20,11 @@
       <div class="layui-row">
           <form action="/doctor/doctor_download/" method="post">
               {% csrf_token %}
-              <input id="VIN" name="VIN" style="width: 200px;float: left;margin-left: 10px" type="text" placeholder="请输入完整VIN" class="layui-input" required>
+              <input value="{{ VIN }}" id="VIN" name="VIN" style="width: 200px;float: left;margin-left: 10px" type="text" placeholder="请输入完整VIN" class="layui-input" required>
               <span></span>
-              <input class="layui-input" id="stime" placeholder="起始时间" style="width: 14.5%;float: left;margin-left: 10px" class="Wdate" type="text" onClick="WdatePicker({el:this,dateFmt:'yyyy-MM-dd HH:mm:ss'})" name="stime" autocomplete="off" required>
+              <input value="{{ stime }}" class="layui-input" id="stime" placeholder="起始时间" style="width: 14.5%;float: left;margin-left: 10px" class="Wdate" type="text" onClick="WdatePicker({el:this,dateFmt:'yyyy-MM-dd HH:mm:ss'})" name="stime" autocomplete="off" required>
               <span style="font-size:15px; float: left;margin-left: 5px;margin-top: 5px">到</span>
-              <input class="layui-input" id="etime" placeholder="结束时间" style="width: 14.5%; float: left;margin-left: 5px" class="Wdate" type="text" onClick="WdatePicker({el:this,dateFmt:'yyyy-MM-dd HH:mm:ss'})" name="etime" autocomplete="off" required>
+              <input value="{{ etime }}" class="layui-input" id="etime" placeholder="结束时间" style="width: 14.5%; float: left;margin-left: 5px" class="Wdate" type="text" onClick="WdatePicker({el:this,dateFmt:'yyyy-MM-dd HH:mm:ss'})" name="etime" autocomplete="off" required>
               <button type="submit" style="float: left;margin-left: 5px" class="layui-btn" >数据下载</button>
           </form>
       </div>

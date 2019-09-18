@@ -57,20 +57,20 @@ function menuCAClick(url,_this){
 	
 	//处理frameMain title名称变化
 	if($(_this).find("i").attr("class") == "iconfont icon-yonghu1"){
-		$("#frameMainTitle span").html('<i class="iconfont icon-xianshiqi"></i>个人资料');
+		$("#frameMainTitle span").html('<i class="iconfont icon-diannao"></i>个人资料');
 		return;
 	}
 	if($(_this).text() == "修改密码"){
-		$("#frameMainTitle span").html('<i class="iconfont icon-xianshiqi"></i>'+$(_this).text());
+		$("#frameMainTitle span").html('<i class="iconfont icon-diannao"></i>'+$(_this).text());
 		return;
 	}
 	if($(_this).attr("class") == "menuFA"){
-		$("#frameMainTitle span").html('<i class="iconfont icon-xianshiqi"></i>'+$(_this).text());
+		$("#frameMainTitle span").html('<i class="iconfont icon-diannao"></i>'+$(_this).text());
 	}else{
 		//显示父菜单
 //		$("#frameMainTitle span").html('<i class="iconfont icon-xianshiqi"></i>'+$(_this).parent().parent().siblings(".menuFA").text());
 		//显示子菜单
-		$("#frameMainTitle span").html('<i class="iconfont icon-xianshiqi"></i>'+$(_this).text());
+		$("#frameMainTitle span").html('<i class="iconfont icon-diannao"></i>'+$(_this).text());
 	}
 	
 	//处理菜单样式变化

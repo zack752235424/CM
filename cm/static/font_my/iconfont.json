@@ -1,0 +1,114 @@
+{
+  "id": "",
+  "name": "",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "1165",
+      "name": "管理员",
+      "font_class": "guanliyuan",
+      "unicode": "f00ec",
+      "unicode_decimal": 983276
+    },
+    {
+      "icon_id": "1049941",
+      "name": "下载",
+      "font_class": "xiazai",
+      "unicode": "e60b",
+      "unicode_decimal": 58891
+    },
+    {
+      "icon_id": "1056544",
+      "name": "电脑",
+      "font_class": "diannao",
+      "unicode": "e69b",
+      "unicode_decimal": 59035
+    },
+    {
+      "icon_id": "1244099",
+      "name": "首页-选中",
+      "font_class": "shouye-xuanzhong",
+      "unicode": "e637",
+      "unicode_decimal": 58935
+    },
+    {
+      "icon_id": "1490320",
+      "name": "围栏",
+      "font_class": "weilan-",
+      "unicode": "e688",
+      "unicode_decimal": 59016
+    },
+    {
+      "icon_id": "2166693",
+      "name": "监控",
+      "font_class": "jiankong",
+      "unicode": "e6a7",
+      "unicode_decimal": 59047
+    },
+    {
+      "icon_id": "3092305",
+      "name": "升级中心",
+      "font_class": "shengjizhongxin",
+      "unicode": "e78a",
+      "unicode_decimal": 59274
+    },
+    {
+      "icon_id": "3877057",
+      "name": "控制",
+      "font_class": "kongzhi",
+      "unicode": "e61a",
+      "unicode_decimal": 58906
+    },
+    {
+      "icon_id": "4397458",
+      "name": "车辆管理",
+      "font_class": "cheliangguanli",
+      "unicode": "e628",
+      "unicode_decimal": 58920
+    },
+    {
+      "icon_id": "4511910",
+      "name": "用户管理",
+      "font_class": "yonghuguanli",
+      "unicode": "e642",
+      "unicode_decimal": 58946
+    },
+    {
+      "icon_id": "4719754",
+      "name": "设备管理",
+      "font_class": "shebeiguanli",
+      "unicode": "e6b0",
+      "unicode_decimal": 59056
+    },
+    {
+      "icon_id": "5114023",
+      "name": "监控",
+      "font_class": "jiankong--",
+      "unicode": "e60e",
+      "unicode_decimal": 58894
+    },
+    {
+      "icon_id": "6003013",
+      "name": "注销",
+      "font_class": "zhuxiao",
+      "unicode": "e609",
+      "unicode_decimal": 58889
+    },
+    {
+      "icon_id": "6547454",
+      "name": "数据查询",
+      "font_class": "shujuchaxun",
+      "unicode": "e6d7",
+      "unicode_decimal": 59095
+    },
+    {
+      "icon_id": "10606077",
+      "name": "轨迹回放",
+      "font_class": "guijihuifang",
+      "unicode": "e61e",
+      "unicode_decimal": 58910
+    }
+  ]
+}

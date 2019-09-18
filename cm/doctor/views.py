@@ -49,8 +49,12 @@ def doctor_download(request):
         etime = request.POST.get('etime')
         car = Car.objects.filter(VIN=VIN).first()
         if not car:
-            return render(request, 'doctor_download.html', {'error': 'VIN输入错误,请重新输入!'})
+            result = {'error': 'VIN输入错误,请重新输入!', 'VIN': VIN, 'stime': stime, 'etime': etime}
+            return render(request, 'doctor_download.html', result)
         cans = car.can_set.all().filter(Q(type=2 or 3) & Q(create_time__range=(stime, etime)))
+        if not cans:
+            result = {'error': '此时间段无数据,请重新输入!', 'VIN': VIN, 'stime': stime, 'etime': etime}
+            return render(request, 'doctor_download.html', result)
         # 创建一个workbook 设置编码
         workbook = xlwt.Workbook(encoding='utf-8')
         # 创建一个worksheet
