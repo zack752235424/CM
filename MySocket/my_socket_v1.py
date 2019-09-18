@@ -198,14 +198,39 @@ def main():
                             db.close()
                             ter_time = Convertertime().to_time(info[48:60])
                             if not car:
-                                type = 1003
-                                messages['CAN'].append((1003, create_time, ter_time, info, type))
-                                data = info[:6] + '02' + info[8:42] + '010006' + Convertertime().to_hex_time()
-                                my_bcc = BCC_all(data)
-                                self.cclient.send(str(Converter().to_ascii(data + my_bcc)).encode('raw_unicode_escape'))
-                                print('车辆登录失败')
-                                self.is_break = False
-                                break
+                                db = pymysql.connect(host='localhost', port=3306, user='root', passwd='ruige254475',
+                                                     db='cm',
+                                                     charset='utf8')
+                                cursor = db.cursor()
+                                ICCID = Converter().to_ascii(info[64:104])
+                                sql = 'select * from machine where ICCID = "%s";' % ICCID
+                                cursor.execute(sql)
+                                car_ICCID = cursor.fetchone()
+                                cursor.close()
+                                db.close()
+                                if not car_ICCID:
+                                    type = 1003
+                                    messages['CAN'].append((1003, create_time, ter_time, info, type))
+                                    data = info[:6] + '02' + info[8:42] + '010006' + Convertertime().to_hex_time()
+                                    my_bcc = BCC_all(data)
+                                    self.cclient.send(str(Converter().to_ascii(data + my_bcc)).encode('raw_unicode_escape'))
+                                    print('车辆登录失败')
+                                    self.is_break = False
+                                    break
+                                else:
+                                    db = pymysql.connect(host='localhost', port=3306, user='root', passwd='ruige254475',
+                                                         db='cm',
+                                                         charset='utf8')
+                                    cursor = db.cursor()
+                                    VIN = Converter().to_ascii(info[8:42])
+                                    query = "insert into car(VIN,dept) VALUES ('%s', '%s')" % (VIN, car_ICCID[5])
+                                    cursor.execute(query)
+                                    db.commit()
+                                    sql = 'select * from car where VIN = "%s";' % VIN
+                                    cursor.execute(sql)
+                                    car = cursor.fetchone()
+                                    cursor.close()
+                                    db.close()
                             car_ID = car[0]
                             type = 1
                             messages['CAN'].append((car_ID, create_time, ter_time, info, type))
@@ -213,6 +238,16 @@ def main():
                             my_bcc = BCC_all(data)
                             self.cclient.send(str(Converter().to_ascii(data + my_bcc)).encode('raw_unicode_escape'))
                             self.is_login = True
+                            db = pymysql.connect(host='localhost', port=3306, user='root', passwd='ruige254475',
+                                                 db='cm',
+                                                 charset='utf8')
+                            cursor = db.cursor()
+                            query = "update car set ICCID = '%s' where id = %d;" % (Converter().to_ascii(info[64:104]), car[0])
+                            cursor.execute(query)
+                            db.commit()
+                            cursor.close()
+                            db.close()
+                            r.zadd('car_login', {VIN: 0})
                             continue
                         if message[4:6] == '02':
                             print('实时信息上报')
@@ -325,6 +360,9 @@ def main():
                                     if data[0:2] == '32':
                                         print('自定义32数据')
                                         data = data.replace(data[0:226], '', 1)
+                                    if data[0:2] == '33':
+                                        print('医疗设备数据')
+                                        data = data.replace(data[0:130], '', 1)
                                 continue
                             except:
                                 print('上报信息错误')
@@ -443,6 +481,9 @@ def main():
                                     if data[0:2] == '32':
                                         print('自定义32数据')
                                         data = data.replace(data[0:226], '', 1)
+                                    if data[0:2] == '33':
+                                        print('医疗设备数据')
+                                        data = data.replace(data[0:130], '', 1)
                                 continue
                             except:
                                 print('上报信息错误')
@@ -525,22 +566,23 @@ def main():
                             if self.is_login:
                                 VIN = Converter().to_ascii(info[8:42])
                                 num = r.zscore('car', VIN)
-                                if int(num) == 1:
-                                    print('锁车命令发出')
-                                    data = '232382fe' + info[8:42] + '010008' + Convertertime().to_hex_time() + '9091'
-                                    my_bcc = BCC_all(data)
-                                    self.cclient.send(str(Converter().to_ascii(data + my_bcc)).encode('raw_unicode_escape'))
-                                if int(num) == 2:
-                                    print('解锁命令发出')
-                                    data = '232382fe' + info[8:42] + '010008' + Convertertime().to_hex_time() + '9090'
-                                    my_bcc = BCC_all(data)
-                                    self.cclient.send(str(Converter().to_ascii(data + my_bcc)).encode('raw_unicode_escape'))
-                                score_c = r.zscore('car_status', VIN)
-                                if int(score_c) == 3:
-                                    print('车辆状态查询')
-                                    data = '232380fe' + info[8:42] + '010008' + Convertertime().to_hex_time() + '0190'
-                                    my_bcc = BCC_all(data)
-                                    self.cclient.send(str(Converter().to_ascii(data + my_bcc)).encode('raw_unicode_escape'))
+                                if num:
+                                    if int(num) == 1:
+                                        print('锁车命令发出')
+                                        data = '232382fe' + info[8:42] + '010008' + Convertertime().to_hex_time() + '9091'
+                                        my_bcc = BCC_all(data)
+                                        self.cclient.send(str(Converter().to_ascii(data + my_bcc)).encode('raw_unicode_escape'))
+                                    if int(num) == 2:
+                                        print('解锁命令发出')
+                                        data = '232382fe' + info[8:42] + '010008' + Convertertime().to_hex_time() + '9090'
+                                        my_bcc = BCC_all(data)
+                                        self.cclient.send(str(Converter().to_ascii(data + my_bcc)).encode('raw_unicode_escape'))
+                                    score_c = r.zscore('car_status', VIN)
+                                    if int(score_c) == 3:
+                                        print('车辆状态查询')
+                                        data = '232380fe' + info[8:42] + '010008' + Convertertime().to_hex_time() + '0190'
+                                        my_bcc = BCC_all(data)
+                                        self.cclient.send(str(Converter().to_ascii(data + my_bcc)).encode('raw_unicode_escape'))
                             continue
                         if message[4:6] == '08':
                             print('校时')
@@ -690,6 +732,21 @@ def main():
                                         db.commit()
                                         cursor.close()
                                         db.close()
+                                        data = Convertertime().to_hex_time() + '01' + Converter().to_hex(
+                                            ';' + str(ftp) + ';' + str(pwd) + ';' + str(ip) + ';' + str(
+                                                port) + ';' + str(ID) + ';' + str(ter) + ';' + str(version) + ';' + str(
+                                                url) + ';') + '0000'
+                                        len_data = hex(int(len(data)))[2:]
+                                        if len(len_data) == 1:
+                                            datas = info[:4] + '82fe' + info[8:42] + '01' + '000' + str(len_data) + data
+                                        if len(len_data) == 2:
+                                            datas = info[:4] + '82fe' + info[8:42] + '01' + '00' + str(len_data) + data
+                                        if len(len_data) == 3:
+                                            datas = info[:4] + '82fe' + info[8:42] + '01' + '0' + str(len_data) + data
+                                        if len(len_data) == 4:
+                                            datas = info[:4] + '82fe' + info[8:42] + '01' + str(len_data) + data
+                                        is_bcc = BCC_all(datas)
+                                        self.cclient.send(str(Converter().to_ascii(datas + is_bcc)).encode('raw_unicode_escape'))
                                         continue
                                     else:
                                         print('当前版本大于需要升级版本')
@@ -793,6 +850,7 @@ def main():
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.bind(('0.0.0.0', 2000))
+    # sock.bind(('127.0.0.1', 2000))
     sock.listen(5000)
 
     while True:
@@ -824,6 +882,7 @@ def set_time():
             for item in messages['offline']:
                 location = r.geopos('car_online', item)
                 r.zrem("car_online", item)
+                r.zrem("car_login", item)
                 r.geoadd('car_offline', location[0][0], location[0][1], item)
             messages['offline'] = []
 

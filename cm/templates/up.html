@@ -56,7 +56,7 @@
             top: 140px;
             font-size: 20px;
         }
-        .layui-btn{
+        .layui-btn-normal{
             position: absolute;
             top: 185px;
             margin-top: 20px;
@@ -87,36 +87,69 @@
             <div id="pwd" >密码：
                 <input id="first_f" type="password" value="00Tbx" name="pwd">
             </div>
-            <button type="submit" class="layui-btn" >升级</button>
+            <button type="submit" class="layui-btn layui-btn-normal">升级</button>
         </form>
     </div>
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
         <legend style="color: gray">车辆升级</legend>
     </fieldset>
-    <table id="demo" lay-filter="test"></table>
-    <script>
-        layui.use('table', function(){
-          var table = layui.table;
+    <div class="demoTable">
+      <div class="layui-inline">
+        <input class="layui-input" name="id" id="demoReload" autocomplete="off">
+      </div>
+      <button class="layui-btn" data-type="reload">搜索</button>
+    </div>
 
-          //第一个实例
-          table.render({
-            elem: '#demo'
-            ,height: 500
-            ,url: '{% url 'updt:get_users' %}' //数据接口
-            ,page: true //开启分页
-            ,cols: [[ //表头
-              {field: 'id', title: 'ID', sort: true, fixed: 'left', align:'center'}
-              ,{field: 'VIN', title: 'VIN', align:'center'}
-              ,{field: 'ICCID', title: 'ICCID', align:'center'}
-              ,{field: 'IP', title: 'IP', align:'center'}
-              ,{field: 'create_time', title: '时间', align:'center'}
-              ,{field: 'version_now', title: '当前版本号',sort: true, align:'center'}
-              ,{field: 'version', title: '升级版本',sort: true, align:'center'}
-              ,{field: 'status', title: '状态',sort: true, align:'center'}
-              ,{field: 'status_code', title: '状态码',sort: true, align:'center'}
-            ]]
-          });
-        });
-    </script>
+<table class="layui-hide" id="LAY_table_user" lay-filter="user"></table>
+
+
+<script>
+layui.use('table', function(){
+  var table = layui.table;
+
+  //方法级渲染
+  table.render({
+    elem: '#LAY_table_user'
+    ,url: '{% url 'updt:get_users' %}' //数据接口
+    ,cols: [[
+      {field: 'id', title: 'ID', sort: true, fixed: 'left', align:'center'}
+      ,{field: 'VIN', title: 'VIN', align:'center'}
+      ,{field: 'ICCID', title: 'ICCID', align:'center'}
+      ,{field: 'IP', title: 'IP', align:'center'}
+      ,{field: 'create_time', title: '时间', align:'center'}
+      ,{field: 'version_now', title: '当前版本号',sort: true, align:'center'}
+      ,{field: 'version', title: '升级版本',sort: true, align:'center'}
+      ,{field: 'status', title: '状态',sort: true, align:'center'}
+      ,{field: 'status_code', title: '状态码',sort: true, align:'center'}
+    ]]
+    ,id: 'testReload'
+    ,page: true
+    ,height: 500
+  });
+
+  var $ = layui.$, active = {
+    reload: function(){
+      var demoReload = $('#demoReload');
+
+      //执行重载
+      table.reload('testReload', {
+        page: {
+          curr: 1 //重新从第 1 页开始
+        }
+        ,where: {
+          key: {
+            id: demoReload.val()
+          }
+        }
+      }, 'data');
+    }
+  };
+
+  $('.demoTable .layui-btn').on('click', function(){
+    var type = $(this).data('type');
+    active[type] ? active[type].call(this) : '';
+  });
+});
+</script>
 </body>
 </html>

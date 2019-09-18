@@ -33,7 +33,7 @@
 	<!-- 仅供所有子页面使用 -->
 	<script src="/static/js/cframe.js"></script>
 	<!-- 公共样式 结束 -->
-	
+
 	<!-- 编辑整体样式 -->
 	<link rel="stylesheet" type="text/css" href="/static/css/frameStyle.css">
 	<!-- 将子模板渲染到中间 -->
@@ -54,20 +54,35 @@
                     <li>
 		                <a class="menuFA" href="javascript:void(0)" onclick="menuCAClick('{% url 'index:map' %}',this)"><i class="iconfont icon-yunying left"></i>首页</a>
 		           	</li>
+                    <li>
+		                <a class="menuFA" href="javascript:void(0)" {% ifequal rolename '超级管理员' %}onclick="menuCAClick('{% url 'machine:index' %}',this)"{% endifequal %}><i class="iconfont icon-huojian left"></i>设备管理</a>
+		           	</li>
 		        	<li>
 		                <a class="menuFA" href="javascript:void(0)" {% ifequal rolename '超级管理员' %}onclick="menuCAClick('{% url 'user:manage' %}',this)"{% endifequal %}><i class="iconfont icon-huojian left"></i>用户管理</a>
 		           	</li>
                     <li>
-		                <a class="menuFA" href="javascript:void(0)" onclick="menuCAClick('{% url 'car:manage' %}',this)"><i class="iconfont icon-huojian left"></i>车辆管理</a>
+		                <a class="menuFA" href="javascript:void(0)" {% ifequal rolename '超级管理员' %}onclick="menuCAClick('{% url 'car:manage' %}',this)"{% endifequal %}><i class="iconfont icon-huojian left"></i>车辆管理</a>
 		           	</li>
                     <li>
-		                <a class="menuFA" href="javascript:void(0)" onclick="menuCAClick('{% url 'playback:back_video' %}',this)"><i class="iconfont icon-liuliangyunpingtaitubiao03 left"></i>轨迹回放</a>
+		                <a class="menuFA" href="javascript:void(0)" {% ifequal rolename '超级管理员' %}onclick="menuCAClick('{% url 'playback:back_video' %}',this)"{% endifequal %}><i class="iconfont icon-liuliangyunpingtaitubiao03 left"></i>轨迹回放</a>
 		           	</li>
                     <li>
-		                <a class="menuFA" href="javascript:void(0)" onclick="menuCAClick('{% url 'lock:lock' %}',this)"><i class="iconfont icon-liuliangyunpingtaitubiao03 left"></i>车辆锁车</a>
+		                <a class="menuFA" href="javascript:void(0)" {% ifequal rolename '超级管理员' %}onclick="menuCAClick('{% url 'lock:lock' %}',this)"{% endifequal %}><i class="iconfont icon-liuliangyunpingtaitubiao03 left"></i>车辆锁车</a>
 		           	</li>
                     <li>
 		                <a class="menuFA" href="javascript:void(0)" onclick="menuCAClick('{% url 'CAN:show' %}',this)"><i class="iconfont icon-icon left"></i>报文查询</a>
+		           	</li>
+                    <li>
+		                <a class="menuFA" href="javascript:void(0)" {% ifequal rolename '超级管理员' %}onclick="menuCAClick('{% url 'car:car_index' %}',this)"{% endifequal %}><i class="iconfont icon-icon left"></i>车辆监控</a>
+		           	</li>
+                    <li>
+		                <a class="menuFA" href="javascript:void(0)" onclick="menuCAClick('{% url 'doctor:doctor' %}',this)"><i class="iconfont icon-icon left"></i>医疗监控</a>
+		           	</li>
+                    <li>
+		                <a class="menuFA" href="javascript:void(0)" {% ifequal rolename '超级管理员' %}onclick="menuCAClick('{% url 'doctor:doctor_download' %}',this)"{% endifequal %}><i class="iconfont icon-shangpin left"></i>医疗报文下载</a>
+		           	</li>
+                    <li>
+		                <a class="menuFA" href="javascript:void(0)" {% ifequal rolename '超级管理员' %}onclick="menuCAClick('{% url 'fence:index' %}',this)"{% endifequal %}><i class="iconfont icon-shangpin left"></i>电子围栏</a>
 		           	</li>
 {#		        	<li>#}
 {#		                <a class="menuFA" href="javascript:void(0)"><i class="iconfont icon-liuliangyunpingtaitubiao03 left"></i>分管管理<i class="iconfont icon-dajiantouyou right"></i></a>#}
@@ -118,13 +133,13 @@
 {#		                </dl>#}
 {#		           	</li>#}
                     <li>
-		                <a class="menuFA" href="javascript:void(0)" onclick="menuCAClick('{% url 'updt:up' %}',this)"><i class="iconfont icon-zhishi left"></i>车辆升级</a>
+		                <a class="menuFA" href="javascript:void(0)" {% ifequal rolename '超级管理员' %}onclick="menuCAClick('{% url 'updt:up' %}',this)"{% endifequal %}><i class="iconfont icon-zhishi left"></i>车辆升级</a>
 		            </li>
 		        </ul>
 		    </div>
 		</div>
 		<!-- 左侧菜单 - 结束 -->
-		
+
 		<div class="main">
 			<!-- 头部栏 - 开始 -->
 			<div class="frameTop">
@@ -138,7 +153,7 @@
 				</div>
 			</div>
 			<!-- 头部栏 - 结束 -->
-			
+
 			<!-- 核心区域 - 开始 -->
 			<div class="frameMain">
 				<div class="title" id="frameMainTitle">

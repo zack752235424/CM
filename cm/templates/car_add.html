@@ -39,10 +39,10 @@
           </div>
           <div class="layui-form-item">
               <label for="L_repass" class="layui-form-label">
-                  <span class="x-red">*</span>ICCID
+                  ICCID
               </label>
               <div class="layui-input-inline">
-                  <input type="text" id="L_repass" name="ICCID" required lay-verify="ICCID"
+                  <input type="text" id="L_repass" name="ICCID"  lay-verify="ICCID"
                   autocomplete="off" class="layui-input">
               </div>
           </div>
@@ -86,14 +86,6 @@
               }
             }
           });
-          form.verify({
-            ICCID: function(value){
-              if(value.length != 20){
-                return '请输入20位ICCID码';
-              }
-            }
-          });
-
         });
     </script>
   </body>

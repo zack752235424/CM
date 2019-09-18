@@ -15,14 +15,14 @@ def lock(request):
     car_lists = r.zrange('car_status', 0, -1)
     for car in cars:
         if car.VIN.encode('utf-8') not in car_list:
-            r.zadd('car', {car.VIN: 0})
+            r.zadd('car', {car.VIN: 10})
     for car in cars:
         if car.VIN.encode('utf-8') not in car_lists:
-            r.zadd('car_status', {car.VIN: 0})
+            r.zadd('car_status', {car.VIN: 10})
     car_lis = []
-    for item in car_list:
-        score_o = int(r.zscore('car', item.decode('utf-8')))
-        score_c = int(r.zscore('car_status', item.decode('utf-8')))
+    for item in cars:
+        score_o = int(r.zscore('car', item.VIN))
+        score_c = int(r.zscore('car_status', item.VIN))
         if score_o == 1:
             status = '锁车中'
         elif score_o == 2:
@@ -39,8 +39,7 @@ def lock(request):
             check = '车辆查询中'
         else:
             check = ''
-
-        car_lis.append((str(item.decode('utf-8')), status, check))
+        car_lis.append((item.VIN, status, check))
     result = {'car_lis': car_lis}
     return render(request, 'lock.html', result)
 

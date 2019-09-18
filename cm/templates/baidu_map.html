@@ -33,7 +33,7 @@
         is_continue = true;
         var lockReconnect = false;  //避免ws重复连接
         var ws = null;          // 判断当前浏览器是否支持WebSocket
-        var wsUrl = 'ws://' + window.location.host + '/ws/chat/';
+        var wsUrl = 'ws://' + window.location.host + '/index/chat/';
         createWebSocket(wsUrl);   //连接ws
         function createWebSocket(url) {
             try{
@@ -70,19 +70,19 @@
             ws.onmessage = function (event) {    //如果获取到消息，心跳检测重置
                 messages = JSON.parse(event.data);
                 baidumap(messages);
-                is_continue = false;
                 heartCheck.reset().start();      //拿到任何消息都说明当前连接是正常的
                 console.log("llws收到消息啦:" +event.data);
-                if(event.data!='pong'){
-                    var obj=eval("("+event.data+")");
-                    layui.use(['layim'], function(layim){
-                        if(obj.type=="onlineStatus"){
-                            layim.setFriendStatus(obj.id, obj.content);
-                        }else if(obj.type=="friend" || obj.type=="group"){
-                            layim.getMessage(obj);
-                        }
-            });
-        }}}
+{#                if(event.data!='pong'){#}
+{#                    var obj=eval("("+event.data+")");#}
+{#                    layui.use(['layim'], function(layim){#}
+{#                        if(obj.type=="onlineStatus"){#}
+{#                            layim.setFriendStatus(obj.id, obj.content);#}
+{#                        }else if(obj.type=="friend" || obj.type=="group"){#}
+{#                            layim.getMessage(obj);#}
+{#                        }#}
+{#            });#}
+{#        }#}
+            }}
 
         // 监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
         window.onbeforeunload = function() {
@@ -209,9 +209,6 @@
 
     //点击出现滚动聚合途中点
     function baidumap(messages) {
-            onmarkers = 0;
-            offmarkers = 0;
-            Warningmarkers = 0;
             function OnlineCar() {
                         onmarkers = [];
                         var pt = null;
@@ -238,7 +235,11 @@
                         onmarkerClusterer = new BMapLib.MarkerClusterer(map, {markers: onmarkers});
                 }
             if (is_continue){
+                onmarkers = 0;
+                Warningmarkers = 0;
+                offmarkers = 0;
                 OnlineCar();
+                is_continue = false;
             }
             function WarningCar() {
                     Warningmarkers = [];
@@ -333,7 +334,7 @@
                         WarningmarkerClusterer.clearMarkers(Warningmarkers);
                         Warningmarkers = 0
                     }
-                    OfflineCar();
+                        OfflineCar();
                 };
                 return div;
             };
@@ -448,58 +449,6 @@
         map.panTo(point_s);
     }
 
-
-
-//
-//        // 监听this事件
-//        map.addEventListener("click", function(){
-//            alert("地图缩放至:" + this.getZoom() + "级");
-//        });
-
-
-
-//        //自定义地图层
-//        var tilelayer = new BMap.TileLayer();// 创建地图层实例
-//        tilelayer.getTilesUrl=function(tileCoord, zoom){ // 设置图块路径
-//            var x = tileCoord.x;
-//            var y = tileCoord.y;
-//            var url = 'tiles/' + zoom + '/tile' + x + '_' + y + '.png';     //根据当前坐标，选取合适的瓦片图
-//            return "car.png";
-//        };
-//        map.addTileLayer(tilelayer);// 将图层添加到地图上
-
-        //本地搜索服务
-{#        var local = new BMap.LocalSearch(map, {#}
-{#            renderOptions:{map: map}#}
-{#        });#}
-{#        local.search("西南交大");#}
-
-
-
-        // 绘制圆形图像
-{#        var styleOptions = {#}
-{#            strokeColor:"red",    //边线颜色。#}
-{#            fillColor:"red",      //填充颜色。当参数为空时，圆形将没有填充效果。#}
-{#            strokeWeight: 3,       //边线的宽度，以像素为单位。#}
-{#            strokeOpacity: 0.8,    //边线透明度，取值范围0 - 1。#}
-{#            fillOpacity: 0.6,      //填充的透明度，取值范围0 - 1。#}
-{#            strokeStyle: 'solid' //边线的样式，solid或dashed。#}
-{#        }#}
-        //实例化鼠标绘制工具
-{#        var drawingManager = function () {#}
-{#            var drawingManager1 = new BMapLib.DrawingManager(map, {#}
-{#            isOpen: false, //是否开启绘制模式#}
-{#            enableDrawingTool: true, //是否显示工具栏#}
-{#            drawingToolOptions: {#}
-{#                anchor: BMAP_ANCHOR_TOP_RIGHT, //位置#}
-{#                offset: new BMap.Size(5, 5), //偏离值#}
-{#            },#}
-{#            circleOptions: styleOptions, //圆的样式#}
-//            polylineOptions: styleOptions, //线的样式
-//            polygonOptions: styleOptions, //多边形的样式
-//            rectangleOptions: styleOptions //矩形的样式
-{#            });#}
-{#        }#}
 
     </script>
 </body>

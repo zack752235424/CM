@@ -24,4 +24,7 @@ urlpatterns = [
     path('CAN/', include(('CAN.urls', 'CAN'), namespace='CAN')),
     path('playback/', include(('playback.urls', 'playback'), namespace='playback')),
     path('lock/', include(('lock.urls', 'lock'), namespace='lock')),
+    path('fence/', include(('fence.urls', 'fence'), namespace='fence')),
+    path('machine/', include(('machine.urls', 'machine'), namespace='machine')),
+    path('doctor/', include(('doctor.urls', 'doctor'), namespace='doctor')),
 ]

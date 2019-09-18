@@ -1,10 +1,10 @@
+import os
 import time
-import xlwt
-from django.http import HttpResponse, HttpResponseRedirect, FileResponse, JsonResponse
+from django.http import HttpResponse, FileResponse, JsonResponse
 from django.shortcuts import render
-
+from dwebsocket.decorators import accept_websocket
+from django_redis import get_redis_connection
 # Create your views here.
-from django.urls import reverse
 
 from car.excle import ExcelImport
 from car.form import FileForm
@@ -96,7 +96,7 @@ def car_search(request):
         content = {'car_list': car_list, 'info': info}
         return render(request, 'car_list.html', content)
 
-    car_list = Car.objects.filter(car_num=search).all()
+    car_list = Car.objects.filter(VIN__contains=search).all()
     if not car_list:
         info = '无此车辆信息,请重新输入'
         return render(request, 'car_list.html', {'info': info})
@@ -134,8 +134,31 @@ def car_download(request):
     :param request:
     :return:
     """
-    file = open('static/excel_models/car_model.xls', 'rb')
+    pwd = os.path.dirname(os.path.dirname(__file__))
+    file = open(pwd + '/static/excel_models/car_model.xls', 'rb')
     response = FileResponse(file)
     response['Content-Type'] = 'application/octet-stream'
     response['Content-Disposition'] = 'attachment;filename="car_model.xls"'
     return response
+
+
+def car_index(request):
+    if request.method == 'GET':
+        return render(request, 'car_monitor.html')
+
+
+@accept_websocket
+def car_monitor(request):
+    if request.is_websocket():
+        VIN = request.websocket.wait()  # 接受前段发送来的数据
+        r = get_redis_connection('default')
+        car_online = r.zrange('car_login', 0, -1)
+        if VIN not in car_online:
+            request.websocket.send('设备未登录,请连接设备'.encode())
+            request.websocket.close()
+        else:
+            car = Car.objects.filter(VIN=VIN.decode('utf-8')).first()
+            while True:
+                can = car.can_set.all().order_by('-ter_time').first()
+                request.websocket.send(can.data.encode())  # 发送给前段的数据
+                time.sleep(10)

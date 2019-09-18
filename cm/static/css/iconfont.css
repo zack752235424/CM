@@ -1,10 +1,9 @@
-
 @font-face {font-family: "iconfont";
-  src: url('../images/iconfont.eot?t=1532998664992'); /* IE9*/
-  src: url('../images/iconfont.eot?t=1532998664992#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('../images/iconfont.woff') format('woff'), /* chrome、firefox */
-  url('../images/iconfont.ttf?t=1532998664992') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
-  url('../images/iconfont.svg?t=1532998664992#iconfont') format('svg'); /* iOS 4.1- */
+  src: url('../fonts/iconfont.eot?t=1532998664992'); /* IE9*/
+  src: url('../fonts/iconfont.eot?t=1532998664992#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../fonts/iconfont.woff') format('woff'), /* chrome、firefox */
+       url('../fonts/iconfont.ttf?t=1532998664992') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+       url('../font/iconfont.svg?t=1532998664992#iconfont') format('svg'); /* iOS 4.1- */
 }
 
 .iconfont {
@@ -122,4 +121,3 @@
 .icon-shuangxiajiantou-:before { content: "\e610"; }
 
 .icon-shuangshangjiantou-:before { content: "\e611"; }
-

@@ -41,15 +41,17 @@ INSTALLED_APPS = [
     'user',
     'updt',
     'index',
-    'channels',
+    # 'channels',
     'car',
     'CAN',
     'playback',
     'lock',
+    'machine',
+    'doctor',
 ]
 
 # 指定ASGI的路由地址
-ASGI_APPLICATION = 'cm.routing.application'
+# ASGI_APPLICATION = 'cm.routing.application'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -61,6 +63,13 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'utils.UserMiddleware.UserAuthMiddleware',
 ]
+
+import dwebsocket
+# 为所有的URL提供websocket，如果只是单独的视图需要可以不选
+MIDDLEWARE_CLASSES=['dwebsocket.middleware.WebSocketMiddleware']
+
+WEBSOCKET_ACCEPT_ALL=True  # 可以允许每一个单独的视图实用websockets
+
 
 ROOT_URLCONF = 'cm.urls'
 
@@ -91,7 +100,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'cm',
         'USER': 'root',
-        'PASSWORD': 'ruige254475',
+        'PASSWORD': os.environ.get('pwd'),
         'HOST': '127.0.0.1',
         'PORT': '3306',
         'OPTIONS': {'isolation_level': None}

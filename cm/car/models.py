@@ -27,7 +27,6 @@ class Car(models.Model):
     spare_1 = models.CharField(max_length=128, null=True, verbose_name='备用1')
     spare_2 = models.CharField(max_length=128, null=True, verbose_name='备用2')
 
-
     class Meta:
         db_table = 'car'
 

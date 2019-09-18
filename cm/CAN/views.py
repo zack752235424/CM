@@ -58,71 +58,208 @@ def test(request):
     else:
         cans = car.can_set.all().filter(create_time__range=(stime, etime)).order_by('-ter_time')
     data = []
-    for i in range(int(limit) * (int(page) - 1), int(limit) * int(page)):
-        if cans[i].type == 1:
-            data.append({
-                "id": i+1,
-                "VIN": VIN,
-                'create_time': cans[i].ter_time.strftime("%Y-%m-%d %H:%M:%S"),
-                "data": cans[i].data,
-                "type": '车辆登入报文',
-            })
-        elif cans[i].type == 2:
-            data.append({
-                "id": i+1,
-                "VIN": VIN,
-                'create_time': cans[i].ter_time.strftime("%Y-%m-%d %H:%M:%S"),
-                "data": cans[i].data,
-                "type": '实时信息报文',
-            })
-        elif cans[i].type == 3:
-            data.append({
-                "id": i+1,
-                "VIN": VIN,
-                'create_time': cans[i].ter_time.strftime("%Y-%m-%d %H:%M:%S"),
-                "data": cans[i].data,
-                "type": '补发信息报文',
-            })
-        elif cans[i].type == 4:
-            data.append({
-                "id": i+1,
-                "VIN": VIN,
-                'create_time': cans[i].ter_time.strftime("%Y-%m-%d %H:%M:%S"),
-                "data": cans[i].data,
-                "type": '车辆登出报文',
-            })
-        elif cans[i].type == 80:
-            data.append({
-                "id": i+1,
-                "VIN": VIN,
-                'create_time': cans[i].ter_time.strftime("%Y-%m-%d %H:%M:%S"),
-                "data": cans[i].data,
-                "type": '车辆升级报文',
-            })
-        elif cans[i].type == 1001:
-            data.append({
-                "id": i+1,
-                "VIN": VIN,
-                'create_time': cans[i].ter_time.strftime("%Y-%m-%d %H:%M:%S"),
-                "data": cans[i].data,
-                "type": '信息上报错误',
-            })
-        elif cans[i].type == 1002:
-            data.append({
-                "id": i+1,
-                "VIN": VIN,
-                'create_time': cans[i].ter_time.strftime("%Y-%m-%d %H:%M:%S"),
-                "data": cans[i].data,
-                "type": 'BCC校验失败',
-            })
-        elif cans[i].type == 1003:
-            data.append({
-                "id": i+1,
-                "VIN": VIN,
-                'create_time': cans[i].ter_time.strftime("%Y-%m-%d %H:%M:%S"),
-                "data": cans[i].data,
-                "type": '车辆登录失败',
-            })
-    result = {"code": 0, "msg": "成功", "count": cans.count(), "data": data}
-    return JsonResponse(result)
+    if cans.count() < int(limit):
+        for i in range(len(cans)):
+            if cans[i].type == 1:
+                data.append({
+                    "id": i + 1,
+                    "VIN": VIN,
+                    'create_time': cans[i].ter_time.strftime("%Y-%m-%d %H:%M:%S"),
+                    "data": cans[i].data,
+                    "type": '车辆登入报文',
+                })
+            elif cans[i].type == 2:
+                data.append({
+                    "id": i + 1,
+                    "VIN": VIN,
+                    'create_time': cans[i].ter_time.strftime("%Y-%m-%d %H:%M:%S"),
+                    "data": cans[i].data,
+                    "type": '实时信息报文',
+                })
+            elif cans[i].type == 3:
+                data.append({
+                    "id": i + 1,
+                    "VIN": VIN,
+                    'create_time': cans[i].ter_time.strftime("%Y-%m-%d %H:%M:%S"),
+                    "data": cans[i].data,
+                    "type": '补发信息报文',
+                })
+            elif cans[i].type == 4:
+                data.append({
+                    "id": i + 1,
+                    "VIN": VIN,
+                    'create_time': cans[i].ter_time.strftime("%Y-%m-%d %H:%M:%S"),
+                    "data": cans[i].data,
+                    "type": '车辆登出报文',
+                })
+            elif cans[i].type == 80:
+                data.append({
+                    "id": i + 1,
+                    "VIN": VIN,
+                    'create_time': cans[i].ter_time.strftime("%Y-%m-%d %H:%M:%S"),
+                    "data": cans[i].data,
+                    "type": '车辆升级报文',
+                })
+            elif cans[i].type == 1001:
+                data.append({
+                    "id": i + 1,
+                    "VIN": VIN,
+                    'create_time': cans[i].ter_time.strftime("%Y-%m-%d %H:%M:%S"),
+                    "data": cans[i].data,
+                    "type": '信息上报错误',
+                })
+            elif cans[i].type == 1002:
+                data.append({
+                    "id": i + 1,
+                    "VIN": VIN,
+                    'create_time': cans[i].ter_time.strftime("%Y-%m-%d %H:%M:%S"),
+                    "data": cans[i].data,
+                    "type": 'BCC校验失败',
+                })
+            elif cans[i].type == 1003:
+                data.append({
+                    "id": i + 1,
+                    "VIN": VIN,
+                    'create_time': cans[i].ter_time.strftime("%Y-%m-%d %H:%M:%S"),
+                    "data": cans[i].data,
+                    "type": '车辆登录失败',
+                })
+        result = {"code": 0, "msg": "成功", "count": cans.count(), "data": data}
+        return JsonResponse(result)
+    else:
+        try:
+            for i in range(int(limit) * (int(page) - 1), int(limit) * int(page)):
+                if cans[i].type == 1:
+                    data.append({
+                        "id": i+1,
+                        "VIN": VIN,
+                        'create_time': cans[i].ter_time.strftime("%Y-%m-%d %H:%M:%S"),
+                        "data": cans[i].data,
+                        "type": '车辆登入报文',
+                    })
+                elif cans[i].type == 2:
+                    data.append({
+                        "id": i+1,
+                        "VIN": VIN,
+                        'create_time': cans[i].ter_time.strftime("%Y-%m-%d %H:%M:%S"),
+                        "data": cans[i].data,
+                        "type": '实时信息报文',
+                    })
+                elif cans[i].type == 3:
+                    data.append({
+                        "id": i+1,
+                        "VIN": VIN,
+                        'create_time': cans[i].ter_time.strftime("%Y-%m-%d %H:%M:%S"),
+                        "data": cans[i].data,
+                        "type": '补发信息报文',
+                    })
+                elif cans[i].type == 4:
+                    data.append({
+                        "id": i+1,
+                        "VIN": VIN,
+                        'create_time': cans[i].ter_time.strftime("%Y-%m-%d %H:%M:%S"),
+                        "data": cans[i].data,
+                        "type": '车辆登出报文',
+                    })
+                elif cans[i].type == 80:
+                    data.append({
+                        "id": i+1,
+                        "VIN": VIN,
+                        'create_time': cans[i].ter_time.strftime("%Y-%m-%d %H:%M:%S"),
+                        "data": cans[i].data,
+                        "type": '车辆升级报文',
+                    })
+                elif cans[i].type == 1001:
+                    data.append({
+                        "id": i+1,
+                        "VIN": VIN,
+                        'create_time': cans[i].ter_time.strftime("%Y-%m-%d %H:%M:%S"),
+                        "data": cans[i].data,
+                        "type": '信息上报错误',
+                    })
+                elif cans[i].type == 1002:
+                    data.append({
+                        "id": i+1,
+                        "VIN": VIN,
+                        'create_time': cans[i].ter_time.strftime("%Y-%m-%d %H:%M:%S"),
+                        "data": cans[i].data,
+                        "type": 'BCC校验失败',
+                    })
+                elif cans[i].type == 1003:
+                    data.append({
+                        "id": i+1,
+                        "VIN": VIN,
+                        'create_time': cans[i].ter_time.strftime("%Y-%m-%d %H:%M:%S"),
+                        "data": cans[i].data,
+                        "type": '车辆登录失败',
+                    })
+        except:
+            data = []
+            for i in range(int(limit) * (int(page) - 1), len(cans)):
+                if cans[i].type == 1:
+                    data.append({
+                        "id": i+1,
+                        "VIN": VIN,
+                        'create_time': cans[i].ter_time.strftime("%Y-%m-%d %H:%M:%S"),
+                        "data": cans[i].data,
+                        "type": '车辆登入报文',
+                    })
+                elif cans[i].type == 2:
+                    data.append({
+                        "id": i+1,
+                        "VIN": VIN,
+                        'create_time': cans[i].ter_time.strftime("%Y-%m-%d %H:%M:%S"),
+                        "data": cans[i].data,
+                        "type": '实时信息报文',
+                    })
+                elif cans[i].type == 3:
+                    data.append({
+                        "id": i+1,
+                        "VIN": VIN,
+                        'create_time': cans[i].ter_time.strftime("%Y-%m-%d %H:%M:%S"),
+                        "data": cans[i].data,
+                        "type": '补发信息报文',
+                    })
+                elif cans[i].type == 4:
+                    data.append({
+                        "id": i+1,
+                        "VIN": VIN,
+                        'create_time': cans[i].ter_time.strftime("%Y-%m-%d %H:%M:%S"),
+                        "data": cans[i].data,
+                        "type": '车辆登出报文',
+                    })
+                elif cans[i].type == 80:
+                    data.append({
+                        "id": i+1,
+                        "VIN": VIN,
+                        'create_time': cans[i].ter_time.strftime("%Y-%m-%d %H:%M:%S"),
+                        "data": cans[i].data,
+                        "type": '车辆升级报文',
+                    })
+                elif cans[i].type == 1001:
+                    data.append({
+                        "id": i+1,
+                        "VIN": VIN,
+                        'create_time': cans[i].ter_time.strftime("%Y-%m-%d %H:%M:%S"),
+                        "data": cans[i].data,
+                        "type": '信息上报错误',
+                    })
+                elif cans[i].type == 1002:
+                    data.append({
+                        "id": i+1,
+                        "VIN": VIN,
+                        'create_time': cans[i].ter_time.strftime("%Y-%m-%d %H:%M:%S"),
+                        "data": cans[i].data,
+                        "type": 'BCC校验失败',
+                    })
+                elif cans[i].type == 1003:
+                    data.append({
+                        "id": i+1,
+                        "VIN": VIN,
+                        'create_time': cans[i].ter_time.strftime("%Y-%m-%d %H:%M:%S"),
+                        "data": cans[i].data,
+                        "type": '车辆登录失败',
+                    })
+        result = {"code": 0, "msg": "成功", "count": cans.count(), "data": data}
+        return JsonResponse(result)
 
