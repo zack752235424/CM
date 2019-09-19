@@ -47,7 +47,7 @@ def doctor_download(request):
         VIN = request.POST.get('VIN')
         stime = request.POST.get('stime')
         etime = request.POST.get('etime')
-        car = Car.objects.filter(VIN=VIN).first()
+        car = Car.objects.filter(VIN=VIN, dept='医疗').first()
         if not car:
             result = {'error': 'VIN输入错误,请重新输入!', 'VIN': VIN, 'stime': stime, 'etime': etime}
             return render(request, 'doctor_download.html', result)
@@ -324,6 +324,8 @@ def doctor_download(request):
                     data = data.replace(data[0:130], '', 1)
                 continue
         # 保存
+        worksheet.col(0).width = 256 * 20
+        worksheet.col(1).width = 256 * 18
         workbook.save('./doctor_data.xls')
         file = open('./doctor_data.xls', 'rb')
         response = FileResponse(file)
