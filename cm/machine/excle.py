@@ -6,7 +6,6 @@ from cm.settings import MEDIA_ROOT
 
 class ExcelImport:
     def __init__(self, file_name):
-
         self.file_name = (MEDIA_ROOT + 'machine/' + str(file_name))
         self.workbook = xlrd.open_workbook(self.file_name)
         self.table = self.workbook.sheets()[0]

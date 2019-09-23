@@ -21,7 +21,7 @@ class MachineFile(models.Model):
     """
     导入设备表
     """
-    file_name = models.FileField(upload_to='car', verbose_name="保存文件路径")  # 指定文件保存的路径名
+    file_name = models.FileField(upload_to='machine', verbose_name="保存文件路径")  # 指定文件保存的路径名
 
     class Meta:
         db_table = 'machine_file'

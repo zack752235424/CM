@@ -100,7 +100,7 @@ def machine_upload(request):
         if form.is_valid():
             file_name = form.cleaned_data['files']
             name = time.time()
-            file_name._set_name('%s.xls'%name)
+            file_name._set_name('%s.xls' % name)
             case_file = MachineFile.objects.create(file_name=file_name)
             case_file.save()
             messages = ExcelImport(file_name)
