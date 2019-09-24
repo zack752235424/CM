@@ -56,7 +56,7 @@
               ,{fixed: 'right', title:'操作', toolbar: '#barDemo', align:'center'}
             ]]
               ,id: 'testReload'
-            ,page: false
+            ,page: true
           });
           //监听行工具事件
           table.on('tool(test)', function(obj){
@@ -78,11 +78,11 @@
               });
 
             } else if(obj.event === 'edit'){
-                layer.open({
+                parent.layer.open({
                   type: 2,
-                  area: ['30%', '50%'],
+                  area: ['30%', '400px'],
                   maxmin: true, //允许全屏最小化
-                 anim: 0, //0-6的动画形式，-1不开启
+                  anim: 0, //0-6的动画形式，-1不开启
                   content: '/machine/machine_edit/?ICCID=' + data.ICCID
                 });
             }

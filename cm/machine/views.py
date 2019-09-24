@@ -16,21 +16,39 @@ def index(request):
 
 def get_machine(request):
     ICCID = request.GET.get('key[ICCID]')
+    page = request.GET.get('page')
+    limit = request.GET.get('limit')
+    if not page or not limit:
+        page = 1
+        limit = 10
     if ICCID:
         machines = Machine.objects.filter(ICCID__contains=ICCID).all()
     else:
         machines = Machine.objects.all()
     data = []
-    for i in range(len(machines)):
-        data.append({
-            "id": i + 1,
-            "ICCID": machines[i].ICCID,
-            "product_num": machines[i].product_num,
-            "serial_num": machines[i].serial_num,
-            'birthday': machines[i].birthday,
-            'create_time': machines[i].create_time.strftime("%Y-%m-%d %H:%M:%S"),
-            'dept': machines[i].dept,
-        })
+    try:
+        for i in range(int(limit) * (int(page) - 1), int(limit) * int(page)):
+            data.append({
+                "id": i + 1,
+                "ICCID": machines[i].ICCID,
+                "product_num": machines[i].product_num,
+                "serial_num": machines[i].serial_num,
+                'birthday': machines[i].birthday,
+                'create_time': machines[i].create_time.strftime("%Y-%m-%d %H:%M:%S"),
+                'dept': machines[i].dept,
+            })
+    except:
+        data = []
+        for i in range(int(limit) * (int(page) - 1), len(machines)):
+            data.append({
+                "id": i + 1,
+                "ICCID": machines[i].ICCID,
+                "product_num": machines[i].product_num,
+                "serial_num": machines[i].serial_num,
+                'birthday': machines[i].birthday,
+                'create_time': machines[i].create_time.strftime("%Y-%m-%d %H:%M:%S"),
+                'dept': machines[i].dept,
+            })
     result = {"code": 0, "msg": "成功", "count": machines.count(), "data": data}
     return JsonResponse(result)
 
