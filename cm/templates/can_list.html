@@ -66,17 +66,17 @@
               });
             } else if(obj.event === 'edit'){
                 if(data.VIN === 'TBOXC32A000000005'){
-                    layer.open({
+                parent.layer.open({
                       type: 2,
-                      area: ['100%', '100%'],
+                      area: ['80%', '90%'],
                       maxmin: true, //允许全屏最小化
                       anim: 0, //0-6的动画形式，-1不开启
                       content: '/doctor/analysis_doctor/?data=' + data.data //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
                     });
                 }else {
-                    layer.open({
+                parent.layer.open({
                       type: 2,
-                      area: ['100%', '100%'],
+                      area: ['80%', '90%'],
                       maxmin: true, //允许全屏最小化
                       anim: 0, //0-6的动画形式，-1不开启
                       content: '/CAN/analysis_data/?data=' + data.data //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
