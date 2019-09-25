@@ -41,7 +41,6 @@ def analysis_data(request):
 
 
 def test(request):
-    s = time.time()
     VIN = request.GET.get('VIN')
     stime = request.GET.get('stime')
     etime = request.GET.get('etime')
@@ -71,6 +70,5 @@ def test(request):
             "type": '车辆登入报文' if(type == 1) else ('实时信息报文' if(type == 2) else ('补发信息报文' if(type == 3) else('车辆登出报文' if(type == 4) else ('车辆升级报文' if(type == 80) else ('信息上报错误' if(type == 1001) else ('BCC校验失败' if(type == 1002) else ('车辆登录失败' if(type == 1003) else '自定义信息'))))))),
         })
     result = {"code": 0, "msg": "成功", "count": cans.count(), "data": data}
-    print(time.time() - s, '总计花费时间')
     return JsonResponse(result)
 

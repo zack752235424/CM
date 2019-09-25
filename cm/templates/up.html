@@ -16,12 +16,14 @@
             left: 40px;
             top: 20px;
             font-size: 20px;
+            width: 32%;
         }
         #ICCID{
             position: absolute;
             left: 580px;
             top: 20px;
             font-size: 20px;
+            width: 32%;
         }
 
         #version{
@@ -29,19 +31,21 @@
             left: 32px;
             top: 80px;
             font-size: 20px;
+            width: 32%;
         }
         #ip{
             position: absolute;
             left: 600px;
             top: 80px;
             font-size: 20px;
+            width: 32%;
         }
         #first_f{
             border-left-width:0px;
             border-top-width:0px;
             border-right-width:0px;
             border-bottom-color:gray;
-            width: 400px;
+            width: 79%;
             text-align: center;
         }
         #ftp{
@@ -49,19 +53,21 @@
             left: 32px;
             top: 140px;
             font-size: 20px;
+            width: 32%;
         }
         #pwd{
             position: absolute;
             left: 613px;
             top: 140px;
             font-size: 20px;
+            width: 32%;
         }
         .layui-btn-normal{
             position: absolute;
             top: 185px;
             margin-top: 20px;
             width: 120px;
-            margin-left: 500px;
+            margin-left: 32%;
         }
     </style>
 </head>
@@ -70,7 +76,7 @@
         <form action="{% url 'updt:up' %}" method="post">
             {% csrf_token %}
             <div id="VIN">VIN号：
-                <input id="first_f" type="text" placeholder="使用英文分号为多个" name="VIN">
+                <input required id="first_f" type="text" placeholder="使用英文分号为多个" name="VIN">
             </div>
             <div id="ICCID">ICCID号：
                 <input id="first_f" type="text" placeholder="使用英文分号为多个" name="ICCID">

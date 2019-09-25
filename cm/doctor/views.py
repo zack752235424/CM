@@ -194,7 +194,6 @@ def doctor_download(request):
         # fc60fc50fc40fce0fcb0fcc0fcc0fcc0fcd0fca0fcc0fca0fcb0fc60fc4  电压数据
         # 09010100084448464547462828  温度数据
         # 0601250fd001010fa3010248010728 b2 极值数据
-
         for i in range(len(cans)):
             message = cans[i].data
             data = message[60:-2]

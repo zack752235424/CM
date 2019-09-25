@@ -36,6 +36,3 @@ def main():
 
 if __name__ == '__main__':
     # main()
-        a = 0
-        print('车辆登入报文' if(a==0) else '其他')
-
