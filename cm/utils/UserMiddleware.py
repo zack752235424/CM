@@ -1,7 +1,9 @@
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.shortcuts import render
 from django.utils.deprecation import MiddlewareMixin
 
+from user.models import User
 
 
 class UserAuthMiddleware(MiddlewareMixin):
@@ -13,9 +15,8 @@ class UserAuthMiddleware(MiddlewareMixin):
             return None
         if 'user_id' in request.session:
             # 表示不运行以下的所有代码，直接去访问路由文件，并执行视图函数
-
-            sdf = 1
-            sadf =2
-
-            return None
+            if (request.path,) in User.objects.get(pk=request.session.get('user_id')).roles.first().permissions.values_list('url').all():
+                return None
+            else:
+                return render(request, 'error.html')
         return HttpResponseRedirect(reverse('user:login'))

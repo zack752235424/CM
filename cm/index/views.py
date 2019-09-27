@@ -58,3 +58,7 @@ def chat(request):
             messages = json.dumps(messages)
             request.websocket.send(messages.encode())  # 发送给前段的数据
             time.sleep(10)
+
+
+def error(request):
+    return render(request, 'error.html')
