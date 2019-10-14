@@ -8,66 +8,21 @@
     <style>
 
         .div_f{
-            position: relative;
             height: 220px;
-        }
-        #VIN{
-            position: absolute;
-            left: 2.5%;
-            top: 20px;
-            font-size: 20px;
-            width: 32%;
-        }
-        #ICCID{
-            position: absolute;
-            left: 36.5%;
-            top: 20px;
-            font-size: 20px;
-            width: 32%;
-        }
-
-        #version{
-            position: absolute;
-            left: 2%;
-            top: 80px;
-            font-size: 20px;
-            width: 32%;
-        }
-        #ip{
-            position: absolute;
-            left: 37.5%;
-            top: 80px;
-            font-size: 20px;
-            width: 32%;
         }
         #first_f{
             border-left-width:0px;
             border-top-width:0px;
             border-right-width:0px;
             border-bottom-color:gray;
-            width: 79%;
+            width: 100%;
             text-align: center;
-        }
-        #ftp{
-            position: absolute;
-            left: 2%;
-            top: 140px;
             font-size: 20px;
-            width: 32%;
-        }
-        #pwd{
-            position: absolute;
-            left: 38.5%;
-            top: 140px;
-            font-size: 20px;
-            width: 32%;
         }
         .layui-btn-normal{
-            position: absolute;
-            top: 185px;
-            margin-top: 20px;
+            margin-top: 10px;
             width: 7.5%;
-            margin-left: 32%;
+            margin-left: 45%;
         }
     </style>
 </head>
@@ -75,24 +30,34 @@
     <div class="div_f">
         <form action="{% url 'updt:up' %}" method="post">
             {% csrf_token %}
-            <div id="VIN">VIN号：
-                <input required id="first_f" type="text" placeholder="使用英文分号为多个" name="VIN">
-            </div>
-            <div id="ICCID">ICCID号：
-                <input id="first_f" type="text" placeholder="使用英文分号为多个" name="ICCID">
-            </div>
-            <div id="version">版本号：
-                <input required id="first_f" type="text" placeholder="请输入版本号" name="version">
-            </div>
-            <div id="ip" >ip地址：
-                <input required id="first_f" type="text" placeholder="请输入IP和路径" name="ip">
-            </div>
-            <div id="ftp" >用户名：
-                <input id="first_f" type="text" value="FTP_tbox" name="ftp">
-            </div>
-            <div id="pwd" >密码：
-                <input id="first_f" type="password" value="00Tbx" name="pwd">
-            </div>
+            <table class="layui-table" lay-size="lg" lay-skin="nob">
+                <tbody>
+                    <tr>
+                        <td style="font-size: 145%; width: 8%; text-align: right; color: black">VIN号：</td>
+                        <td style="width: 20%;text-align: center"><input required id="first_f" type="text" placeholder="使用英文分号为多个" name="VIN"></td>
+                        <td style="width: 2%"></td>
+                        <td style="font-size: 145%;width: 8%;text-align: right;color: black">ICCID号：</td>
+                        <td style="width: 20%; text-align: center"><input id="first_f" type="text" placeholder="使用英文分号为多个" name="ICCID"></td>
+                        <td style="width: 2%"></td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 145%; width: 8%; text-align: right;color: black">版本号：</td>
+                        <td style="width: 15%;text-align: center"><input required id="first_f" type="text" placeholder="请输入版本号" name="version"></td>
+                        <td style="width: 2%"></td>
+                        <td style="font-size: 145%;width: 8%;text-align: right;color: black">ip地址：</td>
+                        <td style="width: 15%; text-align: center"><input required id="first_f" type="text" placeholder="请输入IP和路径" name="ip"></td>
+                        <td style="width: 2%"></td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 145%; width: 8%; text-align: right;color: black">用户名：</td>
+                        <td style="width: 15%;text-align: center"><input id="first_f" type="text" value="FTP_tbox" name="ftp"></td>
+                        <td style="width: 2%"></td>
+                        <td style="font-size: 145%;width: 8%;text-align: right;color: black">密码：</td>
+                        <td style="width: 15%; text-align: center"><input id="first_f" type="password" value="00Tbx" name="pwd"></td>
+                        <td style="width: 2%"></td>
+                    </tr>
+                </tbody>
+            </table>
             <button type="submit" class="layui-btn layui-btn-normal">升级</button>
         </form>
     </div>

@@ -34,8 +34,8 @@ def search(request):
 @accept_websocket
 def chat(request):
     if request.is_websocket():
+        r = get_redis_connection('default')
         while True:
-            r = get_redis_connection('default')
             messages = {}
             messages['car_online'] = []
             messages['car_offline'] = []

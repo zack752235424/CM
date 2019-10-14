@@ -40,6 +40,7 @@ class UserFormAdd(forms.Form):
                                                                                           })
     write = forms.CharField(required=False)
     read = forms.CharField(required=False)
+    ledao = forms.CharField(required=False)
 
     def clean(self):
         """
@@ -51,9 +52,9 @@ class UserFormAdd(forms.Form):
             raise forms.ValidationError({'username': '帐号已存在,请勿重复添加'})
         if self.cleaned_data.get('passd') != self.cleaned_data.get('repassd'):
             raise forms.ValidationError({'repassd': '两次密码不相同'})
-        if not self.cleaned_data.get('write') and not self.cleaned_data.get('read'):
+        if not self.cleaned_data.get('write') and not self.cleaned_data.get('read') and not self.cleaned_data.get('ledao'):
             raise forms.ValidationError({'read': '请勾选帐号角色'})
-        if self.cleaned_data.get('write') and self.cleaned_data.get('read'):
+        if self.cleaned_data.get('write') and self.cleaned_data.get('read') and self.cleaned_data.get('ledao'):
             raise forms.ValidationError({'read': '一个帐号只能有一个角色'})
         return self.cleaned_data
 

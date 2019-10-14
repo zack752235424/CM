@@ -210,6 +210,7 @@
     //点击出现滚动聚合途中点
     function baidumap(messages) {
             function OnlineCar() {
+                        map.setZoom(6);
                         onmarkers = [];
                         var pt = null;
                         var icon = new BMap.Icon('/static/images/car1.png', new BMap.Size(17, 32));
@@ -242,6 +243,7 @@
                 is_continue = false;
             }
             function WarningCar() {
+                    map.setZoom(6);
                     Warningmarkers = [];
                     var pt = null;
                     var icon = new BMap.Icon('/static/images/car2.png', new BMap.Size(17, 32));
@@ -269,6 +271,7 @@
 
 
             function OfflineCar() {
+                    map.setZoom(6);
                     offmarkers = [];
                     var pt = null;
                     var icon = new BMap.Icon('/static/images/car0.png', new BMap.Size(17, 32));

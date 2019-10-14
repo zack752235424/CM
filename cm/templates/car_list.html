@@ -57,7 +57,7 @@
                     {{ car.dept }}
                 {% endif %}</td>
                 <td class="td-manage">
-                  <a title="修改" class="layui-btn layui-btn-sm layui-btn-normal"  onclick="x_admin_show('修改','{% url 'car:car_edit' car.id %}',600,400)" href="javascript:;">
+                  <a title="修改" class="layui-btn layui-btn-sm layui-btn-normal"  onclick="x_admin_show('修改','/car/car_edit/?id={{ car.id }}',600,400)" href="javascript:;">
                     编辑
                   </a>
                   <a title="删除" class="layui-btn layui-btn-sm layui-btn-danger" onclick="member_del(this,{{ car.id }})" href="javascript:;">

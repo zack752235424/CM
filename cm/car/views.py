@@ -40,18 +40,19 @@ def car_add(request):
     return HttpResponse('<<div style="color: red; text-align: center; margin-top: 100px; font-size: 20px">请勿重复添加！！</div>')
 
 
-def car_edit(request, id):
+def car_edit(request):
     """
     修改信息
     :param request:
-    :param id:
     :return:
     """
     if request.method == 'GET':
+        id = int(request.GET.get('id'))
         car = Car.objects.get(pk=id)
         content = {'car': car}
         return render(request, 'car_edit.html', content)
     if request.method == 'POST':
+        id = int(request.GET.get('id'))
         VIN = request.POST.get('VIN')
         car_num = request.POST.get('car_num')
         ICCID = request.POST.get('ICCID')

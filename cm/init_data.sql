@@ -59,6 +59,9 @@ insert into permission(url, title) VALUES ('/user/member_add/', '用户添加功
 insert into permission(url, title) VALUES ('/user/edit/', '用户编辑功能');
 insert into permission(url, title) VALUES ('/user/member_del/', '删除用户功能');
 insert into permission(url, title) VALUES ('/user/member_search/', '查找用户功能');
+insert into permission(url, title) VALUES ('/lock/ledao_lock/', '乐道汽车锁车页面展示');
+insert into permission(url, title) VALUES ('/fence/fence_data/', '电子围栏数据传输');
+
 
 -- 插入角色权限
 insert into role_permissions(role_id, permission_id) VALUES
@@ -106,7 +109,8 @@ insert into role_permissions(role_id, permission_id) VALUES
 (1,42),
 (1,43),
 (1,44),
-(1,45);
+(1,45),
+(1,46);
 
 -- 医疗管理员权限
 insert into role_permissions(role_id, permission_id) VALUES
@@ -124,3 +128,17 @@ insert into role_permissions(role_id, permission_id) VALUES
 (2,22),
 (2,39),
 (2,40);
+
+-- 乐道管理员权限
+insert into role_permissions(role_id, permission_id) VALUES
+(3,1),
+(3,2),
+(3,3),
+(3,4),
+(3,19),
+(3,20),
+(3,21),
+(3,22),
+(3,39),
+(3,40),
+(3,46);

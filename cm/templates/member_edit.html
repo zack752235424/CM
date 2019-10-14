@@ -17,7 +17,7 @@
   
   <body>
     <div class="x-body layui-anim layui-anim-up">
-        <form id="test" action="{% url 'user:edit' user.id %}" class="layui-form" method="post">
+        <form id="test" action="/user/edit/?id={{ user.id }}"class="layui-form" method="post">
             {% csrf_token %}
           <div class="layui-form-item">
               <label for="L_username" class="layui-form-label">

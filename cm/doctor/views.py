@@ -2,9 +2,8 @@ import time
 
 import xlwt
 from django.db.models import Q
-from django.http import FileResponse, HttpResponseRedirect
+from django.http import FileResponse
 from django.shortcuts import render
-from django.urls import reverse
 from dwebsocket.decorators import accept_websocket
 from django_redis import get_redis_connection
 

@@ -33,54 +33,44 @@
       <file leaf-file-name="my_socket_v1.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/my_socket_v1.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="488">
-              <caret line="898" column="59" lean-forward="true" selection-start-line="898" selection-start-column="59" selection-end-line="898" selection-end-column="59" />
+            <state relative-caret-position="64">
+              <caret line="249" column="13" lean-forward="false" selection-start-line="249" selection-start-column="13" selection-end-line="249" selection-end-column="13" />
               <folding>
-                <element signature="e#10770#18593#0" expanded="false" />
-                <element signature="e#18671#26494#0" expanded="false" />
-                <element signature="e#26572#29158#0" expanded="false" />
-                <element signature="e#29236#32727#0" expanded="false" />
-                <element signature="e#32805#34767#0" expanded="false" />
-                <element signature="e#34845#49071#0" expanded="false" />
-                <element signature="e#49149#51020#0" expanded="false" />
-                <marker date="1569405755353" expanded="true" signature="5584:5618" ph="select * fro... car" />
-                <marker date="1569405755353" expanded="true" signature="6872:6906" ph="select * fro... car" />
-                <marker date="1569405755353" expanded="true" signature="7628:7668" ph="select * fro... machine" />
-                <marker date="1569405755353" expanded="true" signature="9009:9072" ph="insert into car... " />
-                <marker date="1569405755353" expanded="true" signature="9255:9289" ph="select * fro... car" />
-                <marker date="1569405755353" expanded="true" signature="10335:10374" ph="update car s... " />
-                <marker date="1569405755353" expanded="true" signature="11475:11509" ph="select * fro... car" />
-                <marker date="1569405755353" expanded="true" signature="12696:12730" ph="select * fro... car" />
-                <marker date="1569405755353" expanded="true" signature="19376:19410" ph="select * fro... car" />
-                <marker date="1569405755353" expanded="true" signature="20597:20631" ph="select * fro... car" />
-                <marker date="1569405755353" expanded="true" signature="27325:27359" ph="select * fro... car" />
-                <marker date="1569405755353" expanded="true" signature="28546:28580" ph="select * fro... car" />
-                <marker date="1569405755353" expanded="true" signature="29964:29998" ph="select * fro... car" />
-                <marker date="1569405755353" expanded="true" signature="33506:33540" ph="select * fro... car" />
-                <marker date="1569405755353" expanded="true" signature="35506:35540" ph="select * fro... car" />
-                <marker date="1569405755353" expanded="true" signature="37514:37548" ph="select * fro... car" />
-                <marker date="1569405755353" expanded="true" signature="38837:38880" ph="update car s... " />
-                <marker date="1569405755353" expanded="true" signature="41354:41391" ph="update car s... " />
-                <marker date="1569405755353" expanded="true" signature="42238:42275" ph="update car s... " />
-                <marker date="1569405755353" expanded="true" signature="42505:42568" ph="update car s... " />
-                <marker date="1569405755353" expanded="true" signature="44757:44794" ph="update car s... " />
-                <marker date="1569405755353" expanded="true" signature="45024:45087" ph="update car s... " />
-                <marker date="1569405755353" expanded="true" signature="47098:47135" ph="update car s... " />
-                <marker date="1569405755353" expanded="true" signature="47349:47412" ph="update car s... " />
-                <marker date="1569405755353" expanded="true" signature="49922:49956" ph="select * fro... car" />
-                <marker date="1569405755353" expanded="true" signature="51910:51992" ph="INSERT INTO can... " />
-                <marker date="1569405755353" expanded="true" signature="52964:53040" ph="INSERT INTO back... " />
+                <element signature="e#0#13#0" expanded="true" />
+                <element signature="e#10832#18655#0" expanded="false" />
+                <element signature="e#18733#26556#0" expanded="false" />
+                <element signature="e#26634#29220#0" expanded="false" />
+                <element signature="e#29298#32789#0" expanded="false" />
+                <element signature="e#32867#34829#0" expanded="false" />
+                <element signature="e#34907#49133#0" expanded="false" />
+                <marker date="1570777069464" expanded="true" signature="5645:5679" ph="select * fro... car" />
+                <marker date="1570777069464" expanded="true" signature="6933:6967" ph="select * fro... car" />
+                <marker date="1570777069464" expanded="true" signature="7689:7729" ph="select * fro... machine" />
+                <marker date="1570777069464" expanded="true" signature="9071:9134" ph="insert into car... " />
+                <marker date="1570777069464" expanded="true" signature="9317:9351" ph="select * fro... car" />
+                <marker date="1570777069464" expanded="true" signature="10397:10436" ph="update car s... " />
+                <marker date="1570777069464" expanded="true" signature="11537:11571" ph="select * fro... car" />
+                <marker date="1570777069464" expanded="true" signature="12758:12792" ph="select * fro... car" />
+                <marker date="1570777069464" expanded="true" signature="19438:19472" ph="select * fro... car" />
+                <marker date="1570777069464" expanded="true" signature="20659:20693" ph="select * fro... car" />
+                <marker date="1570777069464" expanded="true" signature="27387:27421" ph="select * fro... car" />
+                <marker date="1570777069464" expanded="true" signature="28608:28642" ph="select * fro... car" />
+                <marker date="1570777069464" expanded="true" signature="30026:30060" ph="select * fro... car" />
+                <marker date="1570777069464" expanded="true" signature="33568:33602" ph="select * fro... car" />
+                <marker date="1570777069464" expanded="true" signature="35568:35602" ph="select * fro... car" />
+                <marker date="1570777069464" expanded="true" signature="37576:37610" ph="select * fro... car" />
+                <marker date="1570777069464" expanded="true" signature="38899:38942" ph="update car s... " />
+                <marker date="1570777069464" expanded="true" signature="41416:41453" ph="update car s... " />
+                <marker date="1570777069464" expanded="true" signature="42300:42337" ph="update car s... " />
+                <marker date="1570777069464" expanded="true" signature="42567:42630" ph="update car s... " />
+                <marker date="1570777069464" expanded="true" signature="44819:44856" ph="update car s... " />
+                <marker date="1570777069464" expanded="true" signature="45086:45149" ph="update car s... " />
+                <marker date="1570777069464" expanded="true" signature="47160:47197" ph="update car s... " />
+                <marker date="1570777069464" expanded="true" signature="47411:47474" ph="update car s... " />
+                <marker date="1570777069464" expanded="true" signature="49984:50018" ph="select * fro... car" />
+                <marker date="1570777069464" expanded="true" signature="52217:52299" ph="INSERT INTO can... " />
+                <marker date="1570777069464" expanded="true" signature="53271:53347" ph="INSERT INTO back... " />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="my_client.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/my_client.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="500">
-              <caret line="30" column="33" lean-forward="false" selection-start-line="30" selection-start-column="33" selection-end-line="30" selection-end-column="33" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -96,19 +86,11 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>send</find>
-      <find>BCC_all</find>
-      <find>校时</find>
-      <find>BCC</find>
-      <find>to_hex</find>
-      <find>create_time</find>
-      <find>ter_time</find>
       <find>CAN</find>
       <find>1002</find>
       <find>break</find>
       <find>wgs2gcj</find>
       <find>requests</find>
-      <find>offline</find>
       <find>online</find>
       <find>back</find>
       <find>r = redis.Redis(host='localhost', port=6379)</find>
@@ -122,10 +104,18 @@
       <find>zadd</find>
       <find>time</find>
       <find>无版本</find>
-      <find>is_break</find>
       <find>translate</find>
-      <find>last_message</find>
       <find>version_now</find>
+      <find>连接超时</find>
+      <find>messages['CAN']</find>
+      <find>tcp连接中断</find>
+      <find>last_message</find>
+      <find>car_login</find>
+      <find>offline</find>
+      <find>split</find>
+      <find>is_break</find>
+      <find>接收一条信息不完整</find>
+      <find>, 1</find>
     </findStrings>
     <replaceStrings>
       <replace>raw_unicode_escape</replace>
@@ -150,10 +140,10 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="64" />
-    <option name="y" value="-11" />
-    <option name="width" value="1857" />
-    <option name="height" value="1092" />
+    <option name="x" value="65" />
+    <option name="y" value="-4" />
+    <option name="width" value="1855" />
+    <option name="height" value="1084" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -171,6 +161,7 @@
     </navigator>
     <panes>
       <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -185,12 +176,11 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="settings.editor.selected.configurable" value="PyConsoleConfigurable.Python Console" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../cm" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="WebServerToolWindowFactoryState" value="false" />
   </component>
   <component name="PyConsoleOptionsProvider">
@@ -515,19 +505,20 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="64" y="-11" width="1857" height="1092" extended-state="6" />
+    <frame x="65" y="-4" width="1855" height="1084" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.11969112" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12686156" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32992327" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.29313928" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32762313" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.29313928" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.05894173" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3286445" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32848233" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39897698" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -617,40 +608,40 @@
         <state relative-caret-position="423">
           <caret line="828" column="26" lean-forward="true" selection-start-line="828" selection-start-column="26" selection-end-line="828" selection-end-column="26" />
           <folding>
-            <element signature="e#10770#18593#0" expanded="false" />
-            <element signature="e#18671#26494#0" expanded="false" />
-            <element signature="e#26572#29158#0" expanded="false" />
-            <element signature="e#29236#32727#0" expanded="false" />
-            <element signature="e#32805#34767#0" expanded="false" />
-            <element signature="e#34845#49071#0" expanded="false" />
-            <element signature="e#49149#51020#0" expanded="false" />
-            <marker date="1569405755353" expanded="true" signature="5584:5618" ph="select * fro... car" />
-            <marker date="1569405755353" expanded="true" signature="6872:6906" ph="select * fro... car" />
-            <marker date="1569405755353" expanded="true" signature="7628:7668" ph="select * fro... machine" />
-            <marker date="1569405755353" expanded="true" signature="9009:9072" ph="insert into car... " />
-            <marker date="1569405755353" expanded="true" signature="9255:9289" ph="select * fro... car" />
-            <marker date="1569405755353" expanded="true" signature="10335:10374" ph="update car s... " />
-            <marker date="1569405755353" expanded="true" signature="11475:11509" ph="select * fro... car" />
-            <marker date="1569405755353" expanded="true" signature="12696:12730" ph="select * fro... car" />
-            <marker date="1569405755353" expanded="true" signature="19376:19410" ph="select * fro... car" />
-            <marker date="1569405755353" expanded="true" signature="20597:20631" ph="select * fro... car" />
-            <marker date="1569405755353" expanded="true" signature="27325:27359" ph="select * fro... car" />
-            <marker date="1569405755353" expanded="true" signature="28546:28580" ph="select * fro... car" />
-            <marker date="1569405755353" expanded="true" signature="29964:29998" ph="select * fro... car" />
-            <marker date="1569405755353" expanded="true" signature="33506:33540" ph="select * fro... car" />
-            <marker date="1569405755353" expanded="true" signature="35506:35540" ph="select * fro... car" />
-            <marker date="1569405755353" expanded="true" signature="37514:37548" ph="select * fro... car" />
-            <marker date="1569405755353" expanded="true" signature="38837:38880" ph="update car s... " />
-            <marker date="1569405755353" expanded="true" signature="41354:41391" ph="update car s... " />
-            <marker date="1569405755353" expanded="true" signature="42238:42275" ph="update car s... " />
-            <marker date="1569405755353" expanded="true" signature="42505:42568" ph="update car s... " />
-            <marker date="1569405755353" expanded="true" signature="44757:44794" ph="update car s... " />
-            <marker date="1569405755353" expanded="true" signature="45024:45087" ph="update car s... " />
-            <marker date="1569405755353" expanded="true" signature="47098:47135" ph="update car s... " />
-            <marker date="1569405755353" expanded="true" signature="47349:47412" ph="update car s... " />
-            <marker date="1569405755353" expanded="true" signature="49922:49956" ph="select * fro... car" />
-            <marker date="1569405755353" expanded="true" signature="51910:51992" ph="INSERT INTO can... " />
-            <marker date="1569405755353" expanded="true" signature="52964:53040" ph="INSERT INTO back... " />
+            <element signature="e#0#13#0" expanded="true" />
+            <element signature="e#10832#18655#0" expanded="false" />
+            <element signature="e#18733#26556#0" expanded="false" />
+            <element signature="e#26634#29220#0" expanded="false" />
+            <element signature="e#29298#32789#0" expanded="false" />
+            <element signature="e#32867#34829#0" expanded="false" />
+            <element signature="e#34907#49133#0" expanded="false" />
+            <marker date="1570777069464" expanded="true" signature="5645:5679" ph="select * fro... car" />
+            <marker date="1570777069464" expanded="true" signature="6933:6967" ph="select * fro... car" />
+            <marker date="1570777069464" expanded="true" signature="7689:7729" ph="select * fro... machine" />
+            <marker date="1570777069464" expanded="true" signature="9071:9134" ph="insert into car... " />
+            <marker date="1570777069464" expanded="true" signature="9317:9351" ph="select * fro... car" />
+            <marker date="1570777069464" expanded="true" signature="10397:10436" ph="update car s... " />
+            <marker date="1570777069464" expanded="true" signature="11537:11571" ph="select * fro... car" />
+            <marker date="1570777069464" expanded="true" signature="12758:12792" ph="select * fro... car" />
+            <marker date="1570777069464" expanded="true" signature="19438:19472" ph="select * fro... car" />
+            <marker date="1570777069464" expanded="true" signature="20659:20693" ph="select * fro... car" />
+            <marker date="1570777069464" expanded="true" signature="27387:27421" ph="select * fro... car" />
+            <marker date="1570777069464" expanded="true" signature="28608:28642" ph="select * fro... car" />
+            <marker date="1570777069464" expanded="true" signature="30026:30060" ph="select * fro... car" />
+            <marker date="1570777069464" expanded="true" signature="33568:33602" ph="select * fro... car" />
+            <marker date="1570777069464" expanded="true" signature="35568:35602" ph="select * fro... car" />
+            <marker date="1570777069464" expanded="true" signature="37576:37610" ph="select * fro... car" />
+            <marker date="1570777069464" expanded="true" signature="38899:38942" ph="update car s... " />
+            <marker date="1570777069464" expanded="true" signature="41416:41453" ph="update car s... " />
+            <marker date="1570777069464" expanded="true" signature="42300:42337" ph="update car s... " />
+            <marker date="1570777069464" expanded="true" signature="42567:42630" ph="update car s... " />
+            <marker date="1570777069464" expanded="true" signature="44819:44856" ph="update car s... " />
+            <marker date="1570777069464" expanded="true" signature="45086:45149" ph="update car s... " />
+            <marker date="1570777069464" expanded="true" signature="47160:47197" ph="update car s... " />
+            <marker date="1570777069464" expanded="true" signature="47411:47474" ph="update car s... " />
+            <marker date="1570777069464" expanded="true" signature="49984:50018" ph="select * fro... car" />
+            <marker date="1570777069464" expanded="true" signature="52217:52299" ph="INSERT INTO can... " />
+            <marker date="1570777069464" expanded="true" signature="53271:53347" ph="INSERT INTO back... " />
           </folding>
         </state>
       </provider>
@@ -787,20 +778,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/start_socket.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="4" column="6" lean-forward="false" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/requirement">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///usr/lib/python3.6/socket.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="127">
@@ -809,10 +786,10 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/my_socket.py" />
-    <entry file="file://$PROJECT_DIR$/test.py">
+    <entry file="file://$PROJECT_DIR$/requirement">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="10" column="7" lean-forward="true" selection-start-line="10" selection-start-column="7" selection-end-line="10" selection-end-column="7" />
+        <state relative-caret-position="60">
+          <caret line="3" column="10" lean-forward="false" selection-start-line="3" selection-start-column="10" selection-end-line="3" selection-end-column="10" />
         </state>
       </provider>
     </entry>
@@ -820,49 +797,62 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="500">
           <caret line="30" column="33" lean-forward="false" selection-start-line="30" selection-start-column="33" selection-end-line="30" selection-end-column="33" />
-          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/start_socket.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="4" column="6" lean-forward="false" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="320">
+          <caret line="17" column="28" lean-forward="true" selection-start-line="17" selection-start-column="28" selection-end-line="17" selection-end-column="28" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/my_socket_v1.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="488">
-          <caret line="898" column="59" lean-forward="true" selection-start-line="898" selection-start-column="59" selection-end-line="898" selection-end-column="59" />
+        <state relative-caret-position="64">
+          <caret line="249" column="13" lean-forward="false" selection-start-line="249" selection-start-column="13" selection-end-line="249" selection-end-column="13" />
           <folding>
-            <element signature="e#10770#18593#0" expanded="false" />
-            <element signature="e#18671#26494#0" expanded="false" />
-            <element signature="e#26572#29158#0" expanded="false" />
-            <element signature="e#29236#32727#0" expanded="false" />
-            <element signature="e#32805#34767#0" expanded="false" />
-            <element signature="e#34845#49071#0" expanded="false" />
-            <element signature="e#49149#51020#0" expanded="false" />
-            <marker date="1569405755353" expanded="true" signature="5584:5618" ph="select * fro... car" />
-            <marker date="1569405755353" expanded="true" signature="6872:6906" ph="select * fro... car" />
-            <marker date="1569405755353" expanded="true" signature="7628:7668" ph="select * fro... machine" />
-            <marker date="1569405755353" expanded="true" signature="9009:9072" ph="insert into car... " />
-            <marker date="1569405755353" expanded="true" signature="9255:9289" ph="select * fro... car" />
-            <marker date="1569405755353" expanded="true" signature="10335:10374" ph="update car s... " />
-            <marker date="1569405755353" expanded="true" signature="11475:11509" ph="select * fro... car" />
-            <marker date="1569405755353" expanded="true" signature="12696:12730" ph="select * fro... car" />
-            <marker date="1569405755353" expanded="true" signature="19376:19410" ph="select * fro... car" />
-            <marker date="1569405755353" expanded="true" signature="20597:20631" ph="select * fro... car" />
-            <marker date="1569405755353" expanded="true" signature="27325:27359" ph="select * fro... car" />
-            <marker date="1569405755353" expanded="true" signature="28546:28580" ph="select * fro... car" />
-            <marker date="1569405755353" expanded="true" signature="29964:29998" ph="select * fro... car" />
-            <marker date="1569405755353" expanded="true" signature="33506:33540" ph="select * fro... car" />
-            <marker date="1569405755353" expanded="true" signature="35506:35540" ph="select * fro... car" />
-            <marker date="1569405755353" expanded="true" signature="37514:37548" ph="select * fro... car" />
-            <marker date="1569405755353" expanded="true" signature="38837:38880" ph="update car s... " />
-            <marker date="1569405755353" expanded="true" signature="41354:41391" ph="update car s... " />
-            <marker date="1569405755353" expanded="true" signature="42238:42275" ph="update car s... " />
-            <marker date="1569405755353" expanded="true" signature="42505:42568" ph="update car s... " />
-            <marker date="1569405755353" expanded="true" signature="44757:44794" ph="update car s... " />
-            <marker date="1569405755353" expanded="true" signature="45024:45087" ph="update car s... " />
-            <marker date="1569405755353" expanded="true" signature="47098:47135" ph="update car s... " />
-            <marker date="1569405755353" expanded="true" signature="47349:47412" ph="update car s... " />
-            <marker date="1569405755353" expanded="true" signature="49922:49956" ph="select * fro... car" />
-            <marker date="1569405755353" expanded="true" signature="51910:51992" ph="INSERT INTO can... " />
-            <marker date="1569405755353" expanded="true" signature="52964:53040" ph="INSERT INTO back... " />
+            <element signature="e#0#13#0" expanded="true" />
+            <element signature="e#10832#18655#0" expanded="false" />
+            <element signature="e#18733#26556#0" expanded="false" />
+            <element signature="e#26634#29220#0" expanded="false" />
+            <element signature="e#29298#32789#0" expanded="false" />
+            <element signature="e#32867#34829#0" expanded="false" />
+            <element signature="e#34907#49133#0" expanded="false" />
+            <marker date="1570777069464" expanded="true" signature="5645:5679" ph="select * fro... car" />
+            <marker date="1570777069464" expanded="true" signature="6933:6967" ph="select * fro... car" />
+            <marker date="1570777069464" expanded="true" signature="7689:7729" ph="select * fro... machine" />
+            <marker date="1570777069464" expanded="true" signature="9071:9134" ph="insert into car... " />
+            <marker date="1570777069464" expanded="true" signature="9317:9351" ph="select * fro... car" />
+            <marker date="1570777069464" expanded="true" signature="10397:10436" ph="update car s... " />
+            <marker date="1570777069464" expanded="true" signature="11537:11571" ph="select * fro... car" />
+            <marker date="1570777069464" expanded="true" signature="12758:12792" ph="select * fro... car" />
+            <marker date="1570777069464" expanded="true" signature="19438:19472" ph="select * fro... car" />
+            <marker date="1570777069464" expanded="true" signature="20659:20693" ph="select * fro... car" />
+            <marker date="1570777069464" expanded="true" signature="27387:27421" ph="select * fro... car" />
+            <marker date="1570777069464" expanded="true" signature="28608:28642" ph="select * fro... car" />
+            <marker date="1570777069464" expanded="true" signature="30026:30060" ph="select * fro... car" />
+            <marker date="1570777069464" expanded="true" signature="33568:33602" ph="select * fro... car" />
+            <marker date="1570777069464" expanded="true" signature="35568:35602" ph="select * fro... car" />
+            <marker date="1570777069464" expanded="true" signature="37576:37610" ph="select * fro... car" />
+            <marker date="1570777069464" expanded="true" signature="38899:38942" ph="update car s... " />
+            <marker date="1570777069464" expanded="true" signature="41416:41453" ph="update car s... " />
+            <marker date="1570777069464" expanded="true" signature="42300:42337" ph="update car s... " />
+            <marker date="1570777069464" expanded="true" signature="42567:42630" ph="update car s... " />
+            <marker date="1570777069464" expanded="true" signature="44819:44856" ph="update car s... " />
+            <marker date="1570777069464" expanded="true" signature="45086:45149" ph="update car s... " />
+            <marker date="1570777069464" expanded="true" signature="47160:47197" ph="update car s... " />
+            <marker date="1570777069464" expanded="true" signature="47411:47474" ph="update car s... " />
+            <marker date="1570777069464" expanded="true" signature="49984:50018" ph="select * fro... car" />
+            <marker date="1570777069464" expanded="true" signature="52217:52299" ph="INSERT INTO can... " />
+            <marker date="1570777069464" expanded="true" signature="53271:53347" ph="INSERT INTO back... " />
           </folding>
         </state>
       </provider>

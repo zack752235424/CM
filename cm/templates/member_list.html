@@ -51,7 +51,7 @@
             <td>{{ user.roles.first }}</td>
             <td>{{ user.create_time|date:'Y-m-d H:i:s' }}</td>
             <td class="td-manage">
-              <a title="修改密码" class="layui-btn layui-btn-sm layui-btn-normal"onclick="x_admin_show('修改密码','{% url 'user:edit' user.id %}',600,400)" title="修改密码" href="javascript:">
+              <a title="修改密码" class="layui-btn layui-btn-sm layui-btn-normal"onclick="x_admin_show('修改密码','/user/edit/?id={{ user.id }}',600,400)" title="修改密码" href="javascript:">
                 修改密码
               </a>
               <a title="删除" class="layui-btn layui-btn-sm layui-btn-danger" onclick="member_del(this,{{ user.id }})" href="javascript:;">

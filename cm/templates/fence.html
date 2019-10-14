@@ -5,7 +5,7 @@
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 	<style type="text/css">
 	body, html{width: 100%;height: 100%;margin:0;font-family:"微软雅黑";}
-	#allmap {width: 100%; height:90%; overflow: hidden;}
+	#allmap {width: 100%; height:50%; overflow: hidden;}
 	#result {width:100%;font-size:12px;}
 	dl,dt,dd,ul,li{
 		margin:0;
@@ -28,6 +28,8 @@
 		line-height:28px;
 	}
 	</style>
+    <link rel="stylesheet" href="/static/css/font.css">
+    <link rel="stylesheet" href="/static/css/xadmin.css">
 	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=vdwlUnwtXAAl0zuQQM2C5MdhLhfLZqcX"></script>
 	<!--加载鼠标绘制工具-->
 	<script type="text/javascript" src="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.js"></script>
@@ -36,6 +38,8 @@
 	<script type="text/javascript" src="http://api.map.baidu.com/library/SearchInfoWindow/1.4/src/SearchInfoWindow_min.js"></script>
 	<link rel="stylesheet" href="http://api.map.baidu.com/library/SearchInfoWindow/1.4/src/SearchInfoWindow_min.css" />
     <script type="text/javascript" src="http://api.map.baidu.com/library/GeoUtils/1.2/src/GeoUtils_min.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.js"></script>
+
 	<title>鼠标绘制工具</title>
 </head>
 <body>
@@ -44,9 +48,20 @@
 	</div>
 	<div id="result">
         <input type="button" value="开启绘制" onclick="startDrawing()"/>
-        <input type="button" value="判断" onclick="ptInPolygon()"/>
+        <input type="button" value="开启监控" onclick="ptInPolygon()"/>
         <input type="button" value="清除" onclick="clearAll()"/>
 	</div>
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 5px;">
+        <legend style="color: lightcoral; text-align: center">未在范围内的车辆VIN:</legend>
+    </fieldset>
+    <table class="layui-table">
+{#        <thead>#}
+{#          <tr>#}
+{#            <th style="text-align: center; color: red">VIN</th>#}
+{#        </thead>#}
+        <tbody id="tbody">
+        </tbody>
+      </table>
 	<script type="text/javascript">
 	// 百度地图API功能
     var map = new BMap.Map('map');
@@ -98,12 +113,11 @@
         drawingManager.setDrawingMode(BMAP_DRAWING_CIRCLE);
     }
 
-
     //点在多边形内
     function ptInPolygon(){
         var pt =new BMap.Point(114.431363,30.469658);
         var pointCenter = new BMap.Point(lng, lat);
-        var circle = new BMap.Circle(pointCenter, radius, {
+        circle = new BMap.Circle(pointCenter, radius, {
             strokeColor:"red",    //边线颜色。
             fillColor:"red",      //填充颜色。当参数为空时，圆形将没有填充效果。
             strokeWeight: 3,       //边线的宽度，以像素为单位。
@@ -111,13 +125,51 @@
             fillOpacity: 0.6,      //填充的透明度，取值范围0 - 1。
             strokeStyle: 'solid' //边线的样式，solid或dashed。
         });
-        var result = BMapLib.GeoUtils.isPointInCircle(pt, circle);
-        if(result == true){
-            alert("点在指定区域内");
+        WebSocketTest();
+    }
+
+    // 实时获取数据
+    function WebSocketTest() {
+        if ("WebSocket" in window) {
+            // 打开一个 web socket
+            ws = new WebSocket("ws:" + window.location.host + "/fence/fence_data/");
+            ws = new WebSocket("ws:" + window.location.host + "/car/car_monitor/");
+            ws.onopen = function () {
+                // Web Socket 已连接上，使用 send() 方法发送数据
+{#                var VIN = $('.layui-input').val();#}
+{#                ws.send(VIN);#}
+            };
+
+            ws.onmessage = function (evt) {
+                var tb = document.getElementById("tbody"); //定位到table上
+                tb.innerText = '';
+                var received_msg = JSON.parse(evt.data);
+                console.log(received_msg);
+                for (var i=0,len=received_msg.length; i<len; i++){
+                    var pt = new BMap.Point(received_msg[i][0], received_msg[i][1]);
+                    var result = BMapLib.GeoUtils.isPointInCircle(pt, circle);
+                    if(result == true){
+                    } else {
+                        var tr = document.createElement("tr");
+                        var td = document.createElement("td");
+                        td.style.textAlign = 'center';
+                        td.innerText = received_msg[i][2];
+                        td.style.color = 'lightcoral';
+                        tr.appendChild(td);
+                        var parNode = document.getElementById("tbody"); //定位到table上
+                        parNode.appendChild(tr);
+                    }
+                }
+            };
+
+            ws.onclose = function () {
+            };
         } else {
-            alert("点在指定区域外");
+            // 浏览器不支持 WebSocket
+            alert("您的浏览器不支持 WebSocket!");
         }
     }
+
 </script>
 </body>
 </html>

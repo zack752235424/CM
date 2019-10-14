@@ -64,19 +64,24 @@ def member_add(request):
             if form.cleaned_data.get('read'):
                 role = Role.objects.filter(rolename='管理员').first()
                 user.roles.add(role)
-            if form.cleaned_data.get('write'):
+            elif form.cleaned_data.get('write'):
                 role = Role.objects.filter(rolename='超级管理员').first()
+                user.roles.add(role)
+            elif form.cleaned_data.get('ledao'):
+                role = Role.objects.filter(rolename='乐道管理员').first()
                 user.roles.add(role)
             return HttpResponse('<div style="color: #0dc316; text-align: center; margin-top: 100px; font-size: 50px">添加成功！!!</div>')
         errors = form.errors
         return render(request, 'member_add.html', {'errors':errors})
 
 
-def edit(request, id):
+def edit(request):
     if request.method == 'GET':
+        id = request.GET.get('id')
         user = User.objects.get(pk=id)
         return render(request, 'member_edit.html', {'user': user})
     if request.method == 'POST':
+        id = int(request.GET.get('id'))
         form = UserFormEdit(request.POST)
         user = User.objects.get(pk=id)
         if form.is_valid():
