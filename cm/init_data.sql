@@ -6,6 +6,8 @@ INSERT INTO user(username, pwd, create_time,is_delete) VALUES ('coco', 'e10adc39
 -- 添加超级管理员
 INSERT INTO role(rolename) VALUES ('超级管理员');
 INSERT INTO role(rolename) VALUES ('管理员');
+INSERT INTO role(rolename) VALUES ('乐到管理员');
+INSERT INTO role(rolename) VALUES ('主函数管理员');
 
 -- 为用户1添加角色
 INSERT INTO user_roles(user_id, role_id) VALUES (1,1);
@@ -61,6 +63,8 @@ insert into permission(url, title) VALUES ('/user/member_del/', '删除用户功
 insert into permission(url, title) VALUES ('/user/member_search/', '查找用户功能');
 insert into permission(url, title) VALUES ('/lock/ledao_lock/', '乐道汽车锁车页面展示');
 insert into permission(url, title) VALUES ('/fence/fence_data/', '电子围栏数据传输');
+insert into permission(url, title) VALUES ('/CAN/can_download/', '整车数据下载');
+insert into permission(url, title) VALUES ('/CAN/zhu_download/', '主函数数据下载');
 
 
 -- 插入角色权限
@@ -110,7 +114,10 @@ insert into role_permissions(role_id, permission_id) VALUES
 (1,43),
 (1,44),
 (1,45),
-(1,46);
+(1,46),
+(1,47),
+(1,48),
+(1,49);
 
 -- 医疗管理员权限
 insert into role_permissions(role_id, permission_id) VALUES
@@ -129,7 +136,7 @@ insert into role_permissions(role_id, permission_id) VALUES
 (2,39),
 (2,40);
 
--- 乐道管理员权限
+-- 乐到管理员权限
 insert into role_permissions(role_id, permission_id) VALUES
 (3,1),
 (3,2),
@@ -142,3 +149,13 @@ insert into role_permissions(role_id, permission_id) VALUES
 (3,39),
 (3,40),
 (3,46);
+
+-- 主函数管理员权限
+insert into role_permissions(role_id, permission_id) VALUES
+(4,19),
+(4,20),
+(4,21),
+(4,22),
+(4,39),
+(4,40),
+(4,49); -- 主函数页面

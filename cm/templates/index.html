@@ -45,15 +45,20 @@
 		<div class="frameMenu">
 		    <div class="logo">
 		        <img style="width: 230px" src="/static/images/cps_logo.png"/>
-{#		        <div class="logoText">#}
-{#		            <h1>成都北斗科技</h1>#}
-{#		        </div>#}
 		    </div>
 		    <div class="menu">
 		        <ul>
                     <li>
 		                <a class="menuFA" href="javascript:void(0)" onclick="menuCAClick('{% url 'index:map' %}',this)"><i class="iconfont icon-shouye-xuanzhong left"></i>首页</a>
 		           	</li>
+{#                    <li>#}
+{#		                <a class="menuFA" href="javascript:void(0)"><i class="iconfont icon-shangpin left"></i>商品管理<i class="iconfont icon-dajiantouyou right"></i></a>#}
+{#		                <dl>#}
+{#		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('tgls/goodsManage/goodsType_list.html',this)">分类列表</a></dt>#}
+{#		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('tgls/goodsManage/goods_list.html',this)">基本商品库</a></dt>#}
+{#		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('tgls/goodsManage/goods_add.html',this)">添加商品</a></dt>#}
+{#		                </dl>#}
+{#		            </li>#}
                     <li>
 		                <a class="menuFA" href="javascript:void(0)" onclick="menuCAClick('{% url 'machine:index' %}',this)"><i class="iconfont icon-shebeiguanli left"></i>设备管理</a>
 		           	</li>
@@ -85,19 +90,14 @@
 		                <a class="menuFA" href="javascript:void(0)" onclick="menuCAClick('{% url 'doctor:doctor_download' %}',this)"><i class="iconfont icon-xiazai left"></i>医疗报文下载</a>
 		           	</li>
                     <li>
+		                <a class="menuFA" href="javascript:void(0)" onclick="menuCAClick('{% url 'CAN:can_download' %}',this)"><i class="iconfont icon-xiazai left"></i>整车数据下载</a>
+		           	</li>
+                    <li>
+		                <a class="menuFA" href="javascript:void(0)" onclick="menuCAClick('{% url 'CAN:zhu_download' %}',this)"><i class="iconfont icon-xiazai left"></i>主函数数据下载</a>
+		           	</li>
+                    <li>
 		                <a class="menuFA" href="javascript:void(0)" onclick="menuCAClick('{% url 'fence:index' %}',this)"><i class="iconfont icon-weilan- left"></i>电子围栏</a>
 		           	</li>
-{#		        	<li>#}
-{#		                <a class="menuFA" href="javascript:void(0)"><i class="iconfont icon-yunying left"></i>基础库内容<i class="iconfont icon-dajiantouyou right"></i></a>#}
-{#		                <dl>#}
-{#		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('tgls/base/base_add.html',this)">表单含编辑器</a></dt>#}
-{#		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('tgls/base/base_list.html',this)">常用列表</a></dt>#}
-{#		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('tgls/base/base_customList.html',this)">可新增的列表</a></dt>#}
-{#		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('tgls/base/base_customNewList.html',this)">可新增的列表(手写)</a></dt>#}
-{#		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('tgls/base/pages.html',this)">页签切换Table</a></dt>#}
-{#		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('tgls/base/maintain.html',this)">维护中页面</a></dt>#}
-{#		                </dl>#}
-{#		           	</li>#}
                     <li>
 		                <a class="menuFA" href="javascript:void(0)" onclick="menuCAClick('{% url 'updt:up' %}',this)"><i class="iconfont icon-shengjizhongxin left"></i>车辆升级</a>
 		            </li>

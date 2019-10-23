@@ -90,6 +90,13 @@
       "unicode_decimal": 58894
     },
     {
+      "icon_id": "5708245",
+      "name": "大箭头右",
+      "font_class": "dajiantouyou",
+      "unicode": "e63a",
+      "unicode_decimal": 58938
+    },
+    {
       "icon_id": "6003013",
       "name": "注销",
       "font_class": "zhuxiao",

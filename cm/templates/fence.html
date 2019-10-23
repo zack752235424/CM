@@ -47,7 +47,8 @@
 		<div id="map" style="height:100%;-webkit-transition: all 0.5s ease-in-out;transition: all 0.5s ease-in-out;"></div>
 	</div>
 	<div id="result">
-        <input type="button" value="开启绘制" onclick="startDrawing()"/>
+        <input type="button" value="开启圆形" onclick="startDrawing()"/>
+        <input type="button" value="开启多边形" onclick="startDrawing1()"/>
         <input type="button" value="开启监控" onclick="ptInPolygon()"/>
         <input type="button" value="清除" onclick="clearAll()"/>
 	</div>
@@ -69,13 +70,32 @@
     map.centerAndZoom(poi, 16);
     map.enableScrollWheelZoom();
     var overlays = [];
+    lis = [];
 	var overlaycomplete = function(e){
 	    drawingManager.close();
-        overlays.push(e.overlay);
-        radius = e.overlay.xa;
-        lng = e.overlay.point.lng;
-        lat = e.overlay.point.lat;
-    };
+	    if(num===1){
+	        overlays.push(e.overlay);
+	        for (var i=0,len=e.overlay.ia.length; i<len; i++){
+	            lis.push(new BMap.Point(e.overlay.ia[i].lng, e.overlay.ia[i].lat));
+            }
+            //创建多边形
+            polygon2 = new BMap.Polygon(lis, {strokeColor:"#f50704",fillColor:"#cfcfcf", strokeWeight:5, strokeOpacity:0,fillOpacity:0});
+
+        } else if(num===0) {
+            overlays.push(e.overlay);
+            radius = e.overlay.xa;
+            lng = e.overlay.point.lng;
+            lat = e.overlay.point.lat;
+            var pointCenter = new BMap.Point(lng, lat);
+            circle = new BMap.Circle(pointCenter, radius, {
+            strokeColor:"red",    //边线颜色。
+            fillColor:"red",      //填充颜色。当参数为空时，圆形将没有填充效果。
+            strokeWeight: 3,       //边线的宽度，以像素为单位。
+            strokeOpacity: 0.8,	   //边线透明度，取值范围0 - 1。
+            fillOpacity: 0.6,      //填充的透明度，取值范围0 - 1。
+            strokeStyle: 'solid' //边线的样式，solid或dashed。
+        });
+        }};
 
     var styleOptions = {
         strokeColor:"red",    //边线颜色。
@@ -93,12 +113,16 @@
                 anchor: BMAP_ANCHOR_TOP_RIGHT, //位置
                 offset: new BMap.Size(5, 5) //偏离值
             },
-            circleOptions: styleOptions //圆的样式
+            circleOptions: styleOptions, //圆的样式
+            polylineOptions: styleOptions, //线的样式
+            polygonOptions: styleOptions, //多边形的样式
+            rectangleOptions: styleOptions //矩形的样式
         });
 
 	 //添加鼠标绘制工具监听事件，用于获取绘制结果
     drawingManager.addEventListener('overlaycomplete', overlaycomplete);
 
+    // 清楚所有图像
     function clearAll() {
 		for(var i = 0; i < overlays.length; i++){
             map.removeOverlay(overlays[i]);
@@ -106,25 +130,24 @@
         overlays.length = 0
     }
 
-    // 绘制图形
+    // 绘制圆形
     function startDrawing() {
+        num = 0;
         drawingManager.open();
         //drawingManager.enableCalculate();     //计算区域面积
         drawingManager.setDrawingMode(BMAP_DRAWING_CIRCLE);
     }
 
-    //点在多边形内
+    // 绘制多边形
+    function startDrawing1() {
+        num = 1;
+        drawingManager.open();
+        //drawingManager.enableCalculate();     //计算区域面积
+        drawingManager.setDrawingMode(BMAP_DRAWING_POLYGON);
+    }
+
+    //开启监控圆形
     function ptInPolygon(){
-        var pt =new BMap.Point(114.431363,30.469658);
-        var pointCenter = new BMap.Point(lng, lat);
-        circle = new BMap.Circle(pointCenter, radius, {
-            strokeColor:"red",    //边线颜色。
-            fillColor:"red",      //填充颜色。当参数为空时，圆形将没有填充效果。
-            strokeWeight: 3,       //边线的宽度，以像素为单位。
-            strokeOpacity: 0.8,	   //边线透明度，取值范围0 - 1。
-            fillOpacity: 0.6,      //填充的透明度，取值范围0 - 1。
-            strokeStyle: 'solid' //边线的样式，solid或dashed。
-        });
         WebSocketTest();
     }
 
@@ -133,7 +156,7 @@
         if ("WebSocket" in window) {
             // 打开一个 web socket
             ws = new WebSocket("ws:" + window.location.host + "/fence/fence_data/");
-            ws = new WebSocket("ws:" + window.location.host + "/car/car_monitor/");
+
             ws.onopen = function () {
                 // Web Socket 已连接上，使用 send() 方法发送数据
 {#                var VIN = $('.layui-input').val();#}
@@ -145,6 +168,7 @@
                 tb.innerText = '';
                 var received_msg = JSON.parse(evt.data);
                 console.log(received_msg);
+                if(num===0){
                 for (var i=0,len=received_msg.length; i<len; i++){
                     var pt = new BMap.Point(received_msg[i][0], received_msg[i][1]);
                     var result = BMapLib.GeoUtils.isPointInCircle(pt, circle);
@@ -159,7 +183,22 @@
                         var parNode = document.getElementById("tbody"); //定位到table上
                         parNode.appendChild(tr);
                     }
-                }
+                }}else if(num===1){
+                    for (var i=0,len=received_msg.length; i<len; i++){
+                        var pt = new BMap.Point(received_msg[i][0], received_msg[i][1]);
+                        var result = BMapLib.GeoUtils.isPointInPolygon(pt,polygon2);
+                        if(result == true){
+                        } else {
+                            var tr = document.createElement("tr");
+                            var td = document.createElement("td");
+                            td.style.textAlign = 'center';
+                            td.innerText = received_msg[i][2];
+                            td.style.color = 'lightcoral';
+                            tr.appendChild(td);
+                            var parNode = document.getElementById("tbody"); //定位到table上
+                            parNode.appendChild(tr);
+                        }
+                }}
             };
 
             ws.onclose = function () {
@@ -169,6 +208,7 @@
             alert("您的浏览器不支持 WebSocket!");
         }
     }
+
 
 </script>
 </body>

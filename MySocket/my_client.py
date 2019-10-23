@@ -35,4 +35,6 @@ def main():
                 time.sleep(10)
 
 if __name__ == '__main__':
-    main()
+    # main()
+        t = '23 56 78 49 23 15 14 56'
+        print(t[0:16])

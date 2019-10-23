@@ -88,6 +88,8 @@ body{
 }
 .frameMenu .menu ul li a:hover i.right{
 	color: #15A848;
+	display: inline-block;
+	transform: rotate(90deg);
 }
 
 .frameMenu .menu dl{

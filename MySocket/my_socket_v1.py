@@ -132,11 +132,15 @@ def main():
                     message += data
                     print(message)
                     if not self.is_break or not data:
-                        print('tcp连接中断')
-                        print('last_message:', last_message)
+                        print('tcp连接中断,last_message:', last_message)
                         try:
-                            messages['offline'].append(Converter().to_ascii(last_message[8:42]))
+                            VIN = Converter().to_ascii(last_message[8:42])
+                            r.zrem("car_login", VIN)
+                            location = r.geopos('car_online', VIN)
+                            r.zrem("car_online", VIN)
+                            r.geoadd('car_offline', location[0][0], location[0][1], VIN)
                         except:
+                            print('车辆正常离线出错')
                             break
                         break
                     if message[:4] != '2323':
@@ -532,8 +536,6 @@ def main():
                             ter_time = Convertertime().to_time(info[48:60])
                             type = 4
                             messages['CAN'].append((car_ID, create_time, ter_time, info, type))
-                            messages['offline'].append(VIN)
-                            message = ''
                             break
                         if message[4:6] == '07':
                             len_data = int(message[44:48], 16)
@@ -846,11 +848,15 @@ def main():
                 print('关闭连接')
                 self.cclient.close()
             except socket.timeout:
-                print('连接超时')
-                print('last_message:', last_message)
+                print('连接超时,last_message:', last_message)
                 try:
-                    messages['offline'].append(Converter().to_ascii(last_message[8:42]))
+                    VIN = Converter().to_ascii(last_message[8:42])
+                    r.zrem("car_login", VIN)
+                    location = r.geopos('car_online', VIN)
+                    r.zrem("car_online", VIN)
+                    r.geoadd('car_offline', location[0][0], location[0][1], VIN)
                 except:
+                    print('车辆超时离线出错')
                     self.cclient.close()
                 self.cclient.close()
 
@@ -887,13 +893,12 @@ def set_time():
             db.close()
 
         # 车辆离线存储
-        if messages['offline']:
-            for item in messages['offline']:
-                location = r.geopos('car_online', item)
-                r.zrem("car_online", item)
-                r.zrem("car_login", item)
-                r.geoadd('car_offline', location[0][0], location[0][1], item)
-            messages['offline'] = []
+        # if messages['offline']:
+        #     for item in messages['offline']:
+        #         location = r.geopos('car_online', item)
+        #         r.zrem("car_online", item)
+        #         r.geoadd('car_offline', location[0][0], location[0][1], item)
+        #     messages['offline'] = []
 
         # 车辆在线存储
         if messages['online']:
@@ -923,9 +928,10 @@ def set_time():
                 r.zrem('car_warning', item)
         Timer(10, set_time).start()
     except:
+        print('存储数据出错')
         messages['CAN'] = []
         messages['online'] = []
-        messages['offline'] = []
+        # messages['offline'] = []
         messages['warning'] = []
         messages['unwarning'] = []
         Timer(10, set_time).start()
@@ -934,7 +940,7 @@ if __name__ == '__main__':
     messages = {}
     messages['CAN'] = []
     messages['online'] = []
-    messages['offline'] = []
+    # messages['offline'] = []
     messages['warning'] = []
     messages['unwarning'] = []
     r = redis.Redis(host='localhost', port=6379)
