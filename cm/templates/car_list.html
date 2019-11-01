@@ -15,107 +15,97 @@
   </head>
   
   <body class="layui-anim layui-anim-up">
-    <div class="x-body">
-      <div class="layui-row">
-        <form action="{% url 'car:car_search' %}" class="layui-form layui-col-md12 x-so">
-          <input style="width: 200px" type="text" name="search"  placeholder="{{ info }}" autocomplete="off" class="layui-input">
-          <button class="layui-btn" ><i class="layui-icon">&#xe615;</i></button>
-        </form>
+      <div class="x-body">
+      <div class="demoTable">
+          <div class="layui-inline">
+            <input class="layui-input" name="VIN" id="demoReload" autocomplete="off">
+          </div>
+          <button class="layui-btn" data-type="reload">搜索</button>
       </div>
+    </div>
       <xblock>
         <button class="layui-btn" onclick="x_admin_show('添加车辆','{% url 'car:car_add' %}',600,400)"><i class="layui-icon"></i>添加</button>
         <button class="layui-btn" onclick="x_admin_show('导入','{% url 'car:car_upload' %}',600,400)"><i class="layui-icon"></i>导入</button>
-        <span class="x-right" style="line-height:40px">共有数据：{{ car_list.count }} 条</span>
       </xblock>
 
-      <table class="layui-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>VIN码</th>
-            <th>车牌号</th>
-            <th>ICCID</th>
-            <th>司机</th>
-            <th>部门</th>
-            <th>操作</th>
-        </thead>
-        <tbody>
-            {% for car in car_list %}
-              <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ car.VIN }}</td>
-                <td>{% if car.car_num %}
-                    {{ car.car_num }}
-                {% endif %}</td>
-                <td>{% if car.ICCID %}
-                    {{ car.ICCID }}
-                {% endif %}</td>
-                <td>{% if car.driver %}
-                    {{ car.driver }}
-                {% endif %}</td>
-                <td>{% if car.dept %}
-                    {{ car.dept }}
-                {% endif %}</td>
-                <td class="td-manage">
-                  <a title="修改" class="layui-btn layui-btn-sm layui-btn-normal"  onclick="x_admin_show('修改','/car/car_edit/?id={{ car.id }}',600,400)" href="javascript:;">
-                    编辑
-                  </a>
-                  <a title="删除" class="layui-btn layui-btn-sm layui-btn-danger" onclick="member_del(this,{{ car.id }})" href="javascript:;">
-                    删除
-                  </a>
-                </td>
-              </tr>
-            {% endfor %}
-
-        </tbody>
-      </table>
-{#        分页#}
-{#      <div class="page">#}
-{#        <div>#}
-{#          <a class="prev" href="">&lt;&lt;</a>#}
-{#          <a class="num" href="">1</a>#}
-{#          <span class="current">2</span>#}
-{#          <a class="num" href="">3</a>#}
-{#          <a class="num" href="">489</a>#}
-{#          <a class="next" href="">&gt;&gt;</a>#}
-{#        </div>#}
-{#      </div>#}
-
-    </div>
+    <table class="layui-hide" id="test" lay-filter="test"></table>
+    <script type="text/html" id="barDemo">
+        <a style="background-color: royalblue" id="analysis_data" class="layui-btn layui-btn-xs analysis_data" lay-event="edit">编辑</a>
+        <a style="background-color: red" id="analysis_data" class="layui-btn layui-btn-xs analysis_data" lay-event="del">删除</a>
+    </script>
     <script>
-      layui.use('laydate', function(){
-        var laydate = layui.laydate;
-        
-        //执行一个laydate实例
-        laydate.render({
-          elem: '#start' //指定元素
-        });
-
-        //执行一个laydate实例
-        laydate.render({
-          elem: '#end' //指定元素
-        });
-      });
-
-      /*用户-删除*/
-      function member_del(obj,id){
-          layer.confirm('确认要删除吗？',function(){
-              layer.closeAll();
-              $.ajax({
-                    url: '/car/car_del?id=' + id,
+        layui.use('table', function(){
+          var table = layui.table;
+          table.render({
+            elem: '#test'
+            ,url:'/car/manage'
+            ,toolbar: '#toolbarDemo'
+            ,title: '设备数据表'
+            ,cols: [[
+              {type: 'checkbox', fixed: 'left'}
+              ,{field:'id', title:'ID', width:80, fixed: 'left', unresize: true, sort: true, align:'center'}
+              ,{field:'VIN', title:'VIN', align:'center', templet: function(res){
+                return '<em>'+ res.VIN +'</em>'
+              }}
+              ,{field:'car_num', title:'车牌号', align:'center'}
+              ,{field:'ICCID', title:'ICCID', align:'center'}
+              ,{field:'driver', title:'司机', align:'center'}
+              ,{field:'create_time', title:'添加日期', align:'center'}
+              ,{field:'dept', title:'部门', align:'center'}
+              ,{fixed: 'right', title:'操作', toolbar: '#barDemo', align:'center'}
+            ]]
+              ,id: 'testReload'
+            ,page: true
+              ,limit:20
+          });
+          //监听行工具事件
+          table.on('tool(test)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'del'){
+              layer.confirm('真的删除行么', function(index){
+                $.ajax({
+                    url: '/car/car_del?VIN=' + data.VIN,
                     dataType: 'json',
                     type: 'GET',
                     timeout: 2000,
                     success: function (e) {
-                        $(obj).parents("tr").remove();
-                        alert('删除成功')
+                        obj.del();
+                        layer.close(index);
                     },
                     error: function () {
-                        alert("删除失败！");
                     }
                 });
+              });
+
+            } else if(obj.event === 'edit'){
+                parent.layer.open({
+                  type: 2,
+                  area: ['30%', '400px'],
+                  maxmin: true, //允许全屏最小化
+                  anim: 0, //0-6的动画形式，-1不开启
+                  content: '/car/car_edit/?VIN=' + data.VIN
+                });
+            }
           });
-      }
+          var $ = layui.$, active = {
+            reload: function(){
+              var demoReload = $('#demoReload');
+
+              //执行重载
+              table.reload('testReload', {
+                where: {
+                  key: {
+                    VIN: demoReload.val()
+                  }
+                }
+              }, 'data');
+            }
+          };
+          $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+          });
+        });
     </script>
   </body>
 

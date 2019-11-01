@@ -143,12 +143,12 @@ def main():
                             print('车辆正常离线出错')
                             break
                         break
-                    if message[:4] != '2323':
-                        print('无2323')
-                        break
                     if len(message) < 50:
                         print('接收一条信息不完整')
                         continue
+                    if message[:4] != '2323':
+                        print('无2323')
+                        break
                     len_data = int(message[44:48], 16)
                     if len(message) < 48 + len_data*2 + 2:
                         print('接收一条大于50长度信息不完整')
@@ -214,8 +214,8 @@ def main():
                                 cursor.close()
                                 db.close()
                                 if not car_ICCID:
-                                    # type = 1003
-                                    # messages['CAN'].append((1, create_time, ter_time, info, type))
+                                    type = 1003
+                                    messages['CAN'].append((1000000, create_time, ter_time, info, type))
                                     data = info[:6] + '02' + info[8:42] + '010006' + Convertertime().to_hex_time()
                                     my_bcc = BCC_all(data)
                                     self.cclient.send(str(Converter().to_ascii(data + my_bcc)).encode('raw_unicode_escape'))
@@ -861,8 +861,8 @@ def main():
                 self.cclient.close()
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.bind(('0.0.0.0', 2000))
-    # sock.bind(('127.0.0.1', 2000))
+    # sock.bind(('0.0.0.0', 2000))
+    sock.bind(('127.0.0.1', 2000))
     # sock.bind(('0.0.0.0', 889))
     # sock.bind(('0.0.0.0', 889))
     # sock.bind(('0.0.0.0', 890))

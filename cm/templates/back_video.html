@@ -167,7 +167,7 @@
                 marker.enableMassClear(); //设置后可以隐藏改点的覆盖物
                 marker.hide();
                 lushu.start();
-                // map.clearOverlays();    //清除所有覆盖物
+                map.clearOverlays();    //清除所有覆盖物
             });
             $("#stop").click(function () {
                 lushu.stop();
@@ -182,9 +182,7 @@
             $("#show").click(function () {
                 lushu.showInfoWindow();
             });
-            //function $(element) {
-            //    return document.getElementById(element);
-            //}
+
         }
     </script>
 </body>

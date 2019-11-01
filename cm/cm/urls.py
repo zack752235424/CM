@@ -27,4 +27,5 @@ urlpatterns = [
     path('fence/', include(('fence.urls', 'fence'), namespace='fence')),
     path('machine/', include(('machine.urls', 'machine'), namespace='machine')),
     path('doctor/', include(('doctor.urls', 'doctor'), namespace='doctor')),
+    path('video/', include(('video.urls', 'video'), namespace='video')),
 ]

@@ -72,16 +72,6 @@
                 baidumap(messages);
                 heartCheck.reset().start();      //拿到任何消息都说明当前连接是正常的
                 console.log("llws收到消息啦:" +event.data);
-{#                if(event.data!='pong'){#}
-{#                    var obj=eval("("+event.data+")");#}
-{#                    layui.use(['layim'], function(layim){#}
-{#                        if(obj.type=="onlineStatus"){#}
-{#                            layim.setFriendStatus(obj.id, obj.content);#}
-{#                        }else if(obj.type=="friend" || obj.type=="group"){#}
-{#                            layim.getMessage(obj);#}
-{#                        }#}
-{#            });#}
-{#        }#}
             }}
 
         // 监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
@@ -89,10 +79,17 @@
             ws.close();
         };
 
-
+        function reconnect(url) {
+            if(lockReconnect) return;
+            lockReconnect = true;
+            setTimeout(function () {     //没连接上会一直重连，设置延迟避免请求过多
+                createWebSocket(url);
+                lockReconnect = false;
+            }, 2000);
+        }
         //心跳检测
         var heartCheck = {
-            timeout: 540000,        //9分钟发一次心跳
+            timeout: 30000,        //30秒发一次心跳
             timeoutObj: null,
             serverTimeoutObj: null,
             reset: function(){

@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'lock',
     'machine',
     'doctor',
+    'video',
 ]
 
 # 指定ASGI的路由地址

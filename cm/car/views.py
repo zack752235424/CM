@@ -12,9 +12,30 @@ from car.models import Car, CaseFile
 
 
 def manage(request):
-    car_list = Car.objects.all()
-    content = {'car_list': car_list, 'info': '请输入位VIN码或车牌号'}
-    return render(request, 'car_list.html', content)
+    VIN = request.GET.get('key[VIN]')
+    page = request.GET.get('page')
+    limit = request.GET.get('limit')
+    if not page or not limit:
+        page = 1
+        limit = 10
+    if VIN:
+        cars = Car.objects.filter(VIN__contains=VIN).all()
+    else:
+        cars = Car.objects.all()
+    data = []
+    need_cans = cars[int(limit) * (int(page) - 1): int(limit) * int(page)]
+    for i in range(len(need_cans)):
+        data.append({
+            "id": i + 1,
+            "VIN": need_cans[i].VIN,
+            "car_num": need_cans[i].car_num,
+            "ICCID": need_cans[i].ICCID,
+            "driver": need_cans[i].driver,
+            'dept': need_cans[i].dept,
+            'create_time': need_cans[i].create_time.strftime("%Y-%m-%d %H:%M:%S"),
+        })
+    result = {"code": 0, "msg": "成功", "count": cars.count(), "data": data}
+    return JsonResponse(result)
 
 
 def car_add(request):
@@ -47,19 +68,17 @@ def car_edit(request):
     :return:
     """
     if request.method == 'GET':
-        id = int(request.GET.get('id'))
-        car = Car.objects.get(pk=id)
+        VIN = request.GET.get('VIN')
+        car = Car.objects.filter(VIN=VIN).first()
         content = {'car': car}
         return render(request, 'car_edit.html', content)
     if request.method == 'POST':
-        id = int(request.GET.get('id'))
         VIN = request.POST.get('VIN')
         car_num = request.POST.get('car_num')
         ICCID = request.POST.get('ICCID')
         driver = request.POST.get('driver')
         dept = request.POST.get('dept')
-        car = Car.objects.get(pk=id)
-        car.VIN = VIN
+        car = Car.objects.filter(VIN=VIN).first()
         car.car_num = car_num
         car.ICCID = ICCID
         car.driver = driver
@@ -75,8 +94,8 @@ def car_del(request):
     :param id:
     :return:
     """
-    id = request.GET.get('id')
-    Car.objects.get(pk=id).delete()
+    VIN = request.GET.get('VIN')
+    Car.objects.filter(VIN=VIN).delete()
     result = {'opt': '操作成功'}
     return JsonResponse(result)
 
@@ -87,23 +106,7 @@ def car_search(request):
     :param request:
     :return:
     """
-    search = request.GET.get('search')
-    if len(search) == 17:
-        car_list = Car.objects.filter(VIN=search).all()
-        if not car_list:
-            info = '无此车辆信息,请重新输入'
-            return render(request, 'car_list.html', {'info': info})
-        info = '查询成功'
-        content = {'car_list': car_list, 'info': info}
-        return render(request, 'car_list.html', content)
-
-    car_list = Car.objects.filter(VIN__contains=search).all()
-    if not car_list:
-        info = '无此车辆信息,请重新输入'
-        return render(request, 'car_list.html', {'info': info})
-    info = '查询成功'
-    content = {'car_list': car_list, 'info': info}
-    return render(request, 'car_list.html', content)
+    return render(request, 'car_list.html')
 
 
 def car_upload(request):

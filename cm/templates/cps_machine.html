@@ -45,7 +45,7 @@
             ,cols: [[
               {type: 'checkbox', fixed: 'left'}
               ,{field:'id', title:'ID', width:80, fixed: 'left', unresize: true, sort: true, align:'center'}
-              ,{field:'ICCID', title:'ICCID', align:'center', edit: 'text', templet: function(res){
+              ,{field:'ICCID', title:'ICCID', align:'center', templet: function(res){
                 return '<em>'+ res.ICCID +'</em>'
               }}
               ,{field:'product_num', title:'货号', align:'center'}
@@ -57,6 +57,7 @@
             ]]
               ,id: 'testReload'
             ,page: true
+              ,limit:20
           });
           //监听行工具事件
           table.on('tool(test)', function(obj){

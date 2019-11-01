@@ -28,5 +28,5 @@ def search(request):
     if opts:
         result = {'opts': [item for item in opts]}
     else:
-        result = {'opts':'failure'}
+        result = {'opts': 'failure'}
     return JsonResponse(result)

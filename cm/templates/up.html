@@ -68,6 +68,9 @@
       <div class="layui-inline">
         <input class="layui-input" name="id" id="demoReload" autocomplete="off" placeholder="模糊匹配VIN">
       </div>
+        <div class="layui-inline">
+        <input class="layui-input" name="id" id="dept" autocomplete="off" placeholder="模糊匹配部门">
+      </div>
       <button class="layui-btn" data-type="reload">搜索</button>
     </div>
 
@@ -101,6 +104,7 @@ layui.use('table', function(){
   var $ = layui.$, active = {
     reload: function(){
       var demoReload = $('#demoReload');
+      var dept = $('#dept');
 
       //执行重载
       table.reload('testReload', {
@@ -109,7 +113,8 @@ layui.use('table', function(){
         }
         ,where: {
           key: {
-            id: demoReload.val()
+            id: demoReload.val(),
+              dept:dept.val()
           }
         }
       }, 'data');

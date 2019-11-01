@@ -61,126 +61,25 @@ def get_users(request):
     page = request.GET.get('page')
     limit = request.GET.get('limit')
     VIN = request.GET.get('key[id]')
-    if VIN:
-        cars = Car.objects.filter(VIN__contains=VIN)
+    dept = request.GET.get('key[dept]')
+    if VIN or dept:
+        cars = Car.objects.filter(VIN__contains=VIN, dept__contains=dept)
     else:
         cars = Car.objects.all()
     data = []
-    if cars.count() > int(limit):
-        try:
-            for i in range(int(limit) * (int(page) - 1), int(limit) * int(page)):
-                if cars[i].status == 0:
-                    data.append({
-                        "id": i + 1,
-                        "ICCID": cars[i].ICCID,
-                        "VIN": cars[i].VIN,
-                        "IP": cars[i].ip,
-                        "version": cars[i].version,
-                        'version_now': cars[i].version_now,
-                        "status": '未升级',
-                        'create_time': cars[i].create_time.strftime("%Y-%m-%d %H:%M:%S"),
-                        'status_code': cars[i].status_code
-                    })
-                if cars[i].status == 1:
-                    data.append({
-                        "id": i + 1,
-                        "ICCID": cars[i].ICCID,
-                        "VIN": cars[i].VIN,
-                        "IP": cars[i].ip,
-                        "version": cars[i].version,
-                        'version_now': cars[i].version_now,
-                        "status": '正在升级',
-                        'create_time': cars[i].create_time.strftime("%Y-%m-%d %H:%M:%S"),
-                        'status_code': cars[i].status_code
-                    })
-                if cars[i].status == 2:
-                    data.append({
-                        "id": i + 1,
-                        "ICCID": cars[i].ICCID,
-                        "VIN": cars[i].VIN,
-                        "IP": cars[i].ip,
-                        "version": cars[i].version,
-                        'version_now': cars[i].version_now,
-                        "status": '升级完成',
-                        'create_time': cars[i].create_time.strftime("%Y-%m-%d %H:%M:%S"),
-                        'status_code': cars[i].status_code
-                    })
-        except:
-            data = []
-            for i in range(int(limit) * (int(page) - 1), len(cars)):
-                if cars[i].status == 0:
-                    data.append({
-                        "id": i+1,
-                        "ICCID": cars[i].ICCID,
-                        "VIN": cars[i].VIN,
-                        "IP": cars[i].ip,
-                        "version": cars[i].version,
-                        'version_now': cars[i].version_now,
-                        "status": '未升级',
-                        'create_time': cars[i].create_time.strftime("%Y-%m-%d %H:%M:%S"),
-                        'status_code': cars[i].status_code
-                    })
-                if cars[i].status == 1:
-                    data.append({
-                        "id": i+1,
-                        "ICCID": cars[i].ICCID,
-                        "VIN": cars[i].VIN,
-                        "IP": cars[i].ip,
-                        "version": cars[i].version,
-                        'version_now': cars[i].version_now,
-                        "status": '正在升级',
-                        'create_time': cars[i].create_time.strftime("%Y-%m-%d %H:%M:%S"),
-                        'status_code': cars[i].status_code
-                    })
-                if cars[i].status == 2:
-                    data.append({
-                        "id": i+1,
-                        "ICCID": cars[i].ICCID,
-                        "VIN": cars[i].VIN,
-                        "IP": cars[i].ip,
-                        "version": cars[i].version,
-                        'version_now': cars[i].version_now,
-                        "status": '升级完成',
-                        'create_time': cars[i].create_time.strftime("%Y-%m-%d %H:%M:%S"),
-                        'status_code': cars[i].status_code
-                    })
-    else:
-        for i in range(len(cars)):
-            if cars[i].status == 0:
-                data.append({
-                    "id": i + 1,
-                    "ICCID": cars[i].ICCID,
-                    "VIN": cars[i].VIN,
-                    "IP": cars[i].ip,
-                    "version": cars[i].version,
-                    'version_now':cars[i].version_now,
-                    "status":  '未升级',
-                    'create_time': cars[i].create_time.strftime("%Y-%m-%d %H:%M:%S"),
-                    'status_code': cars[i].status_code
-                })
-            if cars[i].status == 1:
-                data.append({
-                    "id": cars[i].id,
-                    "ICCID": cars[i].ICCID,
-                    "VIN": cars[i].VIN,
-                    "IP": cars[i].ip,
-                    "version": cars[i].version,
-                    'version_now': cars[i].version_now,
-                    "status":  '正在升级',
-                    'create_time': cars[i].create_time.strftime("%Y-%m-%d %H:%M:%S"),
-                    'status_code': cars[i].status_code
-                })
-            if cars[i].status == 2:
-                data.append({
-                    "id": cars[i].id,
-                    "ICCID": cars[i].ICCID,
-                    "VIN": cars[i].VIN,
-                    "IP": cars[i].ip,
-                    "version": cars[i].version,
-                    'version_now': cars[i].version_now,
-                    "status": '升级完成',
-                    'create_time': cars[i].create_time.strftime("%Y-%m-%d %H:%M:%S"),
-                    'status_code': cars[i].status_code
-                })
+    need_cans = cars[int(limit) * (int(page) - 1): int(limit) * int(page)]
+    for i in range(len(need_cans)):
+        type = need_cans[i].status
+        data.append({
+            "id": i + 1,
+            "ICCID": need_cans[i].ICCID,
+            "VIN": need_cans[i].VIN,
+            "IP": need_cans[i].ip,
+            "version": need_cans[i].version,
+            'version_now': need_cans[i].version_now,
+            "status": '未升级' if(type == 0) else ('正在升级' if (type == 1) else ('升级完成' if(type == 2) else '')),
+            'create_time': need_cans[i].create_time.strftime("%Y-%m-%d %H:%M:%S") if (need_cans[i].create_time) else '',
+            'status_code': need_cans[i].status_code
+        })
     result = {"code": 0, "msg": "成功", "count": cars.count(), "data": data}
     return JsonResponse(result)

@@ -65,6 +65,7 @@ insert into permission(url, title) VALUES ('/lock/ledao_lock/', '乐道汽车锁
 insert into permission(url, title) VALUES ('/fence/fence_data/', '电子围栏数据传输');
 insert into permission(url, title) VALUES ('/CAN/can_download/', '整车数据下载');
 insert into permission(url, title) VALUES ('/CAN/zhu_download/', '主函数数据下载');
+insert into permission(url, title) VALUES ('/video/get_data/', '位置数据请求');
 
 
 -- 插入角色权限
@@ -117,7 +118,8 @@ insert into role_permissions(role_id, permission_id) VALUES
 (1,46),
 (1,47),
 (1,48),
-(1,49);
+(1,49),
+(1,50);
 
 -- 医疗管理员权限
 insert into role_permissions(role_id, permission_id) VALUES

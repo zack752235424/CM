@@ -1,9 +1,8 @@
-import os
 import socket
 
 import time
 
-import pymysql
+import redis
 
 
 def main():
@@ -32,9 +31,9 @@ def main():
                 client.send(str(Converter().to_ascii(data)).encode('raw_unicode_escape'))
                 me = Converter().to_hex(client.recv(2048).decode('raw_unicode_escape'))
                 print(me)
-                time.sleep(10)
+                time.sleep(1000)
 
 if __name__ == '__main__':
     # main()
-        t = '23 56 78 49 23 15 14 56'
-        print(t[0:16])
+        info = '232301fe4c44503532413936354a4e343237353434010025130a1c12190a00023839323434303230303030383434363835333137010700000000000000f8'
+        print(info[64:104])
