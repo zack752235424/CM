@@ -1,172 +1,189 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Track</title>
-<style type="text/css">
-    html{height:100%}
-    body{height:100%;margin:0px;padding:0px}
-    #controller{width:100%; border-bottom:3px outset; height:30px; filter:alpha(Opacity=100); -moz-opacity:1; opacity:1; z-index:10000; background-color:white;}
-    #container{height:100%}
-</style>
-<script type="text/javascript" src="//api.map.baidu.com/api?v=2.0&ak=vdwlUnwtXAAl0zuQQM2C5MdhLhfLZqcX"></script>
-<script language="javascript" type="text/javascript" src="/static/My97DatePicker/WdatePicker.js"></script>
-<script type="text/javascript" src="/static/js/jquery.js"></script>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<style type="text/css">
+		body, html,#allmap {width: 100%;height: 90%;overflow: hidden;margin:0;font-family:"微软雅黑";}
+		#l-map{height:100%;width:78%;float:left;border-right:2px solid #bcbcbc;}
+		#r-result{height:100%;width:20%;float:left;}
+		#result {width:100%}
+	</style>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=vdwlUnwtXAAl0zuQQM2C5MdhLhfLZqcX"></script>
+	<script type="text/javascript" src="http://api.map.baidu.com/library/LuShu/1.2/src/LuShu_min.js"></script>
+	<title>示例</title>
 </head>
-
 <body>
-    <div id="controller">
-        <input id="VIN" style="margin-left: 5px; height: 18px; width: 200px" type="text" placeholder="请输入VIN" name="VIN">
-        <input id="stime" style="width: 14.5%" class="Wdate" type="text" onClick="WdatePicker({el:this,dateFmt:'yyyy-MM-dd HH:mm:ss'})" name="stime" autocomplete="off">
-        <span style="font-size:15px;">到</span>
-        <input id="etime" style="width: 14.5%" class="Wdate" type="text" onClick="WdatePicker({el:this,dateFmt:'yyyy-MM-dd HH:mm:ss'})" name="etime" autocomplete="off">
-        <input id="search" type="button" value="查询" onclick="find()">
-        <input style="margin-left: 27%;" id="follow" type="checkbox"><span style="font-size:12px;">画面跟随</span>
-        <input id="play" type="button" value="开始巡航" onclick="play();" disabled />
-        <input id="pause" type="button" value="暂停" onclick="pause();" disabled />
-        <input id="reset" type="button" value="重置" onclick="reset()" disabled />
-    </div>
-    <div id="container"></div>
-    <script type="text/javascript">
-    var map;   //百度地图对象
-    var car;   //汽车图标
-    var label; //信息标签
-    var centerPoint;
+	<div id="allmap"></div>
 
-    var timer;     //定时器
-    var index = 0; //记录播放到第几个point
-
-    var followChk, playBtn, pauseBtn, resetBtn; //几个控制按钮
-
-
-    // 初始化地图
-    followChk = document.getElementById("follow");
-    playBtn = document.getElementById("play");
-    pauseBtn = document.getElementById("pause");
-    resetBtn = document.getElementById("reset");
-
-    //初始化地图,选取第一个点为起始点
-    map = new BMap.Map("container");
-    map.centerAndZoom(new BMap.Point(116.350658, 39.938888), 5);
-    map.enableScrollWheelZoom();
-    map.addControl(new BMap.NavigationControl());
-    map.addControl(new BMap.ScaleControl());
-    map.addControl(new BMap.OverviewMapControl({isOpen: true}));
-
-
-    function routing(opts) {
-        map.setZoom(15);
-        points = [];
-        for (i = 0; i < opts.length; i++) {
-            points.push(new BMap.Point(opts[i][0],opts[i][1]))
-        }
-        // 创建polyline对象
-        var polyline = new BMap.Polyline(points, {strokeColor: "gray", strokeWeight: 8, strokeOpacity: 1});
-        map.addOverlay(polyline); // 增加折线
-        //显示小车子
-        var icon = new BMap.Icon('/static/images/car1.png', new BMap.Size(17, 32));
-        icon.imageSize = new BMap.Size(17, 30);
-        icon.anchor = new BMap.Size(17, 25);
-        label = new BMap.Label("", {offset: new BMap.Size(-20, -20)});
-        car = new BMap.Marker(points[0]);
-        car.setLabel(label);
-        car.setIcon(icon);
-        map.addOverlay(car);
-
-
-        //将画面移动到中间
-        centerPoint = new BMap.Point((points[0].lng + points[points.length - 1].lng) / 2, (points[0].lat + points[points.length - 1].lat) / 2);
-        map.panTo(centerPoint);
-
-        //点亮操作按钮
-        playBtn.disabled = false;
-        resetBtn.disabled = false;
-    }
-    // 开始按钮
-    function play() {
-        playBtn.disabled = true;
-        pauseBtn.disabled = false;
-
-        //动画效果
-        var sy = new BMap.Symbol(BMap_Symbol_SHAPE_BACKWARD_OPEN_ARROW, {
-            scale: 0.6,//图标缩放大小
-            strokeColor: '#fff',//设置矢量图标的线填充颜色
-            strokeWeight: '2',//设置线宽
-        });
-        var icons = new BMap.IconSequence(sy, '10', '30');
-
-        var point = points[index];
-        if(index > 0) {
-            map.addOverlay(new BMap.Polyline([points[index - 1], point], {
-            enableEditing: false,//是否启用线编辑，默认为false
-            enableClicking: true,//是否响应点击事件，默认为true
-            icons: [icons],
-            strokeWeight: '8',//折线的宽度，以像素为单位
-            strokeOpacity: 0.8,//折线的透明度，取值范围0 - 1
-            strokeColor: "#18a45b"//折线颜色
-        }));
-        }
-        label.setContent("经度: " + point.lng + "<br>纬度: " + point.lat);
-        car.setPosition(point);
-        index++;
-        if(followChk.checked) {
-            map.panTo(point);
-        }
-        if(index < points.length) {
-            timer = window.setTimeout("play(" + index + ")", 2000);
-        } else {
-            playBtn.disabled = true;
-            pauseBtn.disabled = true;
-            map.panTo(point);
-        }
-    }
-
-    // 暂停按钮
-    function pause() {
-        playBtn.disabled = false;
-        pauseBtn.disabled = true;
-
-        if(timer) {
-            window.clearTimeout(timer);
-        }
-    }
-
-    // 重置按钮
-    function reset() {
-        followChk.checked = false;
-        playBtn.disabled = false;
-        pauseBtn.disabled = true;
-
-        if(timer) {
-            window.clearTimeout(timer);
-        }
-        index = 0;
-        car.setPosition(points[0]);
-        map.panTo(centerPoint);
-    }
-    </script>
-    <script type="text/javascript">
-        function find() {
-            $.ajax({
-            url:'/playback/search?VIN='+$('#VIN').val()+'&' + 'stime=' + $('#stime').val()+'&'+'etime='+$('#etime').val(),//地址
-            dataType: 'json',
-            type: 'GET',
-            timeout: 2000,
-            success: function (e) {
-                routing(e.opts)
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                if (textStatus === 'timeout') {
-                    alert('請求超時');
-                    setTimeout(function () {
-                        alert('重新请求');
-                    }, 2000);
-                }
-                //alert(errorThrown);
-            }
-        });
-    }
-    </script>
+	<div id="result"></div>
+	<button id="run" >开始</button>
+	<button id="stop">停止</button>
+	<button id="pause">暂停</button>
+	<button id="hide">隐藏信息窗口</button>
+	<button id="show">展示信息窗口</button>
 </body>
+ <script>
+	//百度地图API功能
+	 var map = new BMap.Map("allmap");
+	 map.enableScrollWheelZoom(true);
+
+
+	 //获取数据
+	 //获取驾车获取数据
+	 var drv=new BMap.DrivingRoute('北京', {
+	     onSearchComplete: function(res) {
+	         if (drv.getStatus() == BMAP_STATUS_SUCCESS) {
+	             var plan = res.getPlan(0);
+	             var arrPois =[];//地图点数据
+	             for(var j=0;j<plan.getNumRoutes();j++){
+	                 var route = plan.getRoute(j);
+	                 arrPois= arrPois.concat(route.getPath());
+
+	                 //模拟添加经过时间
+	                 for(var i=0;i<arrPois.length;i++){
+	                 	var date = new Date(1550710169197+(i*1000*60));
+	                 	arrPois[i].gpsTime=date;
+	                 }
+
+	               //添加轨迹
+	               addRoute(arrPois);
+	             }
+	            ;
+	         }
+	     }
+	 });
+
+	 //获取数据
+	 var start=new BMap.Point(116.403613,39.912916);
+	 var end=new BMap.Point(116.399589,39.791497);
+	 drv.search(start, end);
+
+
+
+	 var lushu; //路书
+
+	 //添加路线
+	 function addRoute(data){
+	 	var points = [];//点信息数组
+	 	var landmarkPois = [];//路书需要数组
+	 	var startTime="";
+	 	for(var i=0;i<data.length;i++){
+	 		var p= new BMap.Point(data[i].lng, data[i].lat);
+
+	 		if(i==0){ //起点
+	 			addMarker(p,data[i].gpsTime,false);
+	 			map.centerAndZoom(p, 14);
+
+	 			startTime=data[i].gpsTime;
+	 		}else if(i==data.length-1){ //止点
+	 			addMarker(p,data[i].gpsTime,false);
+	 		}else if(i%Math.round(data.length/10)==0){//其他点
+	 			addMarker(p,data[i].gpsTime,false);
+	 		}else{
+	 			addMarker(p,data[i].gpsTime,true);
+	 		}
+
+	 		points.push(p);
+
+	 		//路书特殊点（显示经过时间）
+	 		landmarkPois.push(new landmark(data[i].lng, data[i].lat,data[i].gpsTime, 0.1));
+	 	}
+
+	 	//画线
+	 	addLine(points);
+
+	 	//设置点全部在视野中
+	// 	map.setViewport(points);
+
+
+	 	//路书
+	 	lushu = new BMapLib.LuShu(map,points,{
+	 	    defaultContent:startTime,
+	 	    autoView:true,// 是否开启自动视野调整，如果开启那么路书在运动过程中会根据视野自动调整
+	 	    icon  : new BMap.Icon('http://lbsyun.baidu.com/jsdemo/img/car.png', new BMap.Size(52,26),{anchor : new BMap.Size(27, 13)}),
+	 	    speed: 4500,
+	 	    enableRotation:true,// 是否设置marker随着道路的走向进行旋转
+	 	    landmarkPois: landmarkPois
+	 	});
+	 }
+
+	 // 添加点
+	 function addMarker(point,gpsTime,b){
+	 	var marker = new BMap.Marker(point);
+
+	  	map.addOverlay(marker);
+	  	if(b)
+	  	 	marker.hide();
+
+	  	var label = new BMap.Label("时间:"+gpsTime+"<br/>位置:"+ marker.getPosition().lng + "," + marker.getPosition().lat,
+	  			{offset:new BMap.Size(20,-10)});
+	 	marker.setLabel(label);
+	 	label.hide();
+
+	 	marker.addEventListener("mouseover",onMouseover);//鼠标进入事件
+	 	marker.addEventListener("mouseout",onMouseout);//鼠标移出事件
+	 }
+
+	 //画线
+	 function addLine(points){
+	 	//画线
+	 	var sy = new BMap.Symbol(BMap_Symbol_SHAPE_BACKWARD_OPEN_ARROW, {
+	 	    scale: 0.6,//图标缩放大小
+	 	    strokeColor:'#fff',//设置矢量图标的线填充颜色
+	 	    strokeWeight: '2',//设置线宽
+	 	});
+	 	var icons = new BMap.IconSequence(sy, '100%', '4%');
+	 	var polyline =new BMap.Polyline(points, {
+	 		   enableEditing: false,//是否启用线编辑，默认为false
+	 		   enableClicking: true,//是否响应点击事件，默认为true
+	 		   icons:[icons],
+	 		   strokeWeight:'8',//折线的宽度，以像素为单位
+	 		   strokeOpacity: 0.8,//折线的透明度，取值范围0 - 1
+	 		   strokeColor:"#18a45b" //折线颜色
+	 		});
+	 	map.addOverlay(polyline);   //增加折线
+	 }
+
+	 //鼠标进入事件
+	 function onMouseover(e){
+	 	var p = e.target;
+	 	p.getLabel().show();
+	 }
+	 //鼠标移出事件
+	 function onMouseout(e){
+	 	var p = e.target;
+	 	p.getLabel().hide();
+	 }
+
+	 //绑定事件
+	 $("run").onclick = function(){
+	 	lushu.start();
+	 };
+	 $("stop").onclick = function(){
+	 	lushu.stop();
+	 };
+	 $("pause").onclick = function(){
+	 	lushu.pause();
+	 };
+	 $("hide").onclick = function(){
+	 	lushu.hideInfoWindow();
+	 };
+	 $("show").onclick = function(){
+	 	lushu.showInfoWindow();
+	 };
+	 function $(element){
+	 	return document.getElementById(element);
+	 }
+
+
+
+	 //路书经过点
+	 function landmark(lng,lat,html,pauseTime){
+	 	this.lng=lng;
+	 	this.lat=lat;
+	 	this.html=html;
+	 	this.pauseTime=pauseTime;
+	 }
+ </script>
 </html>

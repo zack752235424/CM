@@ -18,14 +18,18 @@
       <div class="x-body">
       <div class="demoTable">
           <div class="layui-inline">
-            <input class="layui-input" name="VIN" id="demoReload" autocomplete="off">
+            <input class="layui-input" name="VIN" id="demoReload" autocomplete="off" placeholder="模糊匹配VIN">
           </div>
+          <div class="layui-inline">
+        <input class="layui-input" name="id" id="dept" autocomplete="off" placeholder="模糊匹配部门">
+      </div>
           <button class="layui-btn" data-type="reload">搜索</button>
       </div>
     </div>
       <xblock>
         <button class="layui-btn" onclick="x_admin_show('添加车辆','{% url 'car:car_add' %}',600,400)"><i class="layui-icon"></i>添加</button>
         <button class="layui-btn" onclick="x_admin_show('导入','{% url 'car:car_upload' %}',600,400)"><i class="layui-icon"></i>导入</button>
+        <button class="layui-btn" onclick="x_admin_show('导入修改','{% url 'car:updt_all' %}',600,400)"><i class="layui-icon"></i>导入修改</button>
       </xblock>
 
     <table class="layui-hide" id="test" lay-filter="test"></table>
@@ -85,17 +89,32 @@
                   anim: 0, //0-6的动画形式，-1不开启
                   content: '/car/car_edit/?VIN=' + data.VIN
                 });
+                layer.confirm('是否刷新?', function(index){
+                    var demoReload = $('#demoReload');
+                    var dept = $('#dept');
+                    table.reload('testReload', {
+                where: {
+                  key: {
+                    VIN: demoReload.val(),
+                    dept:dept.val()
+                  }
+                }
+              }, 'data');
+                    layer.close(index);
+              });
             }
           });
           var $ = layui.$, active = {
             reload: function(){
               var demoReload = $('#demoReload');
+              var dept = $('#dept');
 
               //执行重载
               table.reload('testReload', {
                 where: {
                   key: {
-                    VIN: demoReload.val()
+                    VIN: demoReload.val(),
+                    dept:dept.val()
                   }
                 }
               }, 'data');

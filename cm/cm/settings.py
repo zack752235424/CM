@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -38,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'djcelery',
     'user',
     'updt',
     'index',
@@ -166,3 +168,9 @@ CACHES = {
         }
     }
 }
+
+import djcelery
+djcelery.setup_loader()
+CELERY_TIMEZONE='Asia/Shanghai'  # 并没有北京时区，与下面TIME_ZONE应该一致
+BROKER_URL='redis://127.0.0.1:6379/0'  # 任何可用的redis都可以，不一定要在django server运行的主机上
+CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'

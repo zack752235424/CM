@@ -12,4 +12,5 @@ urlpatterns = [
     path('car_download/', car_download, name='car_download'),
     path('car_index/', car_index, name='car_index'),
     path('car_monitor/', car_monitor, name='car_monitor'),
+    path('updt_all/', updt_all, name='updt_all'),
 ]

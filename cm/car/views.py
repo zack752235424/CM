@@ -5,21 +5,18 @@ from django.shortcuts import render
 from dwebsocket.decorators import accept_websocket
 from django_redis import get_redis_connection
 # Create your views here.
-
+from car.ExcelUpdate import ExcelUpdate
 from car.excle import ExcelImport
 from car.form import FileForm
 from car.models import Car, CaseFile
-
 
 def manage(request):
     VIN = request.GET.get('key[VIN]')
     page = request.GET.get('page')
     limit = request.GET.get('limit')
-    if not page or not limit:
-        page = 1
-        limit = 10
-    if VIN:
-        cars = Car.objects.filter(VIN__contains=VIN).all()
+    dept = request.GET.get('key[dept]')
+    if VIN or dept:
+        cars = Car.objects.filter(VIN__contains=VIN, dept__contains=dept)
     else:
         cars = Car.objects.all()
     data = []
@@ -166,3 +163,22 @@ def car_monitor(request):
                 can = car.can_set.all().order_by('-ter_time').first()
                 request.websocket.send(can.data.encode())  # 发送给前段的数据
                 time.sleep(10)
+
+
+def updt_all(request):
+    if request.method == 'GET':
+        return render(request, 'updt_all.html')
+    if request.method == 'POST':
+        form = FileForm(request.POST, request.FILES)
+        if form.is_valid():
+            file_name = form.cleaned_data['files']
+            name = time.time()
+            file_name._set_name('%s.xls'%name)
+            case_file = CaseFile.objects.create(file_name=file_name)
+            case_file.save()
+            messages = ExcelUpdate(file_name)
+            messages.update_cases()
+            return HttpResponse('<div style="color: #0dc316; text-align: center; margin-top: 100px; font-size: 50px">上传成功！！！</div>')
+        return HttpResponse('<div style="color: red; text-align: center; margin-top: 100px; font-size: 20px">上传错误,请上传xls文件！！！</div>')
+
+

@@ -39,3 +39,19 @@ class CaseFile(models.Model):
 
     class Meta:
         db_table = 'case_file'
+
+
+class Task(models.Model):
+    """
+    保存经纬度
+    """
+    VIN = models.CharField(max_length=32, null=False, unique=True, verbose_name='VIN号')
+    longitude = models.CharField(max_length=32, null=False, verbose_name='经度')
+    latitude = models.CharField(max_length=32, null=False, verbose_name='纬度')
+    type = models.CharField(max_length=32, null=True, verbose_name='类别')
+    create_time = models.DateTimeField(auto_now=True, null=True, verbose_name='添加数据时间')
+    spare_1 = models.CharField(max_length=128, null=True, verbose_name='备用1')
+    spare_2 = models.CharField(max_length=128, null=True, verbose_name='备用2')
+
+    class Meta:
+        db_table = 'task'

@@ -125,6 +125,7 @@ def main():
         def run(self):
             try:
                 message = ''
+                last_message = 'dfsfd'
                 self.cclient.settimeout(60)
                 while True:
                     data = Converter().to_hex('L' + self.cclient.recv(2048).decode('raw_unicode_escape'))

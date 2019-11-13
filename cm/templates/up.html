@@ -72,6 +72,11 @@
         <input class="layui-input" name="id" id="dept" autocomplete="off" placeholder="模糊匹配部门">
       </div>
       <button class="layui-btn" data-type="reload">搜索</button>
+        <div style="float: right">
+            <xblock>
+        <a class="layui-btn" href="/updt/up_download/">全部数据导出</a>
+      </xblock>
+        </div>
     </div>
 
 <table class="layui-hide" id="LAY_table_user" lay-filter="user"></table>
@@ -85,6 +90,7 @@ layui.use('table', function(){
   table.render({
     elem: '#LAY_table_user'
     ,url: '{% url 'updt:get_users' %}' //数据接口
+      ,toolbar: '#toolbarDemo'
     ,cols: [[
       {field: 'id', title: 'ID', sort: true, fixed: 'left', align:'center'}
       ,{field: 'VIN', title: 'VIN', align:'center'}

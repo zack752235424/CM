@@ -66,7 +66,10 @@ insert into permission(url, title) VALUES ('/fence/fence_data/', '电子围栏�
 insert into permission(url, title) VALUES ('/CAN/can_download/', '整车数据下载');
 insert into permission(url, title) VALUES ('/CAN/zhu_download/', '主函数数据下载');
 insert into permission(url, title) VALUES ('/video/get_data/', '位置数据请求');
-
+insert into permission(url, title) VALUES ('/updt/up_download/', '升级数据全部导出');
+insert into permission(url, title) VALUES ('/car/updt_all/', '车辆导入修改');
+insert into permission(url, title) VALUES ('/fence/get_cars/', '树状图显示');
+insert into permission(url, title) VALUES ('/playback/data_recovery/', '地理位置信息数据恢复');
 
 -- 插入角色权限
 insert into role_permissions(role_id, permission_id) VALUES
@@ -119,7 +122,11 @@ insert into role_permissions(role_id, permission_id) VALUES
 (1,47),
 (1,48),
 (1,49),
-(1,50);
+(1,50),
+(1,51),
+(1,52),
+(1,53),
+(1,54);
 
 -- 医疗管理员权限
 insert into role_permissions(role_id, permission_id) VALUES

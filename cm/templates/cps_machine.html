@@ -19,8 +19,11 @@
     <div class="x-body">
       <div class="demoTable">
           <div class="layui-inline">
-            <input class="layui-input" name="ICCID" id="demoReload" autocomplete="off">
+            <input class="layui-input" name="ICCID" id="demoReload" autocomplete="off" placeholder="模糊查询ICCID">
           </div>
+          <div class="layui-inline">
+        <input class="layui-input" name="id" id="dept" autocomplete="off" placeholder="模糊查询部门">
+      </div>
           <button class="layui-btn" data-type="reload">搜索</button>
       </div>
     </div>
@@ -86,17 +89,31 @@
                   anim: 0, //0-6的动画形式，-1不开启
                   content: '/machine/machine_edit/?ICCID=' + data.ICCID
                 });
+                 layer.confirm('是否刷新?', function(index){
+                    var demoReload = $('#demoReload');
+                    var dept = $('#dept');
+                    table.reload('testReload', {
+                where: {
+                  key: {
+                        ICCID: demoReload.val(),
+                        dept:dept.val()
+                  }
+                }
+              }, 'data');
+                    layer.close(index);
+              });
             }
           });
           var $ = layui.$, active = {
             reload: function(){
               var demoReload = $('#demoReload');
-
+              var dept = $('#dept');
               //执行重载
               table.reload('testReload', {
                 where: {
                   key: {
-                    ICCID: demoReload.val()
+                      ICCID: demoReload.val(),
+                      dept:dept.val()
                   }
                 }
               }, 'data');

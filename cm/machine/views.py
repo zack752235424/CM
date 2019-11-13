@@ -18,11 +18,9 @@ def get_machine(request):
     ICCID = request.GET.get('key[ICCID]')
     page = request.GET.get('page')
     limit = request.GET.get('limit')
-    if not page or not limit:
-        page = 1
-        limit = 10
-    if ICCID:
-        machines = Machine.objects.filter(ICCID__contains=ICCID).all()
+    dept = request.GET.get('key[dept]')
+    if ICCID or dept:
+        machines = Machine.objects.filter(ICCID__contains=ICCID, dept__contains=dept).all()
     else:
         machines = Machine.objects.all()
     data = []
