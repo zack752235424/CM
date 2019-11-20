@@ -61,12 +61,6 @@ def search(request):
 
 
 def check_status(request):
-    """
-    车辆状态查询
-    :param request:
-    :param VIN:
-    :return:
-    """
     VIN = request.GET.get('VIN')
     r.zadd('car_status', {VIN: 3})
     return HttpResponseRedirect(reverse('lock:lock'))

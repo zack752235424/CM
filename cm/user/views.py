@@ -10,11 +10,6 @@ from user.models import User, Role
 
 
 def login(request):
-    """
-    登录页面
-    :param request:username, password
-    :return:
-    """
     if request.method == 'GET':
         return render(request, 'login.html')
     if request.method == 'POST':
@@ -28,31 +23,16 @@ def login(request):
 
 
 def logout(request):
-    """
-    注销功能
-    :param request:
-    :return:
-    """
     del request.session['user_id']
     return HttpResponseRedirect(reverse('user:login'))
 
 
 def manage(request):
-    """
-    用户管理
-    :param request:
-    :return:
-    """
     users = User.objects.filter(is_delete=0).all()
     return render(request, 'member_list.html', {'users': users})
 
 
 def member_add(request):
-    """
-    添加用户
-    :param request:
-    :return:
-    """
     if request.method == 'GET':
         return render(request, 'member_add.html')
     if request.method == 'POST':

@@ -122,6 +122,7 @@ def up_download(request):
     worksheet.col(4).width = 256 * 18
     worksheet.col(5).width = 256 * 18
     worksheet.col(6).width = 256 * 18
+    worksheet.col(7).width = 256 * 19
     workbook.save('./up_data.xls')
     file = open('./up_data.xls', 'rb')
     response = FileResponse(file)

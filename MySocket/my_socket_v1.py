@@ -864,7 +864,7 @@ def main():
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     # sock.bind(('0.0.0.0', 2000))
     sock.bind(('127.0.0.1', 2000))
-    # sock.bind(('0.0.0.0', 889))
+    # sock.bind(('0.0.0.0', 888))
     # sock.bind(('0.0.0.0', 889))
     # sock.bind(('0.0.0.0', 890))
     sock.listen(5000)
